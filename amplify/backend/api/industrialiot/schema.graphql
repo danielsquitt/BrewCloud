@@ -1,0 +1,35 @@
+type Company 
+  @model
+  @key(name: "companyByName", fields: ["name"], queryField: "companyByName")
+{
+  id : ID!
+  name: String!
+  InitImg: S3Object
+  devices: [Device] @connection(keyName: "byCompanyId", fields: ["id"])
+}
+
+type Device
+  @model(timestamps:{createdAt: "createdOn", updatedAt: "updatedOn"})
+  @key(name: "byCompanyId", fields: ["companyId"], queryField: "deviceByCompanyId")
+ {
+  id: ID!
+  type: ID!
+  companyId: ID!
+  company: Company @connection(fields: ["companyId"])
+  alias: String
+  description: String
+  connStatus: Boolean
+}
+
+type DeviceType
+  @model(queries: null, mutations: null, subscriptions: null)
+{
+  id: ID!
+  name: String!
+}
+
+type S3Object {
+  bucket: String!
+  region: String!
+  key: String!
+}

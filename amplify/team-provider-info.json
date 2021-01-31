@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-industrialiot-dev-181534-authRole",
+      "UnauthRoleArn": "arn:aws:iam::538003087252:role/amplify-industrialiot-dev-181534-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::538003087252:role/amplify-industrialiot-dev-181534-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-industrialiot-dev-181534-deployment",
+      "UnauthRoleName": "amplify-industrialiot-dev-181534-unauthRole",
+      "StackName": "amplify-industrialiot-dev-181534",
+      "StackId": "arn:aws:cloudformation:eu-west-2:538003087252:stack/amplify-industrialiot-dev-181534/f098e800-63e7-11eb-9aec-02a32d1a1d84",
+      "AmplifyAppId": "d1jms94k2dxinq"
+    },
+    "categories": {
+      "auth": {
+        "industrialiote0ffe468": {}
+      }
+    }
+  }
+}
