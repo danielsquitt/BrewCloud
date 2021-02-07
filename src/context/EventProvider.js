@@ -63,7 +63,7 @@ const EventProvider = (props) => {
  
 
     return (
-        <EventContext.Provider value={{newError, newWarning, newInfo, newSuccess, deleteAlert, alertArray}}>
+        <EventContext.Provider value={{newError, newWarning, newInfo, newSuccess, alertArray}}>
             {props.children}
         </EventContext.Provider>
     )

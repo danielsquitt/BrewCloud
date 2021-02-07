@@ -16,7 +16,6 @@ const Credentials = (props) => {
     const [password, setpassword] = useState('')
 
     const onSubmit = (data, e)=>{
-        console.log({username, password})
         e.preventDefault()
         props.onSubmit(username, password)
     }

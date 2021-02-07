@@ -11,6 +11,7 @@ import { Container, Card, CardMedia } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { useParams } from "react-router-dom";
 import img from "./../img/DefaultImg.png";
+import { EventContext } from "../context/EventProvider";
 
 Amplify.configure(awsmobile);
 
@@ -37,6 +38,7 @@ const Login = (props) => {
     const classes = useStyles();
 
     const {state, login, updateUserPassword } = useContext(AuthContext)
+    const {newError} = useContext(EventContext)
 
     const [imgUrl, setimgUrl] = useState(null)
 
@@ -44,13 +46,14 @@ const Login = (props) => {
         const getImg = async() => {
             if (id) {
                 try {
-                    const result = await API.graphql({ query: queries.companyByName , variables: { name: 'Peninsula' }})
+                    const result = await API.graphql({ query: queries.companyByName , variables: { name: id }})
                     const signedURL = await Storage.get(result.data.companyByName.items[0].InitImg.key,  {
                         download: false,
                     }) 
                     setimgUrl(signedURL)
                 } catch (error) {
-                    console.error(error)
+                    newError(error.message)
+                    console.log(error)
                 }
             }else{
                 setimgUrl(img)
@@ -59,6 +62,28 @@ const Login = (props) => {
         }
         getImg()
     }, [id])
+
+    const newPasswordOnSubmmit = (Password, NewPassword, attributes)=>{
+        const func = async()=>{
+            updateUserPassword(Password, NewPassword, attributes)
+            .catch((error) => {
+                newError(error.message)
+                console.log('error', error)
+            })
+        }
+        func()
+    }
+
+    const credentialsOnSubmmit = (Username, Password)=>{
+        const func = async()=>{
+            login(Username, Password)
+            .catch((error) => {
+                newError(error)
+                console.log('error', error)
+            })
+        }
+        func()
+    }
 
     useEffect(() => {
         if(state.logged){
@@ -78,12 +103,12 @@ const Login = (props) => {
                 />
                 {state.newPasswordRequired ? (
                     <NewPassword 
-                        onSubmit={updateUserPassword}
+                        onSubmit={newPasswordOnSubmmit}
                         classes={classes}
                     />
                 ) : (
                     <Credentials 
-                        onSubmit={login} 
+                        onSubmit={credentialsOnSubmmit} 
                         classes={classes}
                     />
                 )}

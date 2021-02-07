@@ -60,7 +60,6 @@ const AuthProvider = (props) => {
             setState({logged: false, loading: true})
             authenticate(Username, Password)
             .then((result) => {
-                console.log('Result: ',result)
                 if(result.requiredAttributes){
                     setState({logged: false, newPasswordRequired: true, loading: false})
                 }else{
@@ -80,10 +79,8 @@ const AuthProvider = (props) => {
     const authenticate = async(Username, Password) => {
         return await new Promise((resolve, reject) => {
             var _user = new CognitoUser({ Username, Pool })    
-            
             _user.authenticateUser(new AuthenticationDetails({ Username, Password }), {
                 onSuccess: data => {
-                    console.log('onSuccess', data)
                     setSession(data)
                     setUser(_user)
                     const {'cognito:username':username, name, family_name, email, sub, auth_time} = data.idToken.decodePayload()
@@ -91,11 +88,9 @@ const AuthProvider = (props) => {
                     resolve(data)
                 },
                 onFailure: err => {
-                    console.error('onFailure', err)
                     reject(err)
                 },
                 newPasswordRequired: (userAttributes, requiredAttributes) => {
-                    console.log('newPasswordRequired', {userAttributes, requiredAttributes})
                     setUser(_user)
                     resolve({userAttributes, requiredAttributes})
                 }
