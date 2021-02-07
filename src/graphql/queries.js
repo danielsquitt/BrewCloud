@@ -6,6 +6,11 @@ export const getCompany = /* GraphQL */ `
     getCompany(id: $id) {
       id
       name
+      InitImg {
+        bucket
+        region
+        key
+      }
       devices {
         items {
           id
@@ -34,6 +39,11 @@ export const listCompanys = /* GraphQL */ `
       items {
         id
         name
+        InitImg {
+          bucket
+          region
+          key
+        }
         devices {
           nextToken
         }
@@ -53,6 +63,11 @@ export const getDevice = /* GraphQL */ `
       company {
         id
         name
+        InitImg {
+          bucket
+          region
+          key
+        }
         devices {
           nextToken
         }
@@ -89,6 +104,39 @@ export const listDevices = /* GraphQL */ `
         connStatus
         createdOn
         updatedOn
+      }
+      nextToken
+    }
+  }
+`;
+export const companyByName = /* GraphQL */ `
+  query CompanyByName(
+    $name: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelCompanyFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    companyByName(
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        InitImg {
+          bucket
+          region
+          key
+        }
+        devices {
+          nextToken
+        }
+        createdAt
+        updatedAt
       }
       nextToken
     }

@@ -10,9 +10,6 @@ export const AuthContext = React.createContext()
 
 const AuthProvider = (props) => {
 
-    // Export Value
-    const value = {}
-
     // Athentification state
     const [state, setState] = useState({logged: false, newPasswordRequired: false, loading: false})
     
@@ -22,6 +19,20 @@ const AuthProvider = (props) => {
     
     // User data
     const [UserInfo, setUserInfo] = useState(false)
+
+    // REFRESH TOKEN
+    //----------------------------------------------------------------------------------
+    useEffect(() => {
+        if (state.logged) {
+            const interval = session.accessToken.getExpiration()-session.accessToken.getIssuedAt()-15
+            const id = setInterval(() => {
+                refresh()
+                .then()
+            }, interval*1000)
+
+            return () => clearInterval(id)
+        }
+    }, [state.logged])
     
     // REFRESH
     //----------------------------------------------------------------------------------

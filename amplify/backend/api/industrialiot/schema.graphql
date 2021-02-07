@@ -1,11 +1,14 @@
 type Company 
   @model
   @key(name: "companyByName", fields: ["name"], queryField: "companyByName")
+  @auth(rules: [{ allow: public, provider: iam, operations: [read] }] )
 {
   id : ID!
   name: String!
-  InitImg: S3Object
-  devices: [Device] @connection(keyName: "byCompanyId", fields: ["id"])
+  InitImg: S3Object 
+  devices: [Device] 
+    @connection(keyName: "byCompanyId", fields: ["id"])
+    @auth(rules: [{ allow: private, provider: iam, operations: [read] }] )
 }
 
 type Device

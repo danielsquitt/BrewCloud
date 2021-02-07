@@ -9,6 +9,11 @@ export const createCompany = /* GraphQL */ `
     createCompany(input: $input, condition: $condition) {
       id
       name
+      InitImg {
+        bucket
+        region
+        key
+      }
       devices {
         items {
           id
@@ -35,6 +40,11 @@ export const updateCompany = /* GraphQL */ `
     updateCompany(input: $input, condition: $condition) {
       id
       name
+      InitImg {
+        bucket
+        region
+        key
+      }
       devices {
         items {
           id
@@ -61,6 +71,11 @@ export const deleteCompany = /* GraphQL */ `
     deleteCompany(input: $input, condition: $condition) {
       id
       name
+      InitImg {
+        bucket
+        region
+        key
+      }
       devices {
         items {
           id
@@ -91,6 +106,11 @@ export const createDevice = /* GraphQL */ `
       company {
         id
         name
+        InitImg {
+          bucket
+          region
+          key
+        }
         devices {
           nextToken
         }
@@ -117,6 +137,11 @@ export const updateDevice = /* GraphQL */ `
       company {
         id
         name
+        InitImg {
+          bucket
+          region
+          key
+        }
         devices {
           nextToken
         }
@@ -143,6 +168,11 @@ export const deleteDevice = /* GraphQL */ `
       company {
         id
         name
+        InitImg {
+          bucket
+          region
+          key
+        }
         devices {
           nextToken
         }
