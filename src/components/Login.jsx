@@ -1,8 +1,8 @@
 
 // Libraries
 import React, {useState, useEffect, useContext} from 'react'
-import Credentials from './Login/Credentials'
-import NewPassword from "./Login/NewPassword";
+import Credentials from './login/Credentials'
+import NewPassword from "./login/NewPassword";
 import {AuthContext} from "./../context/AuthProvider";
 import Amplify, { API, Storage } from 'aws-amplify';
 import awsmobile from './../aws-exports';
@@ -41,6 +41,10 @@ const Login = (props) => {
     const {newError} = useContext(EventContext)
 
     const [imgUrl, setimgUrl] = useState(null)
+
+    useEffect(() => {
+        credentialsOnSubmmit('Admin', 'Admin1234')
+    }, [])
 
     useEffect(() => {
         const getImg = async() => {

@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^12.6.2",
     "amazon-cognito-identity-js": "^4.5.9",
     "aws-amplify": "^3.3.17",
+    "clsx": "^1.1.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-hook-form": "^6.15.1",
