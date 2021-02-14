@@ -5,7 +5,8 @@ type Company
 {
   id : ID!
   name: String!
-  InitImg: S3Object 
+  initImg: S3Object 
+  faviIcon: S3Object 
   devices: [Device] 
     @connection(keyName: "byCompanyId", fields: ["id"])
 }

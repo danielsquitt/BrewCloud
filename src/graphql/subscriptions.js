@@ -1,12 +1,116 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateDevice = /* GraphQL */ `
+  subscription OnCreateDevice {
+    onCreateDevice {
+      id
+      type
+      companyId
+      alias
+      description
+      connStatus
+      createdOn
+      updatedOn
+      company {
+        id
+        name
+        initImg {
+          bucket
+          region
+          key
+        }
+        faviIcon {
+          bucket
+          region
+          key
+        }
+        devices {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onUpdateDevice = /* GraphQL */ `
+  subscription OnUpdateDevice {
+    onUpdateDevice {
+      id
+      type
+      companyId
+      alias
+      description
+      connStatus
+      createdOn
+      updatedOn
+      company {
+        id
+        name
+        initImg {
+          bucket
+          region
+          key
+        }
+        faviIcon {
+          bucket
+          region
+          key
+        }
+        devices {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onDeleteDevice = /* GraphQL */ `
+  subscription OnDeleteDevice {
+    onDeleteDevice {
+      id
+      type
+      companyId
+      alias
+      description
+      connStatus
+      createdOn
+      updatedOn
+      company {
+        id
+        name
+        initImg {
+          bucket
+          region
+          key
+        }
+        faviIcon {
+          bucket
+          region
+          key
+        }
+        devices {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
 export const onCreateCompany = /* GraphQL */ `
   subscription OnCreateCompany {
     onCreateCompany {
       id
       name
-      InitImg {
+      initImg {
+        bucket
+        region
+        key
+      }
+      faviIcon {
         bucket
         region
         key
@@ -19,18 +123,11 @@ export const onCreateCompany = /* GraphQL */ `
           alias
           description
           connStatus
-          _version
-          _deleted
-          _lastChangedAt
           createdOn
           updatedOn
         }
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -41,7 +138,12 @@ export const onUpdateCompany = /* GraphQL */ `
     onUpdateCompany {
       id
       name
-      InitImg {
+      initImg {
+        bucket
+        region
+        key
+      }
+      faviIcon {
         bucket
         region
         key
@@ -54,18 +156,11 @@ export const onUpdateCompany = /* GraphQL */ `
           alias
           description
           connStatus
-          _version
-          _deleted
-          _lastChangedAt
           createdOn
           updatedOn
         }
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -76,7 +171,12 @@ export const onDeleteCompany = /* GraphQL */ `
     onDeleteCompany {
       id
       name
-      InitImg {
+      initImg {
+        bucket
+        region
+        key
+      }
+      faviIcon {
         bucket
         region
         key
@@ -89,125 +189,13 @@ export const onDeleteCompany = /* GraphQL */ `
           alias
           description
           connStatus
-          _version
-          _deleted
-          _lastChangedAt
           createdOn
           updatedOn
         }
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const onCreateDevice = /* GraphQL */ `
-  subscription OnCreateDevice {
-    onCreateDevice {
-      id
-      type
-      companyId
-      company {
-        id
-        name
-        InitImg {
-          bucket
-          region
-          key
-        }
-        devices {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      alias
-      description
-      connStatus
-      _version
-      _deleted
-      _lastChangedAt
-      createdOn
-      updatedOn
-    }
-  }
-`;
-export const onUpdateDevice = /* GraphQL */ `
-  subscription OnUpdateDevice {
-    onUpdateDevice {
-      id
-      type
-      companyId
-      company {
-        id
-        name
-        InitImg {
-          bucket
-          region
-          key
-        }
-        devices {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      alias
-      description
-      connStatus
-      _version
-      _deleted
-      _lastChangedAt
-      createdOn
-      updatedOn
-    }
-  }
-`;
-export const onDeleteDevice = /* GraphQL */ `
-  subscription OnDeleteDevice {
-    onDeleteDevice {
-      id
-      type
-      companyId
-      company {
-        id
-        name
-        InitImg {
-          bucket
-          region
-          key
-        }
-        devices {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      alias
-      description
-      connStatus
-      _version
-      _deleted
-      _lastChangedAt
-      createdOn
-      updatedOn
     }
   }
 `;

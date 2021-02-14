@@ -1,6 +1,114 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createDevice = /* GraphQL */ `
+  mutation CreateDevice(
+    $input: CreateDeviceInput!
+    $condition: ModelDeviceConditionInput
+  ) {
+    createDevice(input: $input, condition: $condition) {
+      id
+      type
+      companyId
+      alias
+      description
+      connStatus
+      createdOn
+      updatedOn
+      company {
+        id
+        name
+        initImg {
+          bucket
+          region
+          key
+        }
+        faviIcon {
+          bucket
+          region
+          key
+        }
+        devices {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const updateDevice = /* GraphQL */ `
+  mutation UpdateDevice(
+    $input: UpdateDeviceInput!
+    $condition: ModelDeviceConditionInput
+  ) {
+    updateDevice(input: $input, condition: $condition) {
+      id
+      type
+      companyId
+      alias
+      description
+      connStatus
+      createdOn
+      updatedOn
+      company {
+        id
+        name
+        initImg {
+          bucket
+          region
+          key
+        }
+        faviIcon {
+          bucket
+          region
+          key
+        }
+        devices {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const deleteDevice = /* GraphQL */ `
+  mutation DeleteDevice(
+    $input: DeleteDeviceInput!
+    $condition: ModelDeviceConditionInput
+  ) {
+    deleteDevice(input: $input, condition: $condition) {
+      id
+      type
+      companyId
+      alias
+      description
+      connStatus
+      createdOn
+      updatedOn
+      company {
+        id
+        name
+        initImg {
+          bucket
+          region
+          key
+        }
+        faviIcon {
+          bucket
+          region
+          key
+        }
+        devices {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
 export const createCompany = /* GraphQL */ `
   mutation CreateCompany(
     $input: CreateCompanyInput!
@@ -9,7 +117,12 @@ export const createCompany = /* GraphQL */ `
     createCompany(input: $input, condition: $condition) {
       id
       name
-      InitImg {
+      initImg {
+        bucket
+        region
+        key
+      }
+      faviIcon {
         bucket
         region
         key
@@ -22,18 +135,11 @@ export const createCompany = /* GraphQL */ `
           alias
           description
           connStatus
-          _version
-          _deleted
-          _lastChangedAt
           createdOn
           updatedOn
         }
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -47,7 +153,12 @@ export const updateCompany = /* GraphQL */ `
     updateCompany(input: $input, condition: $condition) {
       id
       name
-      InitImg {
+      initImg {
+        bucket
+        region
+        key
+      }
+      faviIcon {
         bucket
         region
         key
@@ -60,18 +171,11 @@ export const updateCompany = /* GraphQL */ `
           alias
           description
           connStatus
-          _version
-          _deleted
-          _lastChangedAt
           createdOn
           updatedOn
         }
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -85,7 +189,12 @@ export const deleteCompany = /* GraphQL */ `
     deleteCompany(input: $input, condition: $condition) {
       id
       name
-      InitImg {
+      initImg {
+        bucket
+        region
+        key
+      }
+      faviIcon {
         bucket
         region
         key
@@ -98,134 +207,13 @@ export const deleteCompany = /* GraphQL */ `
           alias
           description
           connStatus
-          _version
-          _deleted
-          _lastChangedAt
           createdOn
           updatedOn
         }
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const createDevice = /* GraphQL */ `
-  mutation CreateDevice(
-    $input: CreateDeviceInput!
-    $condition: ModelDeviceConditionInput
-  ) {
-    createDevice(input: $input, condition: $condition) {
-      id
-      type
-      companyId
-      company {
-        id
-        name
-        InitImg {
-          bucket
-          region
-          key
-        }
-        devices {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      alias
-      description
-      connStatus
-      _version
-      _deleted
-      _lastChangedAt
-      createdOn
-      updatedOn
-    }
-  }
-`;
-export const updateDevice = /* GraphQL */ `
-  mutation UpdateDevice(
-    $input: UpdateDeviceInput!
-    $condition: ModelDeviceConditionInput
-  ) {
-    updateDevice(input: $input, condition: $condition) {
-      id
-      type
-      companyId
-      company {
-        id
-        name
-        InitImg {
-          bucket
-          region
-          key
-        }
-        devices {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      alias
-      description
-      connStatus
-      _version
-      _deleted
-      _lastChangedAt
-      createdOn
-      updatedOn
-    }
-  }
-`;
-export const deleteDevice = /* GraphQL */ `
-  mutation DeleteDevice(
-    $input: DeleteDeviceInput!
-    $condition: ModelDeviceConditionInput
-  ) {
-    deleteDevice(input: $input, condition: $condition) {
-      id
-      type
-      companyId
-      company {
-        id
-        name
-        InitImg {
-          bucket
-          region
-          key
-        }
-        devices {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      alias
-      description
-      connStatus
-      _version
-      _deleted
-      _lastChangedAt
-      createdOn
-      updatedOn
     }
   }
 `;

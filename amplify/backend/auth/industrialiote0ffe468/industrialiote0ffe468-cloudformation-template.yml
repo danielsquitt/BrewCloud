@@ -158,8 +158,15 @@ Parameters:
     Type: CommaDelimitedList
       
             
+        
+  authProviders:
+    Type: CommaDelimitedList
+      
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
+  
+  ShouldOutputAppClientSecrets: !Equals [!Ref userpoolClientGenerateSecret, true ]
+   
 
 Resources:
   
@@ -440,6 +447,7 @@ Outputs :
     Description: The user pool app client id
   AppClientSecret:
     Value: !GetAtt UserPoolClientInputs.appSecret
+    Condition: ShouldOutputAppClientSecrets
   
   
   

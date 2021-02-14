@@ -60,5 +60,6 @@
     "parentStack": {
         "Ref": "AWS::StackId"
     },
-    "permissions": []
+    "permissions": [],
+    "authProviders": []
 }

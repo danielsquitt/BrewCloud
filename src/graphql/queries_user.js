@@ -6,7 +6,13 @@ export const companyByName = /* GraphQL */ `
       name: $name
     ) {
       items {
-        InitImg {
+        name
+        initImg {
+          bucket
+          region
+          key
+        }
+        faviIcon {
           bucket
           region
           key

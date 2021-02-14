@@ -30,21 +30,21 @@
       "output": {
         "authConfig": {
           "defaultAuthentication": {
-            "authenticationType": "AWS_IAM"
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authindustrialiote0ffe468"
+            }
           },
           "additionalAuthenticationProviders": [
             {
               "authenticationType": "API_KEY",
               "apiKeyConfig": {
-                "apiKeyExpirationDays": 1,
+                "apiKeyExpirationDays": 365,
                 "description": ""
               }
             },
             {
-              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-              "userPoolConfig": {
-                "userPoolId": "authindustrialiote0ffe468"
-              }
+              "authenticationType": "AWS_IAM"
             }
           ]
         }

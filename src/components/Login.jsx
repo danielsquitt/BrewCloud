@@ -11,10 +11,10 @@ import * as queries from './../graphql/queries';
 import { Container, Card, CardMedia } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { useParams } from "react-router-dom";
-import img from "./../img/DefaultImg.png";
+import initImg from "./../img/DefaultImg.png";
 import { EventContext } from "../context/EventProvider";
 
-Amplify.configure(awsmobile);
+
 
 const useStyles = makeStyles((theme) => ({
     cardMedia: {
@@ -36,14 +36,17 @@ const Login = (props) => {
 
     let { id } = useParams();
 
+    Amplify.configure(awsmobile);
+
     const classes = useStyles();
 
-    const {state, login, updateUserPassword } = useContext(AuthContext)
+    const {state, login, logout, updateUserPassword } = useContext(AuthContext)
     const {newError} = useContext(EventContext)
 
     const [imgUrl, setimgUrl] = useState(null)
 
     useEffect(() => {
+        logout()
        //credentialsOnSubmmit('Admin', 'Admin1234')
     }, [])
 
@@ -51,17 +54,32 @@ const Login = (props) => {
         const getImg = async() => {
             if (id) {
                 try {
-                    const result = await API.graphql({ query: queries_user.companyByName , variables: { name: id }})
-                    const signedURL = await Storage.get(result.data.companyByName.items[0].InitImg.key,  {
+                    const result = await API.graphql({ 
+                        query: queries_user.companyByName, 
+                        variables: { name: id },
+                        authMode: 'AWS_IAM' 
+                    })
+                    const data = result.data.companyByName.items[0]
+                    console.log(data)
+                    // Change Init imagen
+                    const initImgURL = await Storage.get(data.initImg.key,  {
                             download: false,
                         }) 
-                        setimgUrl(signedURL)
+                    setimgUrl(initImgURL)
+                    // Change documment title
+                    document.title= data.name
+                    // Change favicon
+                    const faviconURL = await Storage.get(data.faviIcon.key,  {
+                        download: false,
+                    }) 
+                    const favicon= document.getElementById("favicon")
+                    favicon.href = faviconURL
                 } catch (error) {
                     newError(error.message)
                     console.log(error)
                 }
             }else{
-                setimgUrl(img)
+                setimgUrl(initImg)
             }
             
         }
