@@ -8,7 +8,6 @@ type Company
   InitImg: S3Object 
   devices: [Device] 
     @connection(keyName: "byCompanyId", fields: ["id"])
-    @auth(rules: [{ allow: private, provider: iam, operations: [read] }] )
 }
 
 type Device

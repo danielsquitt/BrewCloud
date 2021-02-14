@@ -6,7 +6,8 @@ import NewPassword from "./login/NewPassword";
 import {AuthContext} from "./../context/AuthProvider";
 import Amplify, { API, Storage } from 'aws-amplify';
 import awsmobile from './../aws-exports';
-import * as queries from './../graphql/queries_user';
+import * as queries_user from './../graphql/queries_user';
+import * as queries from './../graphql/queries';
 import { Container, Card, CardMedia } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { useParams } from "react-router-dom";
@@ -43,18 +44,18 @@ const Login = (props) => {
     const [imgUrl, setimgUrl] = useState(null)
 
     useEffect(() => {
-        credentialsOnSubmmit('Admin', 'Admin1234')
+       //credentialsOnSubmmit('Admin', 'Admin1234')
     }, [])
 
     useEffect(() => {
         const getImg = async() => {
             if (id) {
                 try {
-                    const result = await API.graphql({ query: queries.companyByName , variables: { name: id }})
+                    const result = await API.graphql({ query: queries_user.companyByName , variables: { name: id }})
                     const signedURL = await Storage.get(result.data.companyByName.items[0].InitImg.key,  {
-                        download: false,
-                    }) 
-                    setimgUrl(signedURL)
+                            download: false,
+                        }) 
+                        setimgUrl(signedURL)
                 } catch (error) {
                     newError(error.message)
                     console.log(error)

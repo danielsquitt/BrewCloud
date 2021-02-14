@@ -24,6 +24,7 @@ const AuthProvider = (props) => {
     //----------------------------------------------------------------------------------
     useEffect(() => {
         if (state.logged) {
+            console.log('Esta psando por aqui')
             const interval = session.accessToken.getExpiration()-session.accessToken.getIssuedAt()-15
             const id = setInterval(() => {
                 refresh()
@@ -78,6 +79,7 @@ const AuthProvider = (props) => {
     //----------------------------------------------------------------------------------
     const authenticate = async(Username, Password) => {
         return await new Promise((resolve, reject) => {
+            
             var _user = new CognitoUser({ Username, Pool })    
             _user.authenticateUser(new AuthenticationDetails({ Username, Password }), {
                 onSuccess: data => {

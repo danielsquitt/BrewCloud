@@ -1,6 +1,42 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const syncCompanies = /* GraphQL */ `
+  query SyncCompanies(
+    $filter: ModelCompanyFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncCompanies(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        InitImg {
+          bucket
+          region
+          key
+        }
+        devices {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getCompany = /* GraphQL */ `
   query GetCompany($id: ID!) {
     getCompany(id: $id) {
@@ -19,11 +55,18 @@ export const getCompany = /* GraphQL */ `
           alias
           description
           connStatus
+          _version
+          _deleted
+          _lastChangedAt
           createdOn
           updatedOn
         }
         nextToken
+        startedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -46,11 +89,56 @@ export const listCompanys = /* GraphQL */ `
         }
         devices {
           nextToken
+          startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncDevices = /* GraphQL */ `
+  query SyncDevices(
+    $filter: ModelDeviceFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncDevices(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        type
+        companyId
+        company {
+          id
+          name
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        alias
+        description
+        connStatus
+        _version
+        _deleted
+        _lastChangedAt
+        createdOn
+        updatedOn
+      }
+      nextToken
+      startedAt
     }
   }
 `;
@@ -70,13 +158,20 @@ export const getDevice = /* GraphQL */ `
         }
         devices {
           nextToken
+          startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
       alias
       description
       connStatus
+      _version
+      _deleted
+      _lastChangedAt
       createdOn
       updatedOn
     }
@@ -96,16 +191,50 @@ export const listDevices = /* GraphQL */ `
         company {
           id
           name
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         alias
         description
         connStatus
+        _version
+        _deleted
+        _lastChangedAt
         createdOn
         updatedOn
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncDeviceTypes = /* GraphQL */ `
+  query SyncDeviceTypes(
+    $filter: ModelDeviceTypeFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncDeviceTypes(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
     }
   }
 `;
@@ -134,11 +263,16 @@ export const companyByName = /* GraphQL */ `
         }
         devices {
           nextToken
+          startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
+      startedAt
     }
   }
 `;
@@ -164,16 +298,23 @@ export const deviceByCompanyId = /* GraphQL */ `
         company {
           id
           name
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         alias
         description
         connStatus
+        _version
+        _deleted
+        _lastChangedAt
         createdOn
         updatedOn
       }
       nextToken
+      startedAt
     }
   }
 `;

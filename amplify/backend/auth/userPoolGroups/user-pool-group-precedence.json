@@ -1,6 +1,6 @@
 [
-  {
-    "groupName": "PeninsulaAdmin",
-    "precedence": 1
-  }
+    {
+        "groupName": "PeninsulaAdmin",
+        "precedence": 1
+    }
 ]

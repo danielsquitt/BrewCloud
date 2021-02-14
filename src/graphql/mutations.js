@@ -22,11 +22,18 @@ export const createCompany = /* GraphQL */ `
           alias
           description
           connStatus
+          _version
+          _deleted
+          _lastChangedAt
           createdOn
           updatedOn
         }
         nextToken
+        startedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -53,11 +60,18 @@ export const updateCompany = /* GraphQL */ `
           alias
           description
           connStatus
+          _version
+          _deleted
+          _lastChangedAt
           createdOn
           updatedOn
         }
         nextToken
+        startedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -84,11 +98,18 @@ export const deleteCompany = /* GraphQL */ `
           alias
           description
           connStatus
+          _version
+          _deleted
+          _lastChangedAt
           createdOn
           updatedOn
         }
         nextToken
+        startedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -113,13 +134,20 @@ export const createDevice = /* GraphQL */ `
         }
         devices {
           nextToken
+          startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
       alias
       description
       connStatus
+      _version
+      _deleted
+      _lastChangedAt
       createdOn
       updatedOn
     }
@@ -144,13 +172,20 @@ export const updateDevice = /* GraphQL */ `
         }
         devices {
           nextToken
+          startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
       alias
       description
       connStatus
+      _version
+      _deleted
+      _lastChangedAt
       createdOn
       updatedOn
     }
@@ -175,13 +210,20 @@ export const deleteDevice = /* GraphQL */ `
         }
         devices {
           nextToken
+          startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
       alias
       description
       connStatus
+      _version
+      _deleted
+      _lastChangedAt
       createdOn
       updatedOn
     }

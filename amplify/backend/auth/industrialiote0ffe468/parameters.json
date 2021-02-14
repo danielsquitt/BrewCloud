@@ -46,7 +46,9 @@
         ]
     },
     "useDefault": "manual",
-    "userPoolGroupList": [],
+    "userPoolGroupList": [
+        "PeninsulaAdmin"
+    ],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
     "dependsOn": [],
