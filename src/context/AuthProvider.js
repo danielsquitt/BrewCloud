@@ -125,8 +125,10 @@ const AuthProvider = (props) => {
                 delete attributes.email_verified
                 user.completeNewPasswordChallenge(NewPassword, attributes, {
                     onSuccess: (result) => {
-                        authenticate(user.username, NewPassword)
+                        console.log('Success', result)
+                        login(user.username, NewPassword)
                         .then((data) => {
+                            console.log('login', data)
                             resolve(data)
                         })
                         .catch((err) => {

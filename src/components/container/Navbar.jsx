@@ -71,7 +71,6 @@ const Navbar = (props) => {
             className={clsx(classes.appBar, {
                 [classes.appBarOpen]: open,
             })}
-            area
         >
             <Toolbar>
                 <IconButton

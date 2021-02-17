@@ -41,7 +41,7 @@ const Login = (props) => {
     useEffect(() => {
         logout()
         setCompanyName(id)
-        credentialsOnSubmmit('Admin', 'Admin1234')
+        //credentialsOnSubmmit('Admin', 'Admin1234')
     }, [])
 
     const newPasswordOnSubmmit = (Password, NewPassword, attributes)=>{
@@ -59,7 +59,7 @@ const Login = (props) => {
         const func = async()=>{
             login(Username, Password)
             .catch((error) => {
-                newError(error)
+                newError(error.message)
                 console.log('error', error)
             })
         }

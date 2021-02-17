@@ -31,7 +31,6 @@ const Main = () => {
 
     return (
       <div>
-        {alertArray}
         <Router>
             <Switch>
                 <Route path='/login/:id?' component={Login}/>

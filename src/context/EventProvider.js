@@ -1,4 +1,4 @@
-import React, { useState} from 'react'
+import React, { useState, useRef} from 'react'
 
 import Alert from '@material-ui/lab/Alert'
 import Snackbar from '@material-ui/core/Snackbar';
@@ -63,7 +63,8 @@ const EventProvider = (props) => {
  
 
     return (
-        <EventContext.Provider value={{newError, newWarning, newInfo, newSuccess, alertArray}}>
+        <EventContext.Provider value={{newError, newWarning, newInfo, newSuccess}}>
+            {alertArray}
             {props.children}
         </EventContext.Provider>
     )
