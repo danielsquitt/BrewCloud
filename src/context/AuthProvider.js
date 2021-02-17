@@ -2,13 +2,17 @@
 // LIBRARIS
 import React, {useEffect, useState} from 'react'
 import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js"
+import Amplify from 'aws-amplify';
 
 // FILES
 import Pool from '../UserPool';
+import awsmobile from './../aws-exports';
 
 export const AuthContext = React.createContext()
 
 const AuthProvider = (props) => {
+
+    Amplify.configure(awsmobile);
 
     // Athentification state
     const [state, setState] = useState({logged: false, newPasswordRequired: false, loading: false})

@@ -9,13 +9,16 @@ import EventProvider from "./context/EventProvider";
 
 //OTHERs
 import theme from './themeConfig' ;
+import CompanyProvider from './context/CompanyProvider';
 
 function App(props) {
   return (
     <ThemeProvider theme={theme}>
       <EventProvider>
         <AuthProvider>
-          <Main />
+          <CompanyProvider>
+            <Main />
+          </CompanyProvider>
         </AuthProvider>
       </EventProvider>
     </ThemeProvider>

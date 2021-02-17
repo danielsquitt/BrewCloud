@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "industrialiote0ffe468_identitypool_e0ffe468",
+    "identityPoolName": "ibs",
     "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "induste0ffe468",
-    "userPoolName": "industrialiote0ffe468_userpool_e0ffe468",
+    "resourceNameTruncated": "ibs6d53a652",
+    "userPoolName": "ibs",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -18,9 +18,11 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-        "email"
+        "email",
+        "family_name",
+        "name"
     ],
-    "userpoolClientGenerateSecret": true,
+    "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": "1",
     "userpoolClientWriteAttributes": [
         "email"
@@ -28,10 +30,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "induste0ffe468_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "ibscog6d53a652_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "e0ffe468",
-    "resourceName": "industrialiote0ffe468",
+    "sharedId": "6d53a652",
+    "resourceName": "ibscognitoAuth",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -46,20 +48,19 @@
         ]
     },
     "useDefault": "manual",
-    "userPoolGroupList": [
-        "PeninsulaAdmin"
-    ],
-    "serviceName": "Cognito",
-    "usernameCaseSensitive": false,
-    "dependsOn": [],
     "thirdPartyAuth": false,
     "userPoolGroups": false,
     "adminQueries": false,
     "triggers": "{}",
     "hostedUI": false,
+    "userPoolGroupList": [],
+    "serviceName": "Cognito",
+    "verificationBucketName": "ibscognitoauthverificationbucket",
+    "usernameCaseSensitive": false,
     "parentStack": {
         "Ref": "AWS::StackId"
     },
     "permissions": [],
+    "dependsOn": [],
     "authProviders": []
 }
