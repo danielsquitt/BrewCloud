@@ -35,7 +35,7 @@ const CompanyProvider = (props) => {
                         download: false,
                     }) 
                     setInfo({...info, initImg: initImgURL})
-
+                        
                     // Change documment title
                     document.title= data.name
                     // Change favicon

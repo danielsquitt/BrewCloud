@@ -1,105 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateDevice = /* GraphQL */ `
-  subscription OnCreateDevice {
-    onCreateDevice {
-      id
-      type
-      companyId
-      alias
-      description
-      connStatus
-      createdOn
-      updatedOn
-      company {
-        id
-        name
-        initImg {
-          bucket
-          region
-          key
-        }
-        faviIcon {
-          bucket
-          region
-          key
-        }
-        devices {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-    }
-  }
-`;
-export const onUpdateDevice = /* GraphQL */ `
-  subscription OnUpdateDevice {
-    onUpdateDevice {
-      id
-      type
-      companyId
-      alias
-      description
-      connStatus
-      createdOn
-      updatedOn
-      company {
-        id
-        name
-        initImg {
-          bucket
-          region
-          key
-        }
-        faviIcon {
-          bucket
-          region
-          key
-        }
-        devices {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-    }
-  }
-`;
-export const onDeleteDevice = /* GraphQL */ `
-  subscription OnDeleteDevice {
-    onDeleteDevice {
-      id
-      type
-      companyId
-      alias
-      description
-      connStatus
-      createdOn
-      updatedOn
-      company {
-        id
-        name
-        initImg {
-          bucket
-          region
-          key
-        }
-        faviIcon {
-          bucket
-          region
-          key
-        }
-        devices {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-    }
-  }
-`;
 export const onCreateCompany = /* GraphQL */ `
   subscription OnCreateCompany {
     onCreateCompany {
@@ -115,21 +16,25 @@ export const onCreateCompany = /* GraphQL */ `
         region
         key
       }
+      CRUD_Group
+      R_Group
+      createdAt
+      updatedAt
       devices {
         items {
           id
-          type
+          deviceTypeId
           companyId
           alias
           description
           connStatus
+          CRUD_Group
+          R_Group
           createdOn
           updatedOn
         }
         nextToken
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -148,21 +53,25 @@ export const onUpdateCompany = /* GraphQL */ `
         region
         key
       }
+      CRUD_Group
+      R_Group
+      createdAt
+      updatedAt
       devices {
         items {
           id
-          type
+          deviceTypeId
           companyId
           alias
           description
           connStatus
+          CRUD_Group
+          R_Group
           createdOn
           updatedOn
         }
         nextToken
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -181,21 +90,154 @@ export const onDeleteCompany = /* GraphQL */ `
         region
         key
       }
+      CRUD_Group
+      R_Group
+      createdAt
+      updatedAt
       devices {
         items {
           id
-          type
+          deviceTypeId
           companyId
           alias
           description
           connStatus
+          CRUD_Group
+          R_Group
           createdOn
           updatedOn
         }
         nextToken
       }
-      createdAt
-      updatedAt
+    }
+  }
+`;
+export const onCreateDevice = /* GraphQL */ `
+  subscription OnCreateDevice {
+    onCreateDevice {
+      id
+      deviceTypeId
+      companyId
+      alias
+      description
+      connStatus
+      CRUD_Group
+      R_Group
+      createdOn
+      updatedOn
+      company {
+        id
+        name
+        initImg {
+          bucket
+          region
+          key
+        }
+        faviIcon {
+          bucket
+          region
+          key
+        }
+        CRUD_Group
+        R_Group
+        createdAt
+        updatedAt
+        devices {
+          nextToken
+        }
+      }
+      deviceType {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onUpdateDevice = /* GraphQL */ `
+  subscription OnUpdateDevice {
+    onUpdateDevice {
+      id
+      deviceTypeId
+      companyId
+      alias
+      description
+      connStatus
+      CRUD_Group
+      R_Group
+      createdOn
+      updatedOn
+      company {
+        id
+        name
+        initImg {
+          bucket
+          region
+          key
+        }
+        faviIcon {
+          bucket
+          region
+          key
+        }
+        CRUD_Group
+        R_Group
+        createdAt
+        updatedAt
+        devices {
+          nextToken
+        }
+      }
+      deviceType {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onDeleteDevice = /* GraphQL */ `
+  subscription OnDeleteDevice {
+    onDeleteDevice {
+      id
+      deviceTypeId
+      companyId
+      alias
+      description
+      connStatus
+      CRUD_Group
+      R_Group
+      createdOn
+      updatedOn
+      company {
+        id
+        name
+        initImg {
+          bucket
+          region
+          key
+        }
+        faviIcon {
+          bucket
+          region
+          key
+        }
+        CRUD_Group
+        R_Group
+        createdAt
+        updatedAt
+        devices {
+          nextToken
+        }
+      }
+      deviceType {
+        id
+        name
+        createdAt
+        updatedAt
+      }
     }
   }
 `;

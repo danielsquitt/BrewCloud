@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import clsx from 'clsx';
 import { makeStyles, useTheme , Drawer, Divider, List, ListItem, ListItemIcon, ListItemText, Box , Avatar, Typography, Grid } from "@material-ui/core";
 import { MoveToInbox as InboxIcon, 
@@ -6,8 +6,9 @@ import { MoveToInbox as InboxIcon,
          ChevronLeft as ChevronLeftIcon,
          ChevronRight as ChevronRightIcon  } from '@material-ui/icons';
 import {purple} from '@material-ui/core/colors';
+import { CompanyContext } from './../../context/CompanyProvider';
 
-import logo from "./../../img/Logo.png";
+//import logo from "./../../img/Logo.png";
 
 const drawerWidth = 250;
 
@@ -50,6 +51,8 @@ const SideBar = (props) => {
     const classes = useStyles()
     const theme = useTheme();
 
+    const {info} = useContext(CompanyContext)
+
     return (
         <Drawer 
           variant="permanent"
@@ -68,9 +71,9 @@ const SideBar = (props) => {
           <List>
             <ListItem className={clsx(classes.root)} >
               <ListItemIcon>
-                <Avatar alt="Logo" src={logo} className={classes.avatar} />
+                <Avatar alt="Logo" src={info.logo} className={classes.avatar} />
               </ListItemIcon>
-              <ListItemText primary={<Typography variant="overline" className={classes.typography}>Peninsula</Typography>}/>
+              <ListItemText primary={<Typography variant="overline" className={classes.typography}>{info.name}</Typography>}/>
             </ListItem>
           </List>
           <Divider/>

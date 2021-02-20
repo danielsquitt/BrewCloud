@@ -1,7 +1,10 @@
 type Company 
   @model
   @key(name: "companyByName", fields: ["name"], queryField: "companyByName")
-  @auth(rules: [{ allow: public, provider: iam, operations: [read] }] )
+  @auth(rules: [
+    { allow: public, provider: iam, operations: [read] }
+    { allow: private, provider: userPools }
+  ])
 {
   id : ID!
   name: String!
@@ -9,23 +12,40 @@ type Company
   faviIcon: S3Object 
   devices: [Device] 
     @connection(keyName: "byCompanyId", fields: ["id"])
+    @auth(rules: [
+      { allow: groups, groupsField: "R_Group", operations: [ read ] },
+      { allow: groups, groupsField: "CRUD_Group", operations: [ create, update, delete, read] }
+      ])
+  CRUD_Group: String
+  R_Group:String
 }
 
 type Device
   @model(timestamps:{createdAt: "createdOn", updatedAt: "updatedOn"})
-  @key(name: "byCompanyId", fields: ["companyId"], queryField: "deviceByCompanyId")
+  @key(name: "byCompanyId", fields: ["companyId", "alias"], queryField: "deviceByCompanyId")
+  @auth(rules: [
+      { allow: groups, groupsField: "R_Group", operations: [ read ] },
+      { allow: groups, groupsField: "CRUD_Group", operations: [ create, update, delete, read] }
+      ])
  {
   id: ID!
-  type: ID!
+  deviceTypeId: ID!
+  deviceType: DeviceType
+    @connection(fields: ["deviceTypeId"])
   companyId: ID!
   company: Company @connection(fields: ["companyId"])
   alias: String
   description: String
   connStatus: Boolean
+  CRUD_Group: String
+  R_Group:String
 }
 
 type DeviceType
-  @model(queries: null, mutations: null, subscriptions: null)
+  @model( subscriptions: null)
+  @auth(rules: [
+      { allow: private, provider: iam }
+      ])
 {
   id: ID!
   name: String!
