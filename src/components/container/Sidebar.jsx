@@ -71,7 +71,7 @@ const SideBar = (props) => {
           <List>
             <ListItem className={clsx(classes.root)} >
               <ListItemIcon>
-                <Avatar alt="Logo" src={info.logo} className={classes.avatar} />
+                <Avatar alt="Logo" src={info.faviIconUrl} className={classes.avatar} />
               </ListItemIcon>
               <ListItemText primary={<Typography variant="overline" className={classes.typography}>{info.name}</Typography>}/>
             </ListItem>

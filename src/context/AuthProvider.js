@@ -28,7 +28,6 @@ const AuthProvider = (props) => {
     //----------------------------------------------------------------------------------
     useEffect(() => {
         if (state.logged) {
-            console.log('Esta psando por aqui')
             const interval = session.accessToken.getExpiration()-session.accessToken.getIssuedAt()-15
             const id = setInterval(() => {
                 refresh()

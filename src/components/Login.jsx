@@ -40,9 +40,10 @@ const Login = (props) => {
 
     useEffect(() => {
         logout()
+        if (!id) { id = 'IBS' }
         setCompanyName(id)
         //credentialsOnSubmmit('Admin', 'Admin1234')
-    }, [])
+    }, [id])
 
     const newPasswordOnSubmmit = (Password, NewPassword, attributes)=>{
         const func = async()=>{
@@ -80,7 +81,7 @@ const Login = (props) => {
                     component="img"
                     className={classes.cardMedia}
                     title="Company Image"
-                    src={info.initImg}
+                    src={info.initImgURL}
                 />
                 {state.newPasswordRequired ? (
                     <NewPassword 

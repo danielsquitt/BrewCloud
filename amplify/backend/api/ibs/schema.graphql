@@ -3,7 +3,7 @@ type Company
   @key(name: "companyByName", fields: ["name"], queryField: "companyByName")
   @auth(rules: [
     { allow: public, provider: iam, operations: [read] }
-    { allow: private, provider: userPools }
+    { allow: groups, groupsField: "R_Group", operations: [ read ] }
   ])
 {
   id : ID!

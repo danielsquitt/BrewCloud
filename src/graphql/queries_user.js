@@ -21,3 +21,24 @@ export const companyByName = /* GraphQL */ `
     }
   }
 `;
+
+export const listCompanys = /* GraphQL */ `
+  query ListCompanys {
+    listCompanys {
+      items {
+        id
+        name
+        initImg {
+          bucket
+          region
+          key
+        }
+        faviIcon {
+          bucket
+          region
+          key
+        }
+      }
+    }
+  }
+`;
