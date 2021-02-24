@@ -40,18 +40,16 @@ const CompanyProvider = (props) => {
 
     useEffect(() => {
         if(ActualCompany !== false) {
-            console.log(companyList.current[ActualCompany]);
             setInfo(companyList.current[ActualCompany])
         }
     }, [ActualCompany])
 
     useEffect(() => {
-        console.log('info', info);
         setDocumentInfo(info)
     }, [info.name, info.faviIconUrl])
 
     const setCompanyName = (name)=>{
-        //loadPublicInfo(name)
+        loadPublicInfo(name)
     }
 
     const getS3Url = async(key)=>{
@@ -59,7 +57,6 @@ const CompanyProvider = (props) => {
             const url = await Storage.get(key,  {
                 download: false,
             })
-            console.log('url',url)
             return url
         } catch (error) {
             console.log(error)
@@ -77,7 +74,6 @@ const CompanyProvider = (props) => {
                 authMode: 'AWS_IAM' 
             })
             const data = result.data.companyByName.items[0]
-            console.log(data)
 
             // Change Init imagen
             const initImgURL = await getS3Url(data.initImg.key) 
@@ -96,7 +92,6 @@ const CompanyProvider = (props) => {
     }
 
     const setDocumentInfo = (data) => {
-        console.log('Set documment', data);
         // Change documment title
         document.title= data.name
 
@@ -118,7 +113,6 @@ const CompanyProvider = (props) => {
                         delete item['faviIcon']
                         item['initImgUrl'] = await getS3Url(item.initImg.key)
                         delete item['initImg']
-                        console.log('get company list', item)
                     return item;
                 }));
                 resolve(results)
@@ -131,7 +125,7 @@ const CompanyProvider = (props) => {
 
 
     return (
-        <CompanyContext.Provider value={{info, setCompanyName}}>
+        <CompanyContext.Provider value={{info, setCompanyName, companyList: companyList.current, setActualCompany}}>
             {props.children}
         </CompanyContext.Provider>
     )

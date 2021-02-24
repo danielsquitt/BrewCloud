@@ -1,7 +1,10 @@
-import React from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import clsx from 'clsx';
 import {AppBar, Toolbar, IconButton, makeStyles} from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu';
+import CompanySelector from './componets/CompanySelector';
+
+import { CompanyContext } from './../../context/CompanyProvider';
 
 const drawerWidth = 250;
 
@@ -55,8 +58,39 @@ const useStyle = makeStyles(theme => ({
 const Navbar = (props) => {
 
     const {open, onClose, onOpen} = props
-
     const classes = useStyle()
+
+    const {companyList, setActualCompany} = useContext(CompanyContext)
+
+    const [companyValue, setCompanyValue] = useState('')
+    const [list, setList] = useState([])
+    const [loaded, setloaded] = useState(false)
+
+    useEffect(() => {
+        //console.log('List', companyList);
+        if(companyList){
+            setList(companyList.map((item, index)=>{
+                return { value: index, label: item.name }
+              }))
+        }
+    }, [companyList])
+
+    useEffect(() => {
+        if (list.length > 1){
+            setloaded(true)
+            setCompanyValue(list[0])
+        }else{
+            setloaded(false)
+            setCompanyValue('')
+        }
+        console.log(list);
+    }, [list])
+
+    useEffect(() => {
+        if (loaded){
+            setActualCompany(companyValue.value)
+        }
+    }, [companyValue])
 
     const ClickHandler = ()=>{
         if(open){
@@ -85,6 +119,10 @@ const Navbar = (props) => {
                 >
                     <MenuIcon/>
                 </IconButton>
+                {
+                    loaded ? (<CompanySelector items={list} value={companyValue} setValue={setCompanyValue} />) : null
+                }
+                
             </Toolbar>
         </AppBar>
     )
