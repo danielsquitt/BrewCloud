@@ -1,12 +1,11 @@
 
 // LIBRARIS
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 
 import { API, Storage } from 'aws-amplify'
 import { companyByName, listCompanys } from './../graphql/queries_user'
 import { EventContext } from "../context/EventProvider"
 import { AuthContext } from "../context/AuthProvider";
-import initImg from "./../img/DefaultImg.png";
 
 
 
@@ -17,34 +16,42 @@ const CompanyProvider = (props) => {
     const {newError} = useContext(EventContext)
     const {state} = useContext(AuthContext)
 
-    const [info, setInfo] = useState({
-        initImgURL: '',
-        name: ''
-        })
+    const [info, setInfo] = useState(false)
 
-    const [companyList, setcompanyList] = useState([{}])
+    //const [companyList, setcompanyList] = useState([{}])
     const [ActualCompany, setActualCompany] = useState(false)
+    const companyList = useRef(false)
 
     useEffect(() => {
-        if (state.logged){
-            getCompanyList()
-            setActualCompany(0)
+        const func = async()=>{
+            if (state.logged){
+                try {
+                    const list = await getCompanyList()
+                    companyList.current = list
+                    setActualCompany(0)
+                } catch (error) {
+                    console.log(error);
+                }
+                
+            }
         }
+        func()
     }, [state.logged])
 
     useEffect(() => {
         if(ActualCompany !== false) {
-            console.log(companyList[ActualCompany]);
-            setInfo(companyList[ActualCompany])
+            console.log(companyList.current[ActualCompany]);
+            setInfo(companyList.current[ActualCompany])
         }
-    }, [ActualCompany, companyList])
+    }, [ActualCompany])
 
     useEffect(() => {
-        setDocumentInfo(info.name, info.faviIconUrl )
-    }, [info])
+        console.log('info', info);
+        setDocumentInfo(info)
+    }, [info.name, info.faviIconUrl])
 
     const setCompanyName = (name)=>{
-        loadPublicInfo(name)
+        //loadPublicInfo(name)
     }
 
     const getS3Url = async(key)=>{
@@ -82,48 +89,44 @@ const CompanyProvider = (props) => {
                 faviIconUrl
             })
 
-            //setDocumentInfo(data.name, faviIconUrl)
-
         } catch (error) {
             newError(error.message)
             console.log(error)
         }
     }
 
-    const setDocumentInfo = (name, faviIconUrl) => {
+    const setDocumentInfo = (data) => {
+        console.log('Set documment', data);
         // Change documment title
-        document.title= name
+        document.title= data.name
 
         // Change favicon
         const favicon= document.getElementById("favicon")
-            favicon.href = faviIconUrl
+        favicon.href = data.faviIconUrl
     }
     
     const getCompanyList = async()=>{
-        try {
-            // company list
-            const result = await API.graphql({ 
+        return await new Promise((resolve, reject) => {
+            API.graphql({ 
                 query: listCompanys, 
             })
+            .then(async(result)=>{
 
-            // Transform urls
-            result.data.listCompanys.items.map(async (item) => {
-                try {
+                var arr =result.data.listCompanys.items
+                var results = await Promise.all(arr.map(async (item) => {
                     item['faviIconUrl'] = await getS3Url(item.faviIcon.key)
-                    delete item['faviIcon']
-                    item['initImgUrl'] = await getS3Url(item.initImg.key)
-                    delete item['initImg']
-                } catch (error) {
-                    
-                }
+                        delete item['faviIcon']
+                        item['initImgUrl'] = await getS3Url(item.initImg.key)
+                        delete item['initImg']
+                        console.log('get company list', item)
+                    return item;
+                }));
+                resolve(results)
             })
-
-            // Save data
-            setcompanyList(result.data.listCompanys.items)
-
-        } catch (error) {
-            console.log(error);
-        }
+            .catch((err) => {
+                reject(err)
+            })
+        })
     }
 
 

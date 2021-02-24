@@ -7,7 +7,6 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 // COMPONETS
-import Footer from './container/Footer'
 import Navbar from './container/Navbar'
 import Sidebar from './container/Sidebar'
 

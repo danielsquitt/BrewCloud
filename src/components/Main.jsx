@@ -14,12 +14,10 @@ import Conteiner from './Container'
 
 // CONTEXT
 import { AuthContext } from '../context/AuthProvider'
-import { EventContext } from "../context/EventProvider";
 
 const Main = () => {
 
   const {state} = useContext(AuthContext)
-  const {alertArray} = useContext(EventContext)
 
   const PrivateRoute = ({path, component, ...rest}) =>{
     if(state.logged){

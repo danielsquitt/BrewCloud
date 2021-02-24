@@ -42,7 +42,7 @@ const Login = (props) => {
         logout()
         if (!id) { id = 'IBS' }
         setCompanyName(id)
-        //credentialsOnSubmmit('Admin', 'Admin1234')
+        credentialsOnSubmmit('Admin', 'Admin1234')
     }, [id])
 
     const newPasswordOnSubmmit = (Password, NewPassword, attributes)=>{

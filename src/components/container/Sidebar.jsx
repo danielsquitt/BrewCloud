@@ -1,11 +1,8 @@
 import React, {useContext} from 'react'
 import clsx from 'clsx';
-import { makeStyles, useTheme , Drawer, Divider, List, ListItem, ListItemIcon, ListItemText, Box , Avatar, Typography, Grid } from "@material-ui/core";
+import { makeStyles, useTheme , Drawer, Divider, List, ListItem, ListItemIcon, ListItemText, Avatar, Typography } from "@material-ui/core";
 import { MoveToInbox as InboxIcon, 
-         Mail as MailIcon,
-         ChevronLeft as ChevronLeftIcon,
-         ChevronRight as ChevronRightIcon  } from '@material-ui/icons';
-import {purple} from '@material-ui/core/colors';
+         Mail as MailIcon} from '@material-ui/icons';
 import { CompanyContext } from './../../context/CompanyProvider';
 
 //import logo from "./../../img/Logo.png";
