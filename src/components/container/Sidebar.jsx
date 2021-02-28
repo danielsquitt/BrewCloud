@@ -4,6 +4,8 @@ import { makeStyles, useTheme , Drawer, Divider, List, ListItem, ListItemIcon, L
 import { MoveToInbox as InboxIcon, 
          Mail as MailIcon} from '@material-ui/icons';
 import { CompanyContext } from './../../context/CompanyProvider';
+import SidebarHeader from "./sidebar/SidebarHeader";
+import SidebarUser from "./sidebar/SidebarUser";
 
 //import logo from "./../../img/Logo.png";
 
@@ -32,13 +34,7 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.up('sm')]: {
           width: theme.spacing(9) + 1,
         },
-      },
-      avatar: {
-        boxShadow: theme.shadows[3],
-      },
-      typography: {
-        fontSize: 16,
-      },
+      }
 }))
 
 const SideBar = (props) => {
@@ -65,14 +61,9 @@ const SideBar = (props) => {
           }}
           onClose={()=>{onClose()}}
         >
-          <List>
-            <ListItem className={clsx(classes.root)} >
-              <ListItemIcon>
-                <Avatar alt="Logo" src={info.faviIconUrl} className={classes.avatar} />
-              </ListItemIcon>
-              <ListItemText primary={<Typography variant="overline" className={classes.typography}>{info.name}</Typography>}/>
-            </ListItem>
-          </List>
+          <SidebarHeader/>
+          <Divider/>
+          <SidebarUser/>
           <Divider/>
           <List>
           {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
