@@ -1,11 +1,15 @@
-import React, {useState} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import clsx from 'clsx';
 import {makeStyles, Grid, Card, CardHeader, CardContent, Divider, Typography, Collapse, Avatar, IconButton } from '@material-ui/core';
 import { red, green } from '@material-ui/core/colors';
 import WifiIcon from '@material-ui/icons/Wifi';
 import WifiOffIcon from '@material-ui/icons/WifiOff';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { mdiAccessPoint, mdiAccessPointOff  } from '@mdi/js';
+
+import { DeviceContext } from './../../../../context/DeviceProvider';
+
+
+
 const useStyles = makeStyles((theme) => ({
     root: {
       maxWidth: 345,
@@ -39,13 +43,23 @@ const useStyles = makeStyles((theme) => ({
       },
   }));
 
+  
+
 const WidgetBase = (props) => {
 
     const classes = useStyles();
 
+    const {getShadow} = useContext(DeviceContext)
+
     const [expanded, setExpanded] = useState(true);
 
     const connected = true
+
+    useEffect(() => {
+        if (props.name){
+            getShadow(props.object, 'std')
+        }
+      }, [props.name])
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -89,7 +103,7 @@ const WidgetBase = (props) => {
             <Card elevation={3}>
                 <CardHeader
                     avatar={avatar()}
-                    title="Device Name"
+                    title={props.object}
                     titleTypographyProps={{className: classes.cardtitle}}
                     action={action()}
                 />

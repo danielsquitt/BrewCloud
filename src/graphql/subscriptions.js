@@ -23,6 +23,7 @@ export const onCreateCompany = /* GraphQL */ `
       devices {
         items {
           id
+          name
           deviceTypeId
           companyId
           alias
@@ -60,6 +61,7 @@ export const onUpdateCompany = /* GraphQL */ `
       devices {
         items {
           id
+          name
           deviceTypeId
           companyId
           alias
@@ -97,6 +99,7 @@ export const onDeleteCompany = /* GraphQL */ `
       devices {
         items {
           id
+          name
           deviceTypeId
           companyId
           alias
@@ -116,6 +119,7 @@ export const onCreateDevice = /* GraphQL */ `
   subscription OnCreateDevice {
     onCreateDevice {
       id
+      name
       deviceTypeId
       companyId
       alias
@@ -159,6 +163,7 @@ export const onUpdateDevice = /* GraphQL */ `
   subscription OnUpdateDevice {
     onUpdateDevice {
       id
+      name
       deviceTypeId
       companyId
       alias
@@ -202,6 +207,7 @@ export const onDeleteDevice = /* GraphQL */ `
   subscription OnDeleteDevice {
     onDeleteDevice {
       id
+      name
       deviceTypeId
       companyId
       alias

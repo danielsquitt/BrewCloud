@@ -63,6 +63,7 @@ export const getCompany = /* GraphQL */ `
       devices {
         items {
           id
+          name
           deviceTypeId
           companyId
           alias
@@ -114,6 +115,7 @@ export const getDevice = /* GraphQL */ `
   query GetDevice($id: ID!) {
     getDevice(id: $id) {
       id
+      name
       deviceTypeId
       companyId
       alias
@@ -162,6 +164,7 @@ export const listDevices = /* GraphQL */ `
     listDevices(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        name
         deviceTypeId
         companyId
         alias
@@ -209,6 +212,7 @@ export const deviceByCompanyId = /* GraphQL */ `
     ) {
       items {
         id
+        name
         deviceTypeId
         companyId
         alias

@@ -1,14 +1,18 @@
 
 // LIBRARIS
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js"
 import Amplify from 'aws-amplify';
+
 
 // FILES
 import Pool from '../UserPool';
 import awsmobile from './../aws-exports';
+import AWS from './../AWS';
 
 export const AuthContext = React.createContext()
+
+
 
 const AuthProvider = (props) => {
 
@@ -23,6 +27,9 @@ const AuthProvider = (props) => {
     
     // User data
     const [UserInfo, setUserInfo] = useState(false)
+
+    // AWS
+    const ref = useRef(AWS)
 
     // REFRESH TOKEN
     //----------------------------------------------------------------------------------
@@ -48,6 +55,7 @@ const AuthProvider = (props) => {
                         reject(err)
                     }else{
                         setSession({session_new})
+                        setCredentials(session_new)
                         resolve(session_new)
                     }
                 })
@@ -55,6 +63,18 @@ const AuthProvider = (props) => {
                 reject('User not set')
             }
         })
+    }
+
+    //Set credentials
+    const setCredentials = (current_session) => {
+        const poolUrl = `cognito-idp.${awsmobile.aws_cognito_region}.amazonaws.com/${awsmobile.aws_user_pools_id}`
+        let credentials = {}
+        credentials['IdentityPoolId'] = awsmobile.aws_cognito_identity_pool_id
+        let logins = {}
+        logins[poolUrl] = current_session.getIdToken().getJwtToken()
+        credentials['Logins'] = logins
+
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials(credentials, { region: awsmobile.aws_cognito_region} );
     }
     
     // LOGIN
@@ -88,6 +108,7 @@ const AuthProvider = (props) => {
                 onSuccess: data => {
                     setSession(data)
                     setUser(_user)
+                    setCredentials(data)
                     const {'cognito:username':username, name, family_name, email, sub, auth_time} = data.idToken.decodePayload()
                     setUserInfo({username, name, family_name, email, sub, auth_time})
                     resolve(data)
@@ -164,7 +185,7 @@ const AuthProvider = (props) => {
     // RETRURN
     //----------------------------------------------------------------------------------
     return (
-        <AuthContext.Provider value={{state, UserInfo, login, updateUserPassword, logout, getUserAtributes}}>
+        <AuthContext.Provider value={{state, UserInfo, login, updateUserPassword, logout, getUserAtributes, AWS: ref.current}}>
             {props.children}
         </AuthContext.Provider>
     )

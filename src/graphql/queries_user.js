@@ -42,3 +42,19 @@ export const listCompanys = /* GraphQL */ `
     }
   }
 `;
+
+export const listDevices = /* GraphQL */ `
+  query ListDevices(
+    $filter: ModelDeviceFilterInput
+  ) {
+    listDevices(filter: $filter) {
+      items {
+        id
+        name
+        deviceTypeId
+        alias
+        description
+      }
+    }
+  }
+`;

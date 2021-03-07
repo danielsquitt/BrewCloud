@@ -26,6 +26,7 @@ export const createCompany = /* GraphQL */ `
       devices {
         items {
           id
+          name
           deviceTypeId
           companyId
           alias
@@ -66,6 +67,7 @@ export const updateCompany = /* GraphQL */ `
       devices {
         items {
           id
+          name
           deviceTypeId
           companyId
           alias
@@ -106,6 +108,7 @@ export const deleteCompany = /* GraphQL */ `
       devices {
         items {
           id
+          name
           deviceTypeId
           companyId
           alias
@@ -128,6 +131,7 @@ export const createDevice = /* GraphQL */ `
   ) {
     createDevice(input: $input, condition: $condition) {
       id
+      name
       deviceTypeId
       companyId
       alias
@@ -174,6 +178,7 @@ export const updateDevice = /* GraphQL */ `
   ) {
     updateDevice(input: $input, condition: $condition) {
       id
+      name
       deviceTypeId
       companyId
       alias
@@ -220,6 +225,7 @@ export const deleteDevice = /* GraphQL */ `
   ) {
     deleteDevice(input: $input, condition: $condition) {
       id
+      name
       deviceTypeId
       companyId
       alias

@@ -64,7 +64,7 @@ const EventProvider = (props) => {
 
     return (
         <EventContext.Provider value={{newError, newWarning, newInfo, newSuccess}}>
-            {alertArray}
+            {alertArray.length > 0 ? alertArray : null }
             {props.children}
         </EventContext.Provider>
     )

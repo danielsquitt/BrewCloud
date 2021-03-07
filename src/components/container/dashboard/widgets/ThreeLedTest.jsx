@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import {makeStyles, Grid, Card, CardHeader, CardContent, Divider, Typography, Collapse, Avatar, IconButton } from '@material-ui/core';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { red, green, blue } from '@material-ui/core/colors';
@@ -6,7 +6,7 @@ import WidgetBase from './WidgetBase'
 
 
 
-const ThreeLedTest = () => {
+const ThreeLedTest = (props) => {
 
     const button = (state, _color)=>{
 
@@ -19,7 +19,7 @@ const ThreeLedTest = () => {
     }
 
     return (
-        <WidgetBase>
+        <WidgetBase name={props.data.alias} object={props.data.name}>
             <Grid container direction={'column'} spacing={3}>
                 <Grid item xs={12}>
                     <Grid container>

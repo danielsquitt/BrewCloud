@@ -1,5 +1,7 @@
-import React from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import {makeStyles, Grid, Card, CardHeader, CardContent, Divider, Typography, Box } from '@material-ui/core';
+
+import { DeviceContext } from './../../../context/DeviceProvider';
 
 import ThreeLedTest from './widgets/ThreeLedTest'
 
@@ -42,17 +44,21 @@ const Dashboard = () => {
 
   const classes = useStyles();
 
+  const {deviceList} = useContext(DeviceContext)
+
+  const [DeviceWidgets, setDeviceWidgets] = useState([])
+
+  useEffect(() => {
+    setDeviceWidgets(deviceList.map((item, index) =>{
+      return(<ThreeLedTest key={index} data={item}/>)
+    }))
+    
+  }, [deviceList])
 
     return (
         <div>
-          <Grid container spacing={1} justify="justify">
-            <ThreeLedTest/>
-            <ThreeLedTest/>
-            <ThreeLedTest/>
-            <ThreeLedTest/>
-            <ThreeLedTest/>
-            <ThreeLedTest/>
-            <ThreeLedTest/>
+          <Grid container spacing={1}>
+            {DeviceWidgets}
           </Grid>
         </div>
     )
