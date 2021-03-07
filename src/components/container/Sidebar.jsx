@@ -6,6 +6,7 @@ import { MoveToInbox as InboxIcon,
 import { CompanyContext } from './../../context/CompanyProvider';
 import SidebarHeader from "./sidebar/SidebarHeader";
 import SidebarUser from "./sidebar/SidebarUser";
+import SidebarMenu from './sidebar/SidebarMenu';
 
 //import logo from "./../../img/Logo.png";
 
@@ -65,6 +66,7 @@ const SideBar = (props) => {
           <Divider/>
           <SidebarUser/>
           <Divider/>
+          <SidebarMenu/>
           <List>
           {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
               <ListItem button key={text}>

@@ -15,7 +15,6 @@ const CompanyProvider = (props) => {
 
     const {newError} = useContext(EventContext)
     const {state} = useContext(AuthContext)
-
     const [info, setInfo] = useState(false)
 
     //const [companyList, setcompanyList] = useState([{}])

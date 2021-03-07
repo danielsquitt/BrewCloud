@@ -10,7 +10,10 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Navbar from './container/Navbar'
 import Sidebar from './container/Sidebar'
 
-import Dashboard from './container/dashboard/Dashboard'
+// CONTEXT
+import DeviceProvider from './../context/DeviceProvider';
+
+import ContentMain from './container/ContentMain';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -42,15 +45,15 @@ const Container = () => {
       };
 
     return (
+      <DeviceProvider>
         <Route>
             <div className={classes.root}>
                 <Navbar open={open} onClose={handleDrawerClose} onOpen={handleDrawerOpen}/>
                 <Sidebar open={open} onClose={handleDrawerClose} onOpen={handleDrawerOpen}/>
-                <Switch>
-                    <Route exact path='/' component={Dashboard}/>                                           
-                </Switch>
+                <ContentMain/>
             </div>
         </Route>    
+      </DeviceProvider>
     )
 }
 

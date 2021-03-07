@@ -1,31 +1,60 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles, Grid, Card, CardHeader, CardContent, Divider, Typography, Box } from '@material-ui/core';
+
+import ThreeLedTest from './widgets/ThreeLedTest'
 
 const useStyles = makeStyles((theme) => ({
-    toolbar: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      padding: theme.spacing(0, 1),
-      // necessary for content to be below app bar
-      ...theme.mixins.toolbar,
+  root: {
+    flexGrow: 1,
+  },
+  cardRoot: {
+      minWidth: 275,
     },
-    content: {
-      flexGrow: 1,
-      padding: theme.spacing(3),
+  paper: {
+    height: 140,
+    width: 100,
+  },
+  control: {
+    padding: theme.spacing(2),
+  },
+  typography: {
+    fontSize: '2rem',
+    [theme.breakpoints.up('sm')]: {
+      fontSize: '2rem',
     },
-  }));
-
+    [theme.breakpoints.up('md')]: {
+      fontSize: '1rem',
+    },
+    [theme.breakpoints.up('lg')]: {
+      fontSize: '1.2rem',
+    },
+    [theme.breakpoints.up('xl')]: {
+      fontSize: '1.5rem',
+    },
+  },
+  cardtitle: {
+    fontSize: '2rem',
+  },
+  
+}));
 
 const Dashboard = () => {
 
-    const classes = useStyles();
+  const classes = useStyles();
+
 
     return (
-        <main className={classes.content}>
-            <div className={classes.toolbar} />
-            
-        </main>
+        <div>
+          <Grid container spacing={1} justify="justify">
+            <ThreeLedTest/>
+            <ThreeLedTest/>
+            <ThreeLedTest/>
+            <ThreeLedTest/>
+            <ThreeLedTest/>
+            <ThreeLedTest/>
+            <ThreeLedTest/>
+          </Grid>
+        </div>
     )
 }
 
