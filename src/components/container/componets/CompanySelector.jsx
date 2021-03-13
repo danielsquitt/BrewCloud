@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
+import React from 'react'
 
-import {makeStyles, FormControl, InputLabel, } from '@material-ui/core';
+import {makeStyles, FormControl } from '@material-ui/core';
 import Select from "react-select";
 
 const useStyles = makeStyles((theme) => ({

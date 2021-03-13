@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react'
-import {
-    Switch, 
+import { 
     Route,
   } from 'react-router-dom'
 import { makeStyles, useTheme } from '@material-ui/core/styles';

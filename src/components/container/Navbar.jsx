@@ -83,7 +83,7 @@ const Navbar = (props) => {
             setloaded(false)
             setCompanyValue('')
         }
-        console.log(list);
+        //console.log(list);
     }, [list])
 
     useEffect(() => {

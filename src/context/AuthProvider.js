@@ -1,14 +1,11 @@
 
 // LIBRARIS
-import React, {useEffect, useState, useRef} from 'react'
-import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js"
-import Amplify from 'aws-amplify';
-
+import React, {useEffect, useState } from 'react'
+//import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js"
+import {Amplify, data, API, PubSub, Auth, AWSIoTProvider } from '../Amplify';
 
 // FILES
 import Pool from '../UserPool';
-import awsmobile from './../aws-exports';
-import AWS from './../AWS';
 
 export const AuthContext = React.createContext()
 
@@ -16,26 +13,22 @@ export const AuthContext = React.createContext()
 
 const AuthProvider = (props) => {
 
-    Amplify.configure(awsmobile);
+    
 
     // Athentification state
     const [state, setState] = useState({logged: false, newPasswordRequired: false, loading: false})
     
     // Cognito objects
-    const [session, setSession] = useState(false)
     const [user, setUser] = useState(false)
     
     // User data
     const [UserInfo, setUserInfo] = useState(false)
 
-    // AWS
-    const ref = useRef(AWS)
-
     // REFRESH TOKEN
     //----------------------------------------------------------------------------------
     useEffect(() => {
         if (state.logged) {
-            const interval = session.accessToken.getExpiration()-session.accessToken.getIssuedAt()-15
+            const interval = user.signInUserSession.accessToken.payload.exp-15 //session.accessToken.getExpiration()-session.accessToken.getIssuedAt()-15
             const id = setInterval(() => {
                 refresh()
                 .then()
@@ -48,34 +41,41 @@ const AuthProvider = (props) => {
     // REFRESH
     //----------------------------------------------------------------------------------
     const refresh = async() => {
-        return await new Promise((resolve, reject) => {
-            if (user){
-                user.refreshSession(session.refreshToken, (err, session_new) =>{
-                    if(err){
-                        reject(err)
-                    }else{
-                        setSession({session_new})
-                        setCredentials(session_new)
-                        resolve(session_new)
-                    }
-                })
-            }else{
-                reject('User not set')
-            }
-        })
-    }
+      //  return await new Promise((resolve, reject) => {
+    //        if (user){
+     //           user.refreshSession(session.refreshToken, (err, session_new) =>{
+     //               if(err){
+     //                   reject(err)
+     //               }else{
+      //                  setSession({session_new})
+     //                   setCredentials({session_new})
+      //                  resolve(session_new)
+     //               }
+     //           })
+     //       }else{
+     //           reject('User not set')
+    //        }
+     //   })
+    }//
 
     //Set credentials
-    const setCredentials = (current_session) => {
-        const poolUrl = `cognito-idp.${awsmobile.aws_cognito_region}.amazonaws.com/${awsmobile.aws_user_pools_id}`
-        let credentials = {}
-        credentials['IdentityPoolId'] = awsmobile.aws_cognito_identity_pool_id
-        let logins = {}
-        logins[poolUrl] = current_session.getIdToken().getJwtToken()
-        credentials['Logins'] = logins
-
-        AWS.config.credentials = new AWS.CognitoIdentityCredentials(credentials, { region: awsmobile.aws_cognito_region} );
-    }
+    //const setCredentials = (current_session) => {
+    //    const poolUrl = `cognito-idp.${awsmobile.aws_cognito_region}.amazonaws.com/${awsmobile.aws_user_pools_id}`
+    //    let credentials = {}
+    //    credentials['IdentityPoolId'] = awsmobile.aws_cognito_identity_pool_id
+    //    let logins = {}
+     //   logins[poolUrl] = current_session.getIdToken().getJwtToken()
+     //   credentials['Logins'] = logins
+//
+  //      ref.current.config.credentials = new AWS.CognitoIdentityCredentials(credentials, { region: awsmobile.aws_cognito_region} );
+   //     ref.current.config.credentials.refresh((error) => {
+   //         if (error) {
+  //            console.error(error);
+   //         } else {
+  //            console.log('Successfully logged!');
+  //          }
+  //        });
+  //  }
     
     // LOGIN
     //----------------------------------------------------------------------------------
@@ -100,29 +100,35 @@ const AuthProvider = (props) => {
     
     // AUTHENTICATE
     //----------------------------------------------------------------------------------
+
     const authenticate = async(Username, Password) => {
         return await new Promise((resolve, reject) => {
-            
-            var _user = new CognitoUser({ Username, Pool })    
-            _user.authenticateUser(new AuthenticationDetails({ Username, Password }), {
-                onSuccess: data => {
-                    setSession(data)
+            Auth.signIn(Username, Password)
+            .then((_user) => {
+                if (_user.challengeName === 'NEW_PASSWORD_REQUIRED') {
                     setUser(_user)
-                    setCredentials(data)
-                    const {'cognito:username':username, name, family_name, email, sub, auth_time} = data.idToken.decodePayload()
-                    setUserInfo({username, name, family_name, email, sub, auth_time})
-                    resolve(data)
-                },
-                onFailure: err => {
-                    reject(err)
-                },
-                newPasswordRequired: (userAttributes, requiredAttributes) => {
-                    setUser(_user)
+                    const userAttributes = _user.challengeParam.userAttributes
+                    const requiredAttributes = _user.challengeParam.requiredAttributes
                     resolve({userAttributes, requiredAttributes})
+                } else {
+                    setUser(_user)
+                    const info = { 
+                        username: _user.username, 
+                        name: _user.attributes.name, 
+                        family_name: _user.attributes.family_name, 
+                        email: _user.attributes.email, 
+                        sub: _user.attributes.sub}
+                    console.log(info);
+                    setUserInfo(info)
+                    resolve(_user)
                 }
             })
-        })
+            .catch((err) => {
+                reject(err)
+            })
+    })
     }
+
     
     // LOG OUT
     //----------------------------------------------------------------------------------
@@ -131,34 +137,36 @@ const AuthProvider = (props) => {
         if (user){
             user.signOut()
             setState({logged: false, loading: false, message: ''})
-            setSession(false)
             setUser(false)
         }
     }
     
     // UPDATE USER PASSWORD
     const updateUserPassword = async(Password, NewPassword, attributes) => {
-        return await new Promise((resolve, reject) => {
+        return await new Promise(async(resolve, reject) => {
             if (Password !== NewPassword){
                 reject("Password doesn't match:", Password, NewPassword )
             }else{
-                delete attributes.email_verified
-                user.completeNewPasswordChallenge(NewPassword, attributes, {
-                    onSuccess: (result) => {
-                        console.log('Success', result)
-                        login(user.username, NewPassword)
-                        .then((data) => {
-                            console.log('login', data)
-                            resolve(data)
-                        })
-                        .catch((err) => {
-                            reject(err)
-                        })
-                        resolve(result)
-                      },
-                      onFailure: (err) => {
-                        reject(err)
-                      }
+                Auth.completeNewPassword(
+                        user,
+                        NewPassword, 
+                        attributes
+                )
+                .then((_user) => {
+                        setUser(_user)
+                        const info = { 
+                            username: _user.username, 
+                            name: _user.attributes.name, 
+                            family_name: _user.attributes.family_name, 
+                            email: _user.attributes.email, 
+                            sub: _user.attributes.sub}
+                        console.log(info);
+                        setUserInfo(info)
+                        setState({logged: true, newPasswordRequired: false, loading: false})
+                        resolve(_user)
+                })   
+                .catch((err) => {
+                    reject(err)
                 })
             }
         })    
@@ -185,7 +193,7 @@ const AuthProvider = (props) => {
     // RETRURN
     //----------------------------------------------------------------------------------
     return (
-        <AuthContext.Provider value={{state, UserInfo, login, updateUserPassword, logout, getUserAtributes, AWS: ref.current}}>
+        <AuthContext.Provider value={{state, UserInfo, login, updateUserPassword, logout, getUserAtributes}}>
             {props.children}
         </AuthContext.Provider>
     )

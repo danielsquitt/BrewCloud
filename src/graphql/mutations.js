@@ -1,6 +1,48 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createDeviceType = /* GraphQL */ `
+  mutation CreateDeviceType(
+    $input: CreateDeviceTypeInput!
+    $condition: ModelDeviceTypeConditionInput
+  ) {
+    createDeviceType(input: $input, condition: $condition) {
+      id
+      name
+      shadownName
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateDeviceType = /* GraphQL */ `
+  mutation UpdateDeviceType(
+    $input: UpdateDeviceTypeInput!
+    $condition: ModelDeviceTypeConditionInput
+  ) {
+    updateDeviceType(input: $input, condition: $condition) {
+      id
+      name
+      shadownName
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteDeviceType = /* GraphQL */ `
+  mutation DeleteDeviceType(
+    $input: DeleteDeviceTypeInput!
+    $condition: ModelDeviceTypeConditionInput
+  ) {
+    deleteDeviceType(input: $input, condition: $condition) {
+      id
+      name
+      shadownName
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createCompany = /* GraphQL */ `
   mutation CreateCompany(
     $input: CreateCompanyInput!
@@ -133,6 +175,13 @@ export const createDevice = /* GraphQL */ `
       id
       name
       deviceTypeId
+      deviceType {
+        id
+        name
+        shadownName
+        createdAt
+        updatedAt
+      }
       companyId
       alias
       description
@@ -161,12 +210,6 @@ export const createDevice = /* GraphQL */ `
         devices {
           nextToken
         }
-      }
-      deviceType {
-        id
-        name
-        createdAt
-        updatedAt
       }
     }
   }
@@ -180,6 +223,13 @@ export const updateDevice = /* GraphQL */ `
       id
       name
       deviceTypeId
+      deviceType {
+        id
+        name
+        shadownName
+        createdAt
+        updatedAt
+      }
       companyId
       alias
       description
@@ -208,12 +258,6 @@ export const updateDevice = /* GraphQL */ `
         devices {
           nextToken
         }
-      }
-      deviceType {
-        id
-        name
-        createdAt
-        updatedAt
       }
     }
   }
@@ -227,6 +271,13 @@ export const deleteDevice = /* GraphQL */ `
       id
       name
       deviceTypeId
+      deviceType {
+        id
+        name
+        shadownName
+        createdAt
+        updatedAt
+      }
       companyId
       alias
       description
@@ -256,51 +307,6 @@ export const deleteDevice = /* GraphQL */ `
           nextToken
         }
       }
-      deviceType {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-    }
-  }
-`;
-export const createDeviceType = /* GraphQL */ `
-  mutation CreateDeviceType(
-    $input: CreateDeviceTypeInput!
-    $condition: ModelDeviceTypeConditionInput
-  ) {
-    createDeviceType(input: $input, condition: $condition) {
-      id
-      name
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateDeviceType = /* GraphQL */ `
-  mutation UpdateDeviceType(
-    $input: UpdateDeviceTypeInput!
-    $condition: ModelDeviceTypeConditionInput
-  ) {
-    updateDeviceType(input: $input, condition: $condition) {
-      id
-      name
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteDeviceType = /* GraphQL */ `
-  mutation DeleteDeviceType(
-    $input: DeleteDeviceTypeInput!
-    $condition: ModelDeviceTypeConditionInput
-  ) {
-    deleteDeviceType(input: $input, condition: $condition) {
-      id
-      name
-      createdAt
-      updatedAt
     }
   }
 `;

@@ -121,6 +121,13 @@ export const onCreateDevice = /* GraphQL */ `
       id
       name
       deviceTypeId
+      deviceType {
+        id
+        name
+        shadownName
+        createdAt
+        updatedAt
+      }
       companyId
       alias
       description
@@ -149,12 +156,6 @@ export const onCreateDevice = /* GraphQL */ `
         devices {
           nextToken
         }
-      }
-      deviceType {
-        id
-        name
-        createdAt
-        updatedAt
       }
     }
   }
@@ -165,6 +166,13 @@ export const onUpdateDevice = /* GraphQL */ `
       id
       name
       deviceTypeId
+      deviceType {
+        id
+        name
+        shadownName
+        createdAt
+        updatedAt
+      }
       companyId
       alias
       description
@@ -193,12 +201,6 @@ export const onUpdateDevice = /* GraphQL */ `
         devices {
           nextToken
         }
-      }
-      deviceType {
-        id
-        name
-        createdAt
-        updatedAt
       }
     }
   }
@@ -209,6 +211,13 @@ export const onDeleteDevice = /* GraphQL */ `
       id
       name
       deviceTypeId
+      deviceType {
+        id
+        name
+        shadownName
+        createdAt
+        updatedAt
+      }
       companyId
       alias
       description
@@ -237,12 +246,6 @@ export const onDeleteDevice = /* GraphQL */ `
         devices {
           nextToken
         }
-      }
-      deviceType {
-        id
-        name
-        createdAt
-        updatedAt
       }
     }
   }

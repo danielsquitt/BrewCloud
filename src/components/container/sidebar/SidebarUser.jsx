@@ -2,11 +2,11 @@ import React, {useContext} from 'react'
 import clsx from 'clsx';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { makeStyles, List, ListItem, ListItemText, ListItemAvatar, Avatar, ListItemIcon , Typography, ListItemSecondaryAction, IconButton } from "@material-ui/core";
+import { makeStyles, List, ListItem, ListItemText, ListItemAvatar, ListItemIcon , Typography, IconButton } from "@material-ui/core";
 import { NavLink } from 'react-router-dom'
 import { AuthContext } from "./../../../context/AuthProvider"
 
-const drawerWidth = 250;
+//const drawerWidth = 250;
 
 const useStyles = makeStyles(theme => ({
       avatar: {

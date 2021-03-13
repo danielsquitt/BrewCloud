@@ -4,7 +4,7 @@ import { makeStyles, List, ListItem, ListItemText, ListItemAvatar, Avatar, Typog
 
 import { CompanyContext } from './../../../context/CompanyProvider';
 
-const drawerWidth = 250;
+//const drawerWidth = 250;
 
 const useStyles = makeStyles(theme => ({
       avatar: {

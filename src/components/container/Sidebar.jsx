@@ -1,9 +1,8 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import clsx from 'clsx';
-import { makeStyles, useTheme , Drawer, Divider, List, ListItem, ListItemIcon, ListItemText, Avatar, Typography } from "@material-ui/core";
+import { makeStyles, Drawer, Divider, List, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 import { MoveToInbox as InboxIcon, 
          Mail as MailIcon} from '@material-ui/icons';
-import { CompanyContext } from './../../context/CompanyProvider';
 import SidebarHeader from "./sidebar/SidebarHeader";
 import SidebarUser from "./sidebar/SidebarUser";
 import SidebarMenu from './sidebar/SidebarMenu';
@@ -40,13 +39,9 @@ const useStyles = makeStyles(theme => ({
 
 const SideBar = (props) => {
 
-    const {open, onClose, onOpen} = props
+    const {open, onClose} = props
 
     const classes = useStyles()
-    const theme = useTheme();
-
-    const {info} = useContext(CompanyContext)
-
     return (
         <Drawer 
           variant="permanent"

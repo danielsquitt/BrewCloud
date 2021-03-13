@@ -51,9 +51,13 @@ export const listDevices = /* GraphQL */ `
       items {
         id
         name
-        deviceTypeId
         alias
         description
+        deviceType {
+          id
+          name
+          shadownName
+        }
       }
     }
   }

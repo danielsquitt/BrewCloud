@@ -44,12 +44,10 @@ type Device
 
 type DeviceType
   @model( subscriptions: null)
-  @auth(rules: [
-      { allow: private, provider: iam }
-      ])
 {
   id: ID!
   name: String!
+  shadownName: String
 }
 
 type S3Object {
