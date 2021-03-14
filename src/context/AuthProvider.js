@@ -118,7 +118,6 @@ const AuthProvider = (props) => {
                         family_name: _user.attributes.family_name, 
                         email: _user.attributes.email, 
                         sub: _user.attributes.sub}
-                    console.log(info);
                     setUserInfo(info)
                     resolve(_user)
                 }

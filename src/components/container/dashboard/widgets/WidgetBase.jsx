@@ -8,7 +8,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { DeviceContext } from './../../../../context/DeviceProvider';
 
-
+import { PubSub } from './../../../../Amplify';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -51,9 +51,21 @@ const WidgetBase = (props) => {
 
     const {} = useContext(DeviceContext)
 
+    const [state, setstate] = useState(false)
+    useEffect(() => {
+        //console.log(props)
+        if (props.data) setstate(props.data.connected.state)
+    }, [props.data.connected.state])
+    
+    useEffect(() => {
+        setTimeout(()=>{
+            const func = async() => {
+                await PubSub.publish(`$aws/things/${props.data.name}/shadow/name/std/get`, { msg: '' });
+            }
+            func()
+           }, 1000)
+    }, [])
     const [expanded, setExpanded] = useState(true);
-
-    const connected = true
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -64,11 +76,11 @@ const WidgetBase = (props) => {
             <Avatar 
                 aria-label="recipe" 
                 className={clsx(classes.avatar, {
-                    [classes.avatarConnected]:connected,
-                    [classes.avatarDisconnected]:!connected,
+                    [classes.avatarConnected]:state ,
+                    [classes.avatarDisconnected]:!state ,
                 })}
             >
-                {connected ? (
+                {state ? (
                     <WifiIcon/>
                 ) : (
                     <WifiOffIcon/>
@@ -97,7 +109,7 @@ const WidgetBase = (props) => {
             <Card elevation={3}>
                 <CardHeader
                     avatar={avatar()}
-                    title={props.object}
+                    title={props.data.name}
                     titleTypographyProps={{className: classes.cardtitle}}
                     action={action()}
                 />

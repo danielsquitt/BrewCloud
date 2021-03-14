@@ -12,46 +12,96 @@ export const DeviceContext = React.createContext()
 const DeviceProvider = (props) => {
 
     const {info} = useContext(CompanyContext)
-    const [deviceList, setDeviceList] = useState([{}])
+    const [deviceList, setDeviceList] = useState([])
     const subsTopicList = useRef([])
 
     useEffect(() => {
+        var pub
         const fuc = async() => {
             if(info.id !== ''){
                 await getDeviceList()
                 .then((result) => {
                     // Save device list
-                    setDeviceList(result)
-
+                    setDeviceList(result.map((item) => {
+                        return({...item, connected: {version: 0, state: false}})
+                    }))
                     // Save device topi subscriptions
-                    result.map((element, index) => {
-                        const array = []
-                        array.push(`$aws/things/${element.name}/shadow/name/std/get/#`)
-                        array.push(`$aws/things/${element.name}/shadow/name/std/update/accepted`)
-                        subsTopicList.current = subsTopicList.current.concat(array)
+                    const topics = []
+                    result.forEach((element) => {
+                        topics.push(`$aws/things/${element.name}/shadow/name/std/get/accepted`)
+                        topics.push(`$aws/things/${element.name}/shadow/name/std/update/accepted`)
+                        topics.push(`$aws/things/${element.name}/shadow/name/${element.deviceType.shadownName}/get/accepted`)
+                        topics.push(`$aws/things/${element.name}/shadow/name/${element.deviceType.shadownName}/update/accepted`)
+                        //subsTopicList.current = subsTopicList.current.concat(topics)
                     })
+                    pub = PubSub.subscribe(topics).subscribe({
+                        next: data => messageDispatcher(data.value),
+                        error: error => console.error('Error:',error),
+                        close: () => console.log('Done'),
+                    });
                 })
                 .catch((err) => {
                     console.error(err);
                 })
-                PubSub.subscribe(subsTopicList.current).subscribe({
-                    next: data => messageDispatcher(data.value),
-                    error: error => console.error('Error:',error),
-                    close: () => console.log('Done'),
-                });
             }
         }
         fuc()
+        return(()=>{ if(pub){pub.unsubscribe()}} )
     }, [info.id])
 
     const messageDispatcher = (data) =>{
-        console.log('Message received', data)
-        const topic=data[Object.getOwnPropertySymbols(data)[0]];
-        
+        //console.log('Message received', data)
+        const topic=data[Object.getOwnPropertySymbols(data)[0]].split('/')
 
-        console.log(topic);
-        
+        switch (topic[0]) {
+            case '$aws':
+                switch (topic[1]) {
+                    case 'things':
+                            const thingName = topic[2]
+                            const shadowName = topic[5]
+                            const result = topic[7] ? topic[7] : false
+                            if (result === 'accepted') {
+                                switch (shadowName) {
+                                    case 'std':
+                                        stdShadowHandler(thingName, data.state, data.version)
+                                        break;
+                                    case '3led':
+                                        devicehadowHandler(thingName, data.state, data.version)
+                                        break;
+                                
+                                    default:
+                                        break;
+                                }
+                            }
+                        break
+                    default:
+                        break
+                }
+                break
+            default:
+                break
+        }
+    }
 
+    const stdShadowHandler = (thingName, payload, version) => {
+        setDeviceList((list) => {
+            //console.log(list, thingName, payload);
+            return (list.map((element) => {
+                //console.log(payload, payload.reported.connected);
+                if (element.name === thingName && version > element.connected.version) return ({...element, connected: {state: payload.reported.connected, version}})
+                return element
+            }))
+        })
+    }
+
+    const devicehadowHandler = (thingName, payload, version) => {
+        //console.log(thingName, payload, version);
+        setDeviceList((list) => {
+            return (list.map((element) => {
+                if (element.name === thingName) return ({...element, state: {...element.state, ...payload}})
+                return element
+            }))
+        })
     }
 
     const getDeviceList = async()=>{

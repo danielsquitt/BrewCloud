@@ -1,25 +1,58 @@
-import React from 'react'
-import {Grid, Divider, Typography} from '@material-ui/core';
+import React, {useState, useEffect} from 'react'
+import {Grid, Divider, Typography, IconButton} from '@material-ui/core';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { red, green, blue } from '@material-ui/core/colors';
 import WidgetBase from './WidgetBase'
+
+import { PubSub } from './../../../../Amplify';
 
 
 
 const ThreeLedTest = (props) => {
 
-    const button = (state, _color)=>{
+    const [shadow, setShadow] = useState({reported:{led1: 'off', led2: 'off',led3: 'off'}})
+    useEffect(() => {
+        //console.log('asdasd', props.data.state)
+        if (props.data.state) setShadow(props.data.state)
+    }, [props.data.state])
 
+    useEffect(() => {
+        setTimeout(()=>{
+            const func = async() => {
+                await PubSub.publish(`$aws/things/${props.data.name}/shadow/name/${props.data.deviceType.shadownName}/get`, { msg: '' });
+            }
+            func()
+           }, 1000)
+    }, [])
+ 
+    const button = (state, name, _color)=>{
         const intensity = state ? 500 : 900
-
         return(
-            <Grid item component={FiberManualRecordIcon} align={'center'} style={{ color: _color[intensity] }} xs={4}>
+            <Grid 
+                item 
+                component={IconButton} 
+                align={'center'} 
+                style={{ color: _color[intensity] }} 
+                xs={4}
+                onClick={() => {upateButtonState(name, !state)}}
+            >
+                <FiberManualRecordIcon fontSize="large" />
             </Grid>
         )
     }
 
+    const upateButtonState = (name, state) => {
+        const func = async() => {
+            const desired = {}
+            desired[name] = state ? 'on' : 'off'
+            const msg = {desired}
+            await PubSub.publish(`$aws/things/${props.data.name}/shadow/name/${props.data.deviceType.shadownName}/update`, {state:{...msg}});
+        }
+        func()
+    }
+
     return (
-        <WidgetBase name={props.data.alias} object={props.data.name}>
+        <WidgetBase data={props.data}>
             <Grid container direction={'column'} spacing={3}>
                 <Grid item xs={12}>
                     <Grid container>
@@ -50,9 +83,9 @@ const ThreeLedTest = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container> 
-                        {button(false, red)}
-                        {button(false, green)}
-                        {button(false, blue)}
+                        {button(shadow.reported.led1 === 'on', 'led1', red)}
+                        {button(shadow.reported.led2 === 'on', 'led2', green)}
+                        {button(shadow.reported.led3 === 'on', 'led3', blue)}
                     </Grid>
                 </Grid>
             </Grid>

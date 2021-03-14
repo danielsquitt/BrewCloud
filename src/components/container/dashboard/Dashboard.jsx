@@ -12,15 +12,18 @@ const Dashboard = () => {
   const [DeviceWidgets, setDeviceWidgets] = useState([])
 
   useEffect(() => {
-    setDeviceWidgets(deviceList.map((item, index) =>{
-      return(<ThreeLedTest key={index} data={item}/>)
-    }))
-    
-  }, [deviceList])
+    if (deviceList.length > 0) {
+      setDeviceWidgets(deviceList.map((item, index) =>{
+        return(<ThreeLedTest key={index} data={item}/>)
+      }))
+    }else{
+      setDeviceWidgets([])
+    }
+  }, [deviceList]) 
 
     return (
         <div>
-          <Grid container spacing={1}>
+          <Grid container spacing={1}> 
             {DeviceWidgets}
           </Grid>
         </div>
