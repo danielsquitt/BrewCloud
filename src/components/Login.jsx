@@ -2,13 +2,13 @@
 // Libraries
 import React, {useEffect, useContext} from 'react'
 import Credentials from './login/Credentials'
-import NewPassword from "./login/NewPassword";
-import {AuthContext} from "./../context/AuthProvider";
+import NewPassword from './login/NewPassword'
+import {AuthContext} from "./../context/AuthProvider"
 import { Container, Card, CardMedia } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { useParams } from "react-router-dom";
-import { EventContext } from "../context/EventProvider";
-import { CompanyContext } from './../context/CompanyProvider';
+import { useParams } from "react-router-dom"
+import { EventContext } from "../context/EventProvider"
+import { CompanyContext } from './../context/CompanyProvider'
 
 
 
