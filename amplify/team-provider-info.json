@@ -16,5 +16,23 @@
         "ibscognitoAuth": {}
       }
     }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-ibs-prod-195836-authRole",
+      "UnauthRoleArn": "arn:aws:iam::538003087252:role/amplify-ibs-prod-195836-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::538003087252:role/amplify-ibs-prod-195836-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-ibs-prod-195836-deployment",
+      "UnauthRoleName": "amplify-ibs-prod-195836-unauthRole",
+      "StackName": "amplify-ibs-prod-195836",
+      "StackId": "arn:aws:cloudformation:eu-west-1:538003087252:stack/amplify-ibs-prod-195836/7527f4e0-85c0-11eb-bbcc-0ad9a0231ad1",
+      "AmplifyAppId": "dp2wv64t8m2a5"
+    },
+    "categories": {
+      "auth": {
+        "ibscognitoAuth": {}
+      }
+    }
   }
 }
