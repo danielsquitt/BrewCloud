@@ -14,7 +14,11 @@ const useStyles = makeStyles(theme => ({
       },
       typography: {
         fontSize: 14,
+        color: 'white',
       },
+      icon: {
+        color: 'white',
+      }
 }))
 
 const SidebarUser = () => {
@@ -26,7 +30,7 @@ const SidebarUser = () => {
     return (
       <List>
         <ListItem className={clsx(classes.root)} component={NavLink} to='/profile' >
-          <ListItemAvatar >
+          <ListItemAvatar className={classes.icon} >
             <AccountCircleIcon fontSize="large"/>
           </ListItemAvatar >
           <ListItemText primary={<Typography variant="overline" className={classes.typography}>{`${UserInfo.name} ${UserInfo.family_name}`}</Typography>}/>

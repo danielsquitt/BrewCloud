@@ -2,7 +2,7 @@
 // LIBRARIS
 import React, {useEffect, useState } from 'react'
 //import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js"
-import {Amplify, data, API, PubSub, Auth, AWSIoTProvider } from '../Amplify';
+import {Auth} from '../Amplify';
 
 // FILES
 import Pool from '../UserPool';
@@ -30,8 +30,8 @@ const AuthProvider = (props) => {
         if (state.logged) {
             const interval = user.signInUserSession.accessToken.payload.exp-15 //session.accessToken.getExpiration()-session.accessToken.getIssuedAt()-15
             const id = setInterval(() => {
-                refresh()
-                .then()
+                //refresh()
+                //.then()
             }, interval*1000)
 
             return () => clearInterval(id)
@@ -41,42 +41,15 @@ const AuthProvider = (props) => {
     // REFRESH
     //----------------------------------------------------------------------------------
     const refresh = async() => {
-      //  return await new Promise((resolve, reject) => {
-    //        if (user){
-     //           user.refreshSession(session.refreshToken, (err, session_new) =>{
-     //               if(err){
-     //                   reject(err)
-     //               }else{
-      //                  setSession({session_new})
-     //                   setCredentials({session_new})
-      //                  resolve(session_new)
-     //               }
-     //           })
-     //       }else{
-     //           reject('User not set')
-    //        }
-     //   })
-    }//
+        return await new Promise((resolve, reject) => {
+            if (user){
+                Auth.currentSession()
+                    .then(data => resolve(data))
+                    .catch(err => reject(err))
+            }
+       })
+    }
 
-    //Set credentials
-    //const setCredentials = (current_session) => {
-    //    const poolUrl = `cognito-idp.${awsmobile.aws_cognito_region}.amazonaws.com/${awsmobile.aws_user_pools_id}`
-    //    let credentials = {}
-    //    credentials['IdentityPoolId'] = awsmobile.aws_cognito_identity_pool_id
-    //    let logins = {}
-     //   logins[poolUrl] = current_session.getIdToken().getJwtToken()
-     //   credentials['Logins'] = logins
-//
-  //      ref.current.config.credentials = new AWS.CognitoIdentityCredentials(credentials, { region: awsmobile.aws_cognito_region} );
-   //     ref.current.config.credentials.refresh((error) => {
-   //         if (error) {
-  //            console.error(error);
-   //         } else {
-  //            console.log('Successfully logged!');
-  //          }
-  //        });
-  //  }
-    
     // LOGIN
     //----------------------------------------------------------------------------------
     const login = async(Username, Password) => {

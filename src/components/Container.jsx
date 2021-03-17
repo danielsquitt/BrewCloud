@@ -49,7 +49,7 @@ const Container = () => {
             <div className={classes.root}>
                 <Navbar open={open} onClose={handleDrawerClose} onOpen={handleDrawerOpen}/>
                 <Sidebar open={open} onClose={handleDrawerClose} onOpen={handleDrawerOpen}/>
-                <ContentMain/>
+                <ContentMain open={open}/>
             </div>
         </Route>    
       </DeviceProvider>

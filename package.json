@@ -10,17 +10,14 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
     "@testing-library/user-event": "^12.6.2",
-    "amazon-cognito-identity-js": "^4.5.9",
     "aws-amplify": "^3.3.17",
-    "aws-sdk": "^2.858.0",
     "clsx": "^1.1.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-hook-form": "^6.15.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
-    "react-select": "^4.1.0",
-    "web-vitals": "^0.2.4"
+    "react-select": "^4.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

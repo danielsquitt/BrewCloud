@@ -12,7 +12,11 @@ const useStyles = makeStyles(theme => ({
       },
       typography: {
         fontSize: 16,
+        color: 'black'
       },
+      list: {
+        background: 'white'
+      }
 }))
 
 const SidebarHeader = () => {
@@ -22,7 +26,7 @@ const SidebarHeader = () => {
     const {info} = useContext(CompanyContext)
 
     return (
-        <List>
+        <List className={classes.list}>
             <ListItem className={clsx(classes.root)} >
                 <ListItemAvatar >
                   <Avatar alt="Logo" src={info.faviIconUrl} className={classes.avatar} />

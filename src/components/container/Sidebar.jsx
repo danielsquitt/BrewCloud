@@ -16,6 +16,8 @@ const useStyles = makeStyles(theme => ({
         width: drawerWidth,
         flexShrink: 0,
         whiteSpace: 'nowrap',
+        color:'white',
+        backgroundColor: '#343A40'
       },
       drawerOpen: {
         width: drawerWidth,
@@ -30,10 +32,7 @@ const useStyles = makeStyles(theme => ({
           duration: theme.transitions.duration.leavingScreen,
         }),
         overflowX: 'hidden',
-        width: theme.spacing(7) + 1,
-        [theme.breakpoints.up('sm')]: {
-          width: theme.spacing(9) + 1,
-        },
+        width: theme.spacing(9),
       }
 }))
 
@@ -45,12 +44,8 @@ const SideBar = (props) => {
     return (
         <Drawer 
           variant="permanent"
-          className={clsx(classes.drawer, {
-              [classes.drawerOpen]: open,
-              [classes.drawerClose]: !open,
-          })}
           classes={{
-          paper: clsx({
+          paper: clsx(classes.drawer, {
               [classes.drawerOpen]: open,
               [classes.drawerClose]: !open,
           }),
@@ -62,14 +57,6 @@ const SideBar = (props) => {
           <SidebarUser/>
           <Divider/>
           <SidebarMenu/>
-          <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-          ))}
-          </List>
         <Divider />
         </Drawer>
     )
