@@ -21,15 +21,15 @@ const useStyles = makeStyles(theme => ({
       }
 }))
 
-const SidebarUser = () => {
+const SidebarUser = ({selectedIndex}) => {
 
     const classes = useStyles()
 
     const { UserInfo, logout} = useContext(AuthContext)
 
     return (
-      <List>
-        <ListItem className={clsx(classes.root)} component={NavLink} to='/profile' >
+      <List component="nav">
+        <ListItem className={clsx(classes.root)} component={NavLink} to='/profile' selected={selectedIndex === 0}>
           <ListItemAvatar className={classes.icon} >
             <AccountCircleIcon fontSize="large"/>
           </ListItemAvatar >

@@ -54,9 +54,9 @@ const SideBar = (props) => {
         >
           <SidebarHeader/>
           <Divider/>
-          <SidebarUser/>
+          <SidebarUser selectedIndex={props.selectedIndex}/>
           <Divider/>
-          <SidebarMenu/>
+          <SidebarMenu selectedIndex={props.selectedIndex}/>
         <Divider />
         </Drawer>
     )

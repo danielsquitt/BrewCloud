@@ -8,6 +8,7 @@ import clsx from 'clsx';
 
 import Profile from './userProfile/Profile';
 import Dashboard from './dashboard/Dashboard';
+import DeviceAdmin from './device_admin/DeviceAdmin';
 
 const drawerWidth = 250;
 
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ContentMain = ({open}) => {
+const ContentMain = ({open, setSelectedIndex}) => {
     const classes = useStyles();
 
     return (
@@ -53,8 +54,15 @@ const ContentMain = ({open}) => {
         >
           <div className={classes.toolbar} />
           <Switch>
-            <Route path='/profile' component={Profile}/>
-            <Route path='/' component={Dashboard}/>
+            <Route path='/profile'>
+              <Profile setSelectedIndex={setSelectedIndex}/>
+            </Route>
+            <Route path='/device-admin'>
+              <DeviceAdmin setSelectedIndex={setSelectedIndex}/>
+            </Route>
+            <Route path='/'>
+              <Dashboard setSelectedIndex={setSelectedIndex}/>
+            </Route>
           </Switch>
         </main>
     )

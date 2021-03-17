@@ -27,6 +27,7 @@ const Container = () => {
     const matches = useMediaQuery(theme.breakpoints.up('lg'));
 
     const [open, setOpen] = React.useState(true);
+    const [selectedIndex, setSelectedIndex] = React.useState(1);
 
     useEffect(() => {
       if(matches){
@@ -48,8 +49,8 @@ const Container = () => {
         <Route>
             <div className={classes.root}>
                 <Navbar open={open} onClose={handleDrawerClose} onOpen={handleDrawerOpen}/>
-                <Sidebar open={open} onClose={handleDrawerClose} onOpen={handleDrawerOpen}/>
-                <ContentMain open={open}/>
+                <Sidebar open={open} onClose={handleDrawerClose} onOpen={handleDrawerOpen} selectedIndex={selectedIndex}/>
+                <ContentMain open={open} setSelectedIndex={setSelectedIndex}/>
             </div>
         </Route>    
       </DeviceProvider>

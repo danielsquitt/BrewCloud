@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {makeStyles, Grid, Card, CardHeader, CardContent, Divider, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,8 +36,14 @@ const useStyles = makeStyles((theme) => ({
     
   }));
 
-const Profile = () => {
+const Profile = ({setSelectedIndex}) => {
+
     const classes = useStyles();
+
+    useEffect(() => {
+      setSelectedIndex(0)
+    }, [])
+    
     return (
         <div className={classes.root}>
             <Grid container spacing={10} justify="center">

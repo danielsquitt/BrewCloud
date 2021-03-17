@@ -5,11 +5,15 @@ import { DeviceContext } from './../../../context/DeviceProvider';
 
 import ThreeLedTest from './widgets/ThreeLedTest'
 
-const Dashboard = () => {
+const Dashboard = ({setSelectedIndex}) => {
 
   const {deviceList} = useContext(DeviceContext)
 
   const [DeviceWidgets, setDeviceWidgets] = useState([])
+
+  useEffect(() => {
+    setSelectedIndex(1)
+  }, [])
 
   useEffect(() => {
     if (deviceList.length > 0) {
