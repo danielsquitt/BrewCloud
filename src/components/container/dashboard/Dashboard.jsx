@@ -29,11 +29,9 @@ const Dashboard = ({setSelectedIndex}) => {
   }, [deviceList]) 
 
     return (
-        <div>
           <Grid container spacing={1}> 
             {DeviceWidgets}
           </Grid>
-        </div>
     )
 }
 
