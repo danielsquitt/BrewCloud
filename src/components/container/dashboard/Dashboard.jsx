@@ -18,7 +18,10 @@ const Dashboard = ({setSelectedIndex}) => {
   useEffect(() => {
     if (deviceList.length > 0) {
       setDeviceWidgets(deviceList.map((item, index) =>{
-        return(<ThreeLedTest key={index} data={item}/>)
+          switch (item.deviceType.name) {
+            case '3LedTest':
+              return <ThreeLedTest key={index} data={item}/>
+          }
       }))
     }else{
       setDeviceWidgets([])
