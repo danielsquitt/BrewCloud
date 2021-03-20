@@ -5,6 +5,7 @@ import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import Brightness1Icon from '@material-ui/icons/Brightness1';
 
 import {DeviceContext} from './../../../context/DeviceProvider'
+import DeviceList from './DeviceList';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -19,12 +20,9 @@ const DeviceAdmin = ({setSelectedIndex}) => {
     const classes = useStyles();
 
     const {deviceList} = useContext(DeviceContext)
-
     const [selectedDeviceIndex, setSelectedDeviceIndex] = useState(0);
+ 
 
-    useEffect(() => {
-        setSelectedIndex(2)
-      }, [])
 
     return (
         <Grid container spacing={1}>
@@ -40,22 +38,7 @@ const DeviceAdmin = ({setSelectedIndex}) => {
                     <Divider/>
                     <CardContent>
                         <Paper style={{maxHeight: '600px', overflow: 'auto'}}>
-                            <List>
-                                {deviceList.map((item, index) => {
-                                    return(
-                                        <ListItem button key={index} onClick={()=>{setSelectedDeviceIndex(index)}} selected={selectedDeviceIndex === index} > 
-                                            <ListItemIcon>
-                                                {selectedDeviceIndex === index ? (
-                                                    <Brightness1Icon/>
-                                                ) : (
-                                                    <ArrowLeftIcon />
-                                                )}
-                                            </ListItemIcon>
-                                            <ListItemText primary={item.alias} />
-                                        </ListItem>
-                                    )
-                                })}
-                            </List>
+                            <DeviceList index={selectedDeviceIndex} setIndex={setSelectedDeviceIndex} />
                         </Paper>
                     </CardContent>
                 </Card>

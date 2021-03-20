@@ -4,7 +4,6 @@ import { CompanyContext } from './../context/CompanyProvider';
 
 import {listDevices} from './../graphql/queries_user'
 
-
 import {API, PubSub} from '../Amplify';
 
 export const DeviceContext = React.createContext()
@@ -13,7 +12,8 @@ const DeviceProvider = (props) => {
 
     const {info} = useContext(CompanyContext)
     const [deviceList, setDeviceList] = useState([])
-    const subsTopicList = useRef([])
+    const [deviceByType, setdeviceByType] = useState({})
+    const [PUB, setPUB] = useState(null)
 
     useEffect(() => {
         var pub
@@ -32,13 +32,24 @@ const DeviceProvider = (props) => {
                         topics.push(`$aws/things/${element.name}/shadow/name/std/update/accepted`)
                         topics.push(`$aws/things/${element.name}/shadow/name/${element.deviceType.shadownName}/get/accepted`)
                         topics.push(`$aws/things/${element.name}/shadow/name/${element.deviceType.shadownName}/update/accepted`)
-                        //subsTopicList.current = subsTopicList.current.concat(topics)
                     })
                     pub = PubSub.subscribe(topics).subscribe({
                         next: data => messageDispatcher(data.value),
                         error: error => console.error('Error:',error),
                         close: () => console.log('Done'),
                     });
+                    setPUB(pub)
+                    console.log(result)
+                    const _devicesByType = {}  
+                    result.forEach((element, index) => {
+                        if(_devicesByType[element.deviceType.name]){
+                            _devicesByType[element.deviceType.name].push(index)
+                        }else{
+                            _devicesByType[element.deviceType.name] = [index]
+                        }
+                    })
+                    setdeviceByType(_devicesByType)
+                    console.log(_devicesByType)
                 })
                 .catch((err) => {
                     console.error(err);
@@ -46,7 +57,12 @@ const DeviceProvider = (props) => {
             }
         }
         fuc()
-        return(()=>{ if(pub){pub.unsubscribe()}} )
+        return(()=>{ 
+            if(PUB){
+                PUB.unsubscribe()
+                setPUB(null)
+            }
+        })
     }, [info.id])
 
     const messageDispatcher = (data) =>{
@@ -127,7 +143,7 @@ const DeviceProvider = (props) => {
     }
 
     return (
-        <DeviceContext.Provider value={{deviceList}}>
+        <DeviceContext.Provider value={{deviceList, deviceByType}}>
             {props.children}
         </DeviceContext.Provider>
     )

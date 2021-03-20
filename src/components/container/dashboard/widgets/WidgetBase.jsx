@@ -109,7 +109,8 @@ const WidgetBase = (props) => {
             <Card elevation={3}>
                 <CardHeader
                     avatar={avatar()}
-                    title={props.data.name}
+                    title={props.data.alias}
+                    subheader={props.data.name}
                     titleTypographyProps={{className: classes.cardtitle}}
                     action={action()}
                 />

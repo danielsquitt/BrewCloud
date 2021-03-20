@@ -1,35 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getDeviceType = /* GraphQL */ `
-  query GetDeviceType($id: ID!) {
-    getDeviceType(id: $id) {
-      id
-      name
-      shadownName
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listDeviceTypes = /* GraphQL */ `
-  query ListDeviceTypes(
-    $filter: ModelDeviceTypeFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listDeviceTypes(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        shadownName
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
 export const companyByName = /* GraphQL */ `
   query CompanyByName(
     $name: String
@@ -146,13 +117,6 @@ export const getDevice = /* GraphQL */ `
       id
       name
       deviceTypeId
-      deviceType {
-        id
-        name
-        shadownName
-        createdAt
-        updatedAt
-      }
       companyId
       alias
       description
@@ -182,6 +146,13 @@ export const getDevice = /* GraphQL */ `
           nextToken
         }
       }
+      deviceType {
+        id
+        name
+        shadownName
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -196,13 +167,6 @@ export const listDevices = /* GraphQL */ `
         id
         name
         deviceTypeId
-        deviceType {
-          id
-          name
-          shadownName
-          createdAt
-          updatedAt
-        }
         companyId
         alias
         description
@@ -216,6 +180,13 @@ export const listDevices = /* GraphQL */ `
           name
           CRUD_Group
           R_Group
+          createdAt
+          updatedAt
+        }
+        deviceType {
+          id
+          name
+          shadownName
           createdAt
           updatedAt
         }
@@ -245,13 +216,6 @@ export const deviceByCompanyId = /* GraphQL */ `
         id
         name
         deviceTypeId
-        deviceType {
-          id
-          name
-          shadownName
-          createdAt
-          updatedAt
-        }
         companyId
         alias
         description
@@ -268,8 +232,44 @@ export const deviceByCompanyId = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        deviceType {
+          id
+          name
+          shadownName
+          createdAt
+          updatedAt
+        }
       }
       nextToken
+    }
+  }
+`;
+export const listDeviceTypes = /* GraphQL */ `
+  query ListDeviceTypes(
+    $filter: ModelDeviceTypeFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listDeviceTypes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        shadownName
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getDeviceType = /* GraphQL */ `
+  query GetDeviceType($id: ID!) {
+    getDeviceType(id: $id) {
+      id
+      name
+      shadownName
+      createdAt
+      updatedAt
     }
   }
 `;

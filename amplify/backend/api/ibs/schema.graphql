@@ -24,6 +24,7 @@ type Device
   @model(timestamps:{createdAt: "createdOn", updatedAt: "updatedOn"})
   @key(name: "byCompanyId", fields: ["companyId", "alias"], queryField: "deviceByCompanyId")
   @auth(rules: [
+      { allow: groups, groups: ["Admin"] },
       { allow: groups, groupsField: "R_Group", operations: [ read ] },
       { allow: groups, groupsField: "CRUD_Group", operations: [ create, update, delete, read] }
       ])
@@ -44,6 +45,9 @@ type Device
 
 type DeviceType
   @model( subscriptions: null)
+  @auth(rules: [
+      { allow: groups, groups: ["Admin"] },
+      ])
 {
   id: ID!
   name: String!
