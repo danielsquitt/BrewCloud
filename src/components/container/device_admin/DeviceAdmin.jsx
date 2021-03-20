@@ -22,7 +22,9 @@ const DeviceAdmin = ({setSelectedIndex}) => {
     const {deviceList} = useContext(DeviceContext)
     const [selectedDeviceIndex, setSelectedDeviceIndex] = useState(0);
  
-
+    useEffect(() => {
+        setSelectedIndex(2)
+      }, [])
 
     return (
         <Grid container spacing={1}>
