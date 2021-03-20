@@ -4,7 +4,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import {DeviceContext} from './../../../context/DeviceProvider'
-import { TrendingUpRounded } from '@material-ui/icons';
+import { TrendingUpOutlined, TrendingUpRounded } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,7 +23,7 @@ const DeviceListHeaderItem = ({item, index, setIndex}) => {
 
     const {deviceList, deviceByType} = useContext(DeviceContext)
 
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(true)
 
     const handleClick = (index)=>{
         setOpen((_open) => {

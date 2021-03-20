@@ -4,6 +4,7 @@ import {Grid} from '@material-ui/core';
 import { DeviceContext } from './../../../context/DeviceProvider';
 
 import ThreeLedTest from './widgets/ThreeLedTest'
+import TempControl from './widgets/TempControl';
 
 const Dashboard = ({setSelectedIndex}) => {
 
@@ -21,6 +22,8 @@ const Dashboard = ({setSelectedIndex}) => {
           switch (item.deviceType.name) {
             case '3LedTest':
               return <ThreeLedTest key={index} data={item}/>
+            case 'TempControl':
+              return <TempControl  key={index} data={item}/>
           }
       }))
     }else{

@@ -52,6 +52,7 @@ const WidgetBase = (props) => {
     const {} = useContext(DeviceContext)
 
     const [state, setstate] = useState(false)
+
     useEffect(() => {
         //console.log(props)
         if (props.data) setstate(props.data.connected.state)
@@ -65,6 +66,7 @@ const WidgetBase = (props) => {
             func()
            }, 1000)
     }, [])
+
     const [expanded, setExpanded] = useState(true);
 
     const handleExpandClick = () => {

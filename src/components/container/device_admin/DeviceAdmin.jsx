@@ -6,6 +6,8 @@ import Brightness1Icon from '@material-ui/icons/Brightness1';
 
 import {DeviceContext} from './../../../context/DeviceProvider'
 import DeviceList from './DeviceList';
+import DeviceCardBase from './DeviceCardBase';
+import DeviceCardThreeLedTest from './DeviceCardThreeLedTest';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,25 +27,16 @@ const DeviceAdmin = ({setSelectedIndex}) => {
     useEffect(() => {
         setSelectedIndex(2)
       }, [])
-
+      
     return (
         <Grid container spacing={1}>
             <Grid item xs={12} md={8} xl={9}>
-               {JSON.stringify(deviceList[selectedDeviceIndex])}
-
+                <DeviceCardBase index={selectedDeviceIndex}>
+                    <DeviceCardThreeLedTest edit/>
+                </DeviceCardBase>
             </Grid>
             <Grid item xs={12} md={4} xl={3}>
-                <Card elevation={3}>
-                    <CardHeader
-                        title={'Device List'}
-                    />
-                    <Divider/>
-                    <CardContent>
-                        <Paper style={{maxHeight: '600px', overflow: 'auto'}}>
-                            <DeviceList index={selectedDeviceIndex} setIndex={setSelectedDeviceIndex} />
-                        </Paper>
-                    </CardContent>
-                </Card>
+                <DeviceList index={selectedDeviceIndex} setIndex={setSelectedDeviceIndex} />
             </Grid>
         </Grid>
     )

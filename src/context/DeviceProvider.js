@@ -39,7 +39,7 @@ const DeviceProvider = (props) => {
                         close: () => console.log('Done'),
                     });
                     setPUB(pub)
-                    console.log(result)
+                    
                     const _devicesByType = {}  
                     result.forEach((element, index) => {
                         if(_devicesByType[element.deviceType.name]){
@@ -49,7 +49,6 @@ const DeviceProvider = (props) => {
                         }
                     })
                     setdeviceByType(_devicesByType)
-                    console.log(_devicesByType)
                 })
                 .catch((err) => {
                     console.error(err);

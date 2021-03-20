@@ -29,16 +29,26 @@ const DeviceList = ({index, setIndex}) => {
 
 
     return (
-        <List>
-            {
-                Object.keys(deviceByType).map((item, idx) => {
-                    return(
-                        <DeviceListHeaderItem key= {idx} item={item} index={index} setIndex={setIndex}/>
-                    )
-                })
-            }
-            
-        </List>
+        <Card elevation={3}>
+            <CardHeader
+                title={'Device List'}
+            />
+            <Divider/>
+            <CardContent>
+                <Paper style={{maxHeight: '600px', overflow: 'auto'}}>
+                    <List>
+                    {
+                        Object.keys(deviceByType).map((item, idx) => {
+                            return(
+                                <DeviceListHeaderItem key= {idx} item={item} index={index} setIndex={setIndex}/>
+                            )
+                        })
+                    }
+                </List>
+                </Paper>
+            </CardContent>
+        </Card>
+        
     )
 }
 
