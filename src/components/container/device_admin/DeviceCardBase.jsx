@@ -37,9 +37,6 @@ const DeviceCardBase = (props) => {
     const [edit, setedit] = useState(false)
 
     useEffect(() => {
-        //props.children.props.edit = edit
-    }, [edit])
-    useEffect(() => {
         setstate(deviceList[props.index].connected.state)
     }, [deviceList[props.index].connected.state])
 
