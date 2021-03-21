@@ -116,7 +116,6 @@ const DeviceProvider = (props) => {
         switch (type) {
             case 'get':
                 setDeviceList((list) => {
-                    console.log('Por aqui no');
                     return (list.map((element) => {
                         if (element.name === thingName) return ({...element, state: {...element.state, ...payload}})
                         return element
@@ -125,29 +124,19 @@ const DeviceProvider = (props) => {
                 break;
             case 'update':
                 setDeviceList((list) => {
-                    list = list.map((device) => {        
+                    return(list.map((device) => {        
                         if (device.name === thingName){     // El elemento que queremos cambiar
-                            const _actualState = device.state
-                            const _newState = Object.entries(payload)
-                            console.log('Actual state', _actualState)
-                            console.log('New state', _newState);
-                            _newState.forEach((_subNewState)=>{
-                                if(_actualState[_subNewState[0]]){
-                                    const _state = Object.entries(_subNewState[1])
-                                    console.log('State to update', _state);
-                                    _state.forEach((item) => {
-                                        if(_actualState[_subNewState[0]][item[0]]){
+                            Object.entries(payload).forEach((_subNewState)=>{
+                                if(device.state[_subNewState[0]]){
+                                    Object.entries(_subNewState[1]).forEach((item) => {
+                                        if(device.state[_subNewState[0]][item[0]])
                                             device.state[_subNewState[0]][item[0]] = item[1]
-                                        }
                                     })
                                 }
                             })
-                            console.log('Device', device);
                         }
                         return device
-                    })
-                    console.log('List', list);
-                    return list
+                    }))
                 })
                 break;
         }
