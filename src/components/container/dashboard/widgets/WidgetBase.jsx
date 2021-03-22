@@ -1,11 +1,11 @@
 import React, {useState, useContext, useEffect} from 'react'
 import clsx from 'clsx';
-import {makeStyles, Grid, Card, CardHeader, CardContent, Divider, Collapse, Avatar, IconButton } from '@material-ui/core';
+import {makeStyles, Grid, Card, CardHeader, CardContent, Divider, Collapse, Avatar, IconButton, CardActionArea  } from '@material-ui/core';
 import { red, green } from '@material-ui/core/colors';
 import WifiIcon from '@material-ui/icons/Wifi';
 import WifiOffIcon from '@material-ui/icons/WifiOff';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
+import { Link } from 'react-router-dom'
 import { DeviceContext } from './../../../../context/DeviceProvider';
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
     cardtitle: {
         fontSize: '1.5rem',
       },
+    cardAction: {
+        display: 'flex'
+      }
   }));
 
   
@@ -107,9 +110,11 @@ const WidgetBase = (props) => {
                 />
                 <Divider/>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
-                    <CardContent>
-                        {props.children}
-                    </CardContent>
+                    <CardActionArea component={Link} to={`/device-admin/${props.idx}`}>
+                        <CardContent>
+                            {props.children}
+                        </CardContent>
+                    </CardActionArea >
                 </Collapse>
             </Card>
         </Grid>

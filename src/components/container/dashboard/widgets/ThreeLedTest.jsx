@@ -31,7 +31,7 @@ const ThreeLedTest = (props) => {
     }
 
     return (
-        <WidgetBase data={props.data}>
+        <WidgetBase data={props.data} idx={props.idx}>
             <Grid container direction={'column'} spacing={3}>
                 <Grid item xs={12}>
                     <Grid container>

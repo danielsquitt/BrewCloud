@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react'
 import clsx from 'clsx';
-import {makeStyles, Grid, Card, CardHeader, CardContent, Divider, CardActionArea , Avatar, IconButton } from '@material-ui/core';
+import {makeStyles, Card, CardHeader, CardContent, Divider , Avatar, IconButton } from '@material-ui/core';
 import {DeviceContext} from './../../../context/DeviceProvider'
 import { red, green } from '@material-ui/core/colors';
 import WifiIcon from '@material-ui/icons/Wifi';
@@ -21,7 +21,10 @@ const useStyles = makeStyles((theme) => ({
           height: theme.spacing(4),
       },
     cardtitle: {
-        fontSize: '1.5rem',
+        fontSize: '1rem',
+        [theme.breakpoints.up('md')]:{
+            fontSize: '1.5rem',
+        }
       },
   }));
 

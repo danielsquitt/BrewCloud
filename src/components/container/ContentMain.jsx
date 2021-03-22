@@ -57,8 +57,7 @@ const ContentMain = ({open, setSelectedIndex}) => {
             <Route path='/profile'>
               <Profile setSelectedIndex={setSelectedIndex}/>
             </Route>
-            <Route path='/device-admin'>
-              <DeviceAdmin setSelectedIndex={setSelectedIndex}/>
+            <Route path='/device-admin/:idx?' render={(props)=>(<DeviceAdmin {...props} setSelectedIndex={setSelectedIndex}/>)}>
             </Route>
             <Route path='/'>
               <Dashboard setSelectedIndex={setSelectedIndex}/>

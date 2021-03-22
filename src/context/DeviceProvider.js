@@ -45,11 +45,9 @@ const DeviceProvider = (props) => {
                     timer = setTimeout(()=>{
                         const func = () => {
                             result.forEach(async(item) => {
-                                console.log(item);
                                 await PubSub.publish(`$aws/things/${item.name}/shadow/name/${item.deviceType.shadownName}/get`, { msg: '' });
                                 await PubSub.publish(`$aws/things/${item.name}/shadow/name/std/get`, { msg: '' });
                             })
-                            
                         }
                         func()
                        }, 1000)

@@ -21,9 +21,9 @@ const Dashboard = ({setSelectedIndex}) => {
       setDeviceWidgets(deviceList.map((item, index) =>{
           switch (item.deviceType.name) {
             case '3LedTest':
-              return <ThreeLedTest key={index} data={item}/>
+              return <ThreeLedTest key={index} idx={index} data={item}/>
             case 'TempControl':
-              return <TempControl  key={index} data={item}/>
+              return <TempControl  key={index} idx={index} data={item}/>
           }
       }))
     }else{

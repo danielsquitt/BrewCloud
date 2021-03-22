@@ -10,7 +10,16 @@ import { PubSub } from './../../../Amplify';
 const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
-      minWidth: 120,
+      minWidth: 60,
+      [theme.breakpoints.up('md')]:{
+        minWidth: 120,
+      }
+    },
+    option: {
+        fontSize: '.5rem',
+        [theme.breakpoints.up('md')]:{
+            fontSize: '1rem'
+          }
     },
     selectEmpty: {
       marginTop: theme.spacing(2),
@@ -69,7 +78,7 @@ const DeviceCardThreeLedTest = (props) => {
         return(
             <Grid container spacing={2} justify="center" alignItems="center">
                 <Grid item xs={12}>
-                    <FormControl variant="outlined" className={classes.formControl}>
+                    <FormControl variant="outlined" className={classes.formControl} size="small">
                         <InputLabel htmlFor="age-native-helper">{label}</InputLabel>
                         <Select
                             native
@@ -117,16 +126,16 @@ const DeviceCardThreeLedTest = (props) => {
                     <Divider/>
                 </Grid>
                 <Grid item xs={12}>
-                    <Grid container spacing={3} > 
+                    <Grid container spacing={2} > 
                         <Grid item xs={12}>
-                            <Grid container spacing={3}>
-                                <Grid item xs={4}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={4} md={4}>
                                     {LedValue('led1', led1, setled1 )}
                                 </Grid>
-                                <Grid item xs={4}>
+                                <Grid item xs={4} md={4}>
                                     {LedValue('led2', led2, setled2 )}
                                 </Grid>
-                                <Grid item xs={4}>
+                                <Grid item xs={4} md={4}>
                                     {LedValue('led3', led3, setled3 )}
                                 </Grid>
                             </Grid>

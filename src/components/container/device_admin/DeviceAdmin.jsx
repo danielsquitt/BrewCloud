@@ -1,15 +1,29 @@
 import React, {useEffect, useState} from 'react'
 import {makeStyles, Grid} from '@material-ui/core';
 
+import {useParams} from "react-router-dom";
+  
 import DeviceList from './DeviceList';
 import DeviceCardThreeLedTest from './DeviceCardThreeLedTest';
 
-const DeviceAdmin = ({setSelectedIndex}) => {
+const DeviceAdmin = (props) => {
 
     const [selectedDeviceIndex, setSelectedDeviceIndex] = useState(1);
+
+    
  
     useEffect(() => {
-        setSelectedIndex(2)
+        const idx = props.match.params?.idx
+        console.log(props);
+        props.setSelectedIndex(2)
+        if (idx) {
+            console.log('From pros', idx);
+            setSelectedDeviceIndex(idx)
+        } else {
+            console.log('Default');
+            setSelectedDeviceIndex(1)
+        }
+        
       }, [])
       
     return (
