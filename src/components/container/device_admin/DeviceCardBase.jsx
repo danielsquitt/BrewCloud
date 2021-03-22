@@ -117,7 +117,7 @@ const DeviceCardBase = (props) => {
                 <CardContent>
                     {React.Children.map(props.children, child => {
                         if (React.isValidElement(child)) {
-                            return React.cloneElement(child, {edit});
+                            return React.cloneElement(child);
                           }
                           return child;
                     })}
