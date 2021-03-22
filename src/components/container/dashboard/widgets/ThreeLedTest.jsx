@@ -15,40 +15,19 @@ const ThreeLedTest = (props) => {
         //console.log('asdasd', props.data.state)
         if (props.data.state) setShadow(props.data.state)
     }, [props.data.state])
-
-    useEffect(() => {
-        setTimeout(()=>{
-            const func = async() => {
-                await PubSub.publish(`$aws/things/${props.data.name}/shadow/name/${props.data.deviceType.shadownName}/get`, { msg: '' });
-            }
-            func()
-           }, 1000)
-    }, [])
  
     const button = (state, name, _color)=>{
         const intensity = state ? 500 : 900
         return(
             <Grid 
                 item 
-                component={IconButton} 
                 align={'center'} 
                 style={{ color: _color[intensity] }} 
                 xs={4}
-                onClick={() => {upateButtonState(name, !state)}}
             >
                 <FiberManualRecordIcon fontSize="large" />
             </Grid>
         )
-    }
-
-    const upateButtonState = (name, state) => {
-        const func = async() => {
-            const desired = {}
-            desired[name] = state ? 'on' : 'off'
-            const msg = {desired}
-            await PubSub.publish(`$aws/things/${props.data.name}/shadow/name/${props.data.deviceType.shadownName}/update`, {state:{...msg}});
-        }
-        func()
     }
 
     return (

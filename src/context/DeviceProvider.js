@@ -18,6 +18,7 @@ const DeviceProvider = (props) => {
 
     useEffect(() => {
         var pub
+        var timer
         const fuc = async() => {
             if(info.id !== ''){
                 await getDeviceList()
@@ -40,6 +41,18 @@ const DeviceProvider = (props) => {
                         close: () => console.log('Done'),
                     });
                     setPUB(pub)
+
+                    timer = setTimeout(()=>{
+                        const func = () => {
+                            result.forEach(async(item) => {
+                                console.log(item);
+                                await PubSub.publish(`$aws/things/${item.name}/shadow/name/${item.deviceType.shadownName}/get`, { msg: '' });
+                                await PubSub.publish(`$aws/things/${item.name}/shadow/name/std/get`, { msg: '' });
+                            })
+                            
+                        }
+                        func()
+                       }, 1000)
                     
                     const _devicesByType = {}  
                     result.forEach((element, index) => {
@@ -58,6 +71,7 @@ const DeviceProvider = (props) => {
         }
         fuc()
         return(()=>{ 
+            clearTimeout(timer)
             if(PUB){
                 PUB.unsubscribe()
                 setPUB(null)

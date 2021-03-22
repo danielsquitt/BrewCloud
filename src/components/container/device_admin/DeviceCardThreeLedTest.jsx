@@ -1,10 +1,11 @@
 import React, {useContext, useState, useEffect} from 'react'
 import DeviceCardBase from './DeviceCardBase'
-import {makeStyles, Grid, Divider, Typography, Button, FormControl, Select, InputLabel  } from '@material-ui/core';
-
-import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
+import {makeStyles, Grid, Divider, Typography, Button, FormControl, Select, InputLabel, Backdrop, CircularProgress    } from '@material-ui/core';
 
 import {DeviceContext} from './../../../context/DeviceProvider'
+import {EventContext} from './../../../context/EventProvider';
+
+import { PubSub } from './../../../Amplify';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -19,10 +20,20 @@ const useStyles = makeStyles((theme) => ({
 const DeviceCardThreeLedTest = (props) => {
     const classes = useStyles();
     const {deviceList} = useContext(DeviceContext)
+    const {setBackdrop, resetBackdrop} = useContext(EventContext)
 
     const [led1, setled1] = useState(deviceList[props.index].state?.reported['led1'])
     const [led2, setled2] = useState(deviceList[props.index].state?.reported['led2'])
     const [led3, setled3] = useState(deviceList[props.index].state?.reported['led3'])
+
+    const [change, setchange] = useState(false)
+
+    useEffect(() => {
+        setchange(led1 !== deviceList[props.index].state?.reported['led1'] || led2 !== deviceList[props.index].state?.reported['led2'] || led3 !== deviceList[props.index].state?.reported['led3'])
+        if(!change) {
+            resetBackdrop(false)
+        }
+    }, [led1, led2, led3, change])
 
     useEffect(() => {
         setled1(deviceList[props.index].state?.reported['led1'])
@@ -38,6 +49,20 @@ const DeviceCardThreeLedTest = (props) => {
             onChange('off')
         }
       };
+
+    const handleClic = (event)=>{
+        event.preventDefault()
+        const func = async() => {
+            setBackdrop(5000, 'Timeout error updating state')
+            const desired = {}
+            desired['led1'] = led1
+            desired['led2'] = led2
+            desired['led3'] = led3
+            const msg = {desired}
+            await PubSub.publish(`$aws/things/${deviceList[props.index].name}/shadow/name/${deviceList[props.index].deviceType.shadownName}/update`, {state:{...msg}});
+        }
+        func()
+    }
 
     const LedValue = (label, state, onChange) => {
 
@@ -107,12 +132,18 @@ const DeviceCardThreeLedTest = (props) => {
                             </Grid>
                         </Grid>
                         <Grid item xs={12} >
-                            <Button variant="contained" color="primary" >Set</Button>
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                                onClick={handleClic} 
+                                disabled = {!change}
+                            >Set</Button>
                         </Grid>
                     </Grid>
                 </Grid>
             </Grid>
         </DeviceCardBase>
+        
     )
 }
 

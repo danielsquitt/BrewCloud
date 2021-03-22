@@ -104,7 +104,6 @@ const DeviceCardBase = (props) => {
 
     return (
         <div>
-            {JSON.stringify(deviceList[props.index])}
             <Card elevation={1}>
                 <CardHeader
                     avatar={avatar()}

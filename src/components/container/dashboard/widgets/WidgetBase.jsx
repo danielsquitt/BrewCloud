@@ -8,8 +8,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { DeviceContext } from './../../../../context/DeviceProvider';
 
-import { PubSub } from './../../../../Amplify';
-
 const useStyles = makeStyles((theme) => ({
     root: {
       maxWidth: 345,
@@ -57,15 +55,6 @@ const WidgetBase = (props) => {
         //console.log(props)
         if (props.data) setstate(props.data.connected.state)
     }, [props.data.connected.state])
-    
-    useEffect(() => {
-        setTimeout(()=>{
-            const func = async() => {
-                await PubSub.publish(`$aws/things/${props.data.name}/shadow/name/std/get`, { msg: '' });
-            }
-            func()
-           }, 1000)
-    }, [])
 
     const [expanded, setExpanded] = useState(true);
 
