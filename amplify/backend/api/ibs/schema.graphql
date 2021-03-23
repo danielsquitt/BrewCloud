@@ -52,6 +52,7 @@ type DeviceType
   id: ID!
   name: String!
   shadownName: String
+  telemetryName: String
 }
 
 type S3Object {

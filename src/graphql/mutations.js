@@ -166,6 +166,7 @@ export const createDevice = /* GraphQL */ `
         id
         name
         shadownName
+        telemetryName
         createdAt
         updatedAt
       }
@@ -214,6 +215,7 @@ export const updateDevice = /* GraphQL */ `
         id
         name
         shadownName
+        telemetryName
         createdAt
         updatedAt
       }
@@ -262,6 +264,7 @@ export const deleteDevice = /* GraphQL */ `
         id
         name
         shadownName
+        telemetryName
         createdAt
         updatedAt
       }
@@ -277,6 +280,7 @@ export const createDeviceType = /* GraphQL */ `
       id
       name
       shadownName
+      telemetryName
       createdAt
       updatedAt
     }
@@ -291,6 +295,7 @@ export const updateDeviceType = /* GraphQL */ `
       id
       name
       shadownName
+      telemetryName
       createdAt
       updatedAt
     }
@@ -305,6 +310,7 @@ export const deleteDeviceType = /* GraphQL */ `
       id
       name
       shadownName
+      telemetryName
       createdAt
       updatedAt
     }

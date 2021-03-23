@@ -57,6 +57,7 @@ export const listDevices = /* GraphQL */ `
           id
           name
           shadownName
+          telemetryName
         }
       }
     }

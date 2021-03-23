@@ -26,7 +26,7 @@ const Container = () => {
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.up('lg'));
 
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
     const [selectedIndex, setSelectedIndex] = React.useState(1);
 
     useEffect(() => {
@@ -40,7 +40,6 @@ const Container = () => {
     };
 
     const handleDrawerClose = () => {
-        console.log('Close request');
         setOpen(false);
       };
 

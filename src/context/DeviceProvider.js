@@ -34,6 +34,7 @@ const DeviceProvider = (props) => {
                         topics.push(`$aws/things/${element.name}/shadow/name/std/update/accepted`)
                         topics.push(`$aws/things/${element.name}/shadow/name/${element.deviceType.shadownName}/get/accepted`)
                         topics.push(`$aws/things/${element.name}/shadow/name/${element.deviceType.shadownName}/update/accepted`)
+                        topics.push(`telemetry/things/${element.name}/telemetry/name/${element.deviceType.telemetryName}`)
                     })
                     pub = PubSub.subscribe(topics).subscribe({
                         next: data => messageDispatcher(data.value),
@@ -106,6 +107,19 @@ const DeviceProvider = (props) => {
                         break
                 }
                 break
+            case 'telemetry':
+                switch (topic[1]) {
+                    case 'things':
+                        const thingName = topic[2]
+                        const type = topic[5]
+                        telemetryHandler(thingName, data, type)
+                        break;
+                
+                    default:
+                        break;
+                }
+                break
+
             default:
                 break
         }
@@ -153,6 +167,19 @@ const DeviceProvider = (props) => {
                 break;
         }
         
+    }
+
+    const telemetryHandler = (thingName, payload) => {
+        const data = JSON.parse(JSON.stringify(payload))
+        //console.log(thingName, data);
+        setDeviceList((list) => {
+            //console.log(list, thingName, payload);
+            return (list.map((element) => {
+                //console.log(payload, payload.reported.connected);
+                if (element.name === thingName) return ({...element, telemetry: {...data}})
+                return element
+            }))
+        })
     }
 
     const getDeviceList = async()=>{

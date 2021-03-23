@@ -150,6 +150,7 @@ export const getDevice = /* GraphQL */ `
         id
         name
         shadownName
+        telemetryName
         createdAt
         updatedAt
       }
@@ -187,6 +188,7 @@ export const listDevices = /* GraphQL */ `
           id
           name
           shadownName
+          telemetryName
           createdAt
           updatedAt
         }
@@ -236,6 +238,7 @@ export const deviceByCompanyId = /* GraphQL */ `
           id
           name
           shadownName
+          telemetryName
           createdAt
           updatedAt
         }
@@ -255,6 +258,7 @@ export const listDeviceTypes = /* GraphQL */ `
         id
         name
         shadownName
+        telemetryName
         createdAt
         updatedAt
       }
@@ -268,6 +272,7 @@ export const getDeviceType = /* GraphQL */ `
       id
       name
       shadownName
+      telemetryName
       createdAt
       updatedAt
     }

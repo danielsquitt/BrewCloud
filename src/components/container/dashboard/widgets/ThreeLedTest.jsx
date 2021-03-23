@@ -41,7 +41,7 @@ const ThreeLedTest = (props) => {
                                     Temeperature
                                 </Grid>
                                 <Grid item component={Typography} align={'center'}  xs={12}>
-                                    26º
+                                    {`${props.data.telemetry?.temperature}ºC`}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -51,7 +51,7 @@ const ThreeLedTest = (props) => {
                                     Humidity
                                 </Grid>
                                 <Grid item component={Typography} align={'center'}  xs={12}>
-                                    73%
+                                {`${props.data.telemetry?.humidity}%`}
                                 </Grid>
                             </Grid>
                         </Grid>
