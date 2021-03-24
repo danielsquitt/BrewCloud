@@ -41,7 +41,7 @@ const ThreeLedTest = (props) => {
                                     Temeperature
                                 </Grid>
                                 <Grid item component={Typography} align={'center'}  xs={12}>
-                                    {`${props.data.telemetry?.temperature}ºC`}
+                                    {props.data.telemetry ? `${props.data.telemetry?.temperature} ºC` : `-- ºC`}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -51,7 +51,7 @@ const ThreeLedTest = (props) => {
                                     Humidity
                                 </Grid>
                                 <Grid item component={Typography} align={'center'}  xs={12}>
-                                {`${props.data.telemetry?.humidity}%`}
+                                    {props.data.telemetry ? `${props.data.telemetry?.humidity} %` : `-- %`}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -62,9 +62,9 @@ const ThreeLedTest = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container> 
-                        {button(shadow.reported.led1 === 'on', 'led1', red)}
-                        {button(shadow.reported.led2 === 'on', 'led2', green)}
-                        {button(shadow.reported.led3 === 'on', 'led3', blue)}
+                        {button(shadow.reported?.led1 === 'on', 'led1', red)}
+                        {button(shadow.reported?.led2 === 'on', 'led2', green)}
+                        {button(shadow.reported?.led3 === 'on', 'led3', blue)}
                     </Grid>
                 </Grid>
             </Grid>

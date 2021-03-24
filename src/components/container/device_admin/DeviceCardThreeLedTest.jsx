@@ -106,7 +106,7 @@ const DeviceCardThreeLedTest = (props) => {
                                     Temeperature
                                 </Grid>
                                 <Grid item component={Typography} align={'center'}  xs={12}>
-                                    26º
+                                    {deviceList[props.index].telemetry ? `${deviceList[props.index].telemetry?.temperature} ºC` : `-- ºC`}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -116,7 +116,7 @@ const DeviceCardThreeLedTest = (props) => {
                                     Humidity
                                 </Grid>
                                 <Grid item component={Typography} align={'center'}  xs={12}>
-                                    73%
+                                    {deviceList[props.index].telemetry ? `${deviceList[props.index].telemetry?.humidity} %` : `-- %`}
                                 </Grid>
                             </Grid>
                         </Grid>
