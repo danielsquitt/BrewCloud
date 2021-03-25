@@ -48,10 +48,11 @@ const DeviceProvider = (props) => {
                             result.forEach(async(item) => {
                                 await PubSub.publish(`$aws/things/${item.name}/shadow/name/${item.deviceType.shadownName}/get`, { msg: '' });
                                 await PubSub.publish(`$aws/things/${item.name}/shadow/name/std/get`, { msg: '' });
+                                await PubSub.publish(`telemetry/things/${item.name}/telemetry/name/${item.deviceType.telemetryName}/get`, { msg: '' });
                             })
                         }
                         func()
-                       }, 1000)
+                       }, 500)
                     
                     const _devicesByType = {}  
                     result.forEach((element, index) => {
@@ -167,7 +168,7 @@ const DeviceProvider = (props) => {
 
     const telemetryHandler = (thingName, payload) => {
         const data = JSON.parse(JSON.stringify(payload))
-        //console.log(thingName, data);
+        console.log(thingName, data);
         setDeviceList((list) => {
             //console.log(list, thingName, payload);
             return (list.map((element) => {
