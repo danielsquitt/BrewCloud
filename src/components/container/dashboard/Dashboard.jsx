@@ -5,6 +5,7 @@ import { DeviceContext } from './../../../context/DeviceProvider';
 
 import ThreeLedTest from './widgets/ThreeLedTest'
 import TempControl from './widgets/TempControl';
+import TempPressureControl from './widgets/TempPressureControl';
 
 const Dashboard = ({setSelectedIndex}) => {
 
@@ -24,6 +25,8 @@ const Dashboard = ({setSelectedIndex}) => {
               return <ThreeLedTest key={index} idx={index} data={item}/>
             case 'TempControl':
               return <TempControl  key={index} idx={index} data={item}/>
+            case 'TePreControl':
+              return <TempPressureControl  key={index} idx={index} data={item}/>
           }
       }))
     }else{

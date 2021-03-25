@@ -94,11 +94,8 @@ const DeviceProvider = (props) => {
                                     case 'std':
                                         stdShadowHandler(thingName, data.state, data.version, topic[6])
                                         break;
-                                    case '3led':
-                                        devicehadowHandler(thingName, data.state, data.version, topic[6])
-                                        break;
-                                
                                     default:
+                                        devicehadowHandler(thingName, data.state, data.version, topic[6])
                                         break;
                                 }
                             }
@@ -114,7 +111,6 @@ const DeviceProvider = (props) => {
                         const type = topic[5]
                         telemetryHandler(thingName, data, type)
                         break;
-                
                     default:
                         break;
                 }

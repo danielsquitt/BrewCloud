@@ -3,7 +3,7 @@ import {Grid, Divider, Typography, TextField, Button } from '@material-ui/core';
 
 import WidgetBase from './WidgetBase'
 
-const TempControl = (props) => {
+const TempPressureControl = (props) => {
     return (
         <WidgetBase data={props.data} idx={props.idx}>
             <Grid container spacing={3}>
@@ -19,7 +19,16 @@ const TempControl = (props) => {
                                 </Grid>
                             </Grid>
                         </Grid>
-                        
+                        <Grid item xs={6}>
+                            <Grid container direction={'column'}>
+                                <Grid item component={Typography} align={'center'}  xs={12}>
+                                    Presure
+                                </Grid>
+                                <Grid item component={Typography} align={'center'}  xs={12}>
+                                    {props.data.telemetry ? `${props.data.telemetry.pressure} ºC` : `-- bar` +  ' / ' + `${props.data.state.reported['sp pressure']} bar`}
+                                </Grid>
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
@@ -35,4 +44,4 @@ const TempControl = (props) => {
     )
 }
 
-export default TempControl
+export default TempPressureControl
