@@ -15,7 +15,7 @@ const TempControl = (props) => {
                                     Temperature
                                 </Grid>
                                 <Grid item component={Typography} align={'center'}  xs={12}>
-                                    {props.data.telemetry ? `${props.data.telemetry?.temperature} ºC` : `-- ºC` +  ' / ' + `${props.data.state?.reported['sp temperature']} ºC`}
+                                    {props.data.telemetry ? `${props.data.telemetry?.temperature} ºC` : `-- ºC` +  ' / ' + `${props.data.state?.reported?.['sp temperature']} ºC`}
                                 </Grid>
                             </Grid>
                         </Grid>

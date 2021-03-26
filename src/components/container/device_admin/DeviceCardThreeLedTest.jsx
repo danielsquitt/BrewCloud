@@ -31,23 +31,23 @@ const DeviceCardThreeLedTest = (props) => {
     const {deviceList} = useContext(DeviceContext)
     const {setBackdrop, resetBackdrop} = useContext(EventContext)
 
-    const [led1, setled1] = useState(deviceList[props.index].state?.reported['led1'])
-    const [led2, setled2] = useState(deviceList[props.index].state?.reported['led2'])
-    const [led3, setled3] = useState(deviceList[props.index].state?.reported['led3'])
+    const [led1, setled1] = useState(deviceList[props.index].state?.reported?.['led1'])
+    const [led2, setled2] = useState(deviceList[props.index].state?.reported?.['led2'])
+    const [led3, setled3] = useState(deviceList[props.index].state?.reported?.['led3'])
 
     const [change, setchange] = useState(false)
 
     useEffect(() => {
-        setchange(led1 !== deviceList[props.index].state?.reported['led1'] || led2 !== deviceList[props.index].state?.reported['led2'] || led3 !== deviceList[props.index].state?.reported['led3'])
+        setchange(led1 !== deviceList[props.index].state?.reported?.['led1'] || led2 !== deviceList[props.index].state?.reported?.['led2'] || led3 !== deviceList[props.index].state?.reported?.['led3'])
         if(!change) {
             resetBackdrop(false)
         }
     }, [led1, led2, led3, change])
 
     useEffect(() => {
-        setled1(deviceList[props.index].state?.reported['led1'])
-        setled2(deviceList[props.index].state?.reported['led2'])
-        setled3(deviceList[props.index].state?.reported['led3'])
+        setled1(deviceList[props.index].state?.reported?.['led1'])
+        setled2(deviceList[props.index].state?.reported?.['led2'])
+        setled3(deviceList[props.index].state?.reported?.['led3'])
     }, [deviceList])
 
     const handleChange = (onChange, value) => {

@@ -1,11 +1,10 @@
-import React,  {useContext, useEffect, useState, useRef} from 'react'
+import React,  {useContext, useEffect, useState} from 'react'
 
 import { CompanyContext } from './../context/CompanyProvider';
 
 import {listDevices} from './../graphql/queries_user'
 
 import {API, PubSub} from '../Amplify';
-import { Switch } from 'react-router';
 
 export const DeviceContext = React.createContext()
 
@@ -18,14 +17,24 @@ const DeviceProvider = (props) => {
 
     useEffect(() => {
         var pub
-        var timer
+        var timer = []
         const fuc = async() => {
             if(info.id !== ''){
                 await getDeviceList()
                 .then((result) => {
                     // Save device list
                     setDeviceList(result.map((item) => {
-                        return({...item, connected: {version: 0, state: false}})
+                        return({
+                            ...item, 
+                            connected: {
+                                version: 0, 
+                                state: false
+                            }, 
+                            state:{
+                                desired:{}, 
+                                reported:{}
+                            }
+                        })
                     }))
                     // Save device topi subscriptions
                     const topics = []
@@ -43,16 +52,15 @@ const DeviceProvider = (props) => {
                     });
                     setPUB(pub)
 
-                    timer = setTimeout(()=>{
-                        const func = () => {
-                            result.forEach(async(item) => {
+                    result.forEach((item, index) => {
+                        timer.push(
+                            setTimeout(async()=>{
                                 await PubSub.publish(`$aws/things/${item.name}/shadow/name/${item.deviceType.shadownName}/get`, { msg: '' });
                                 await PubSub.publish(`$aws/things/${item.name}/shadow/name/std/get`, { msg: '' });
                                 await PubSub.publish(`telemetry/things/${item.name}/telemetry/name/${item.deviceType.telemetryName}/get`, { msg: '' });
-                            })
-                        }
-                        func()
-                       }, 500)
+                            }, 500 + 250*index)
+                        ) 
+                    })
                     
                     const _devicesByType = {}  
                     result.forEach((element, index) => {
@@ -71,7 +79,9 @@ const DeviceProvider = (props) => {
         }
         fuc()
         return(()=>{ 
-            clearTimeout(timer)
+            timer.forEach((item) => {
+                clearTimeout(item)
+            })
             if(PUB){
                 PUB.unsubscribe()
                 setPUB(null)
@@ -127,7 +137,7 @@ const DeviceProvider = (props) => {
             //console.log(list, thingName, payload);
             return (list.map((element) => {
                 //console.log(payload, payload.reported.connected);
-                if (element.name === thingName && version > element.connected.version) return ({...element, connected: {state: payload.reported.connected, version}})
+                if (element.name === thingName && version > element.connected.version) return ({...element, connected: {state: payload.reported?.connected, version}})
                 return element
             }))
         })
@@ -168,7 +178,7 @@ const DeviceProvider = (props) => {
 
     const telemetryHandler = (thingName, payload) => {
         const data = JSON.parse(JSON.stringify(payload))
-        console.log(thingName, data);
+        //console.log(thingName, data);
         setDeviceList((list) => {
             //console.log(list, thingName, payload);
             return (list.map((element) => {
