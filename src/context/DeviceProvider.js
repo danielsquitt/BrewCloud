@@ -51,16 +51,6 @@ const DeviceProvider = (props) => {
                         close: () => console.log('Done'),
                     });
                     setPUB(pub)
-
-                    result.forEach((item, index) => {
-                        timer.push(
-                            setTimeout(async()=>{
-                                await PubSub.publish(`$aws/things/${item.name}/shadow/name/${item.deviceType.shadownName}/get`, { msg: '' });
-                                await PubSub.publish(`$aws/things/${item.name}/shadow/name/std/get`, { msg: '' });
-                                await PubSub.publish(`telemetry/things/${item.name}/telemetry/name/${item.deviceType.telemetryName}/get`, { msg: '' });
-                            }, 500 + 250*index)
-                        ) 
-                    })
                     
                     const __devicesByType = {} 
                     result.forEach((element, index) => {
@@ -87,6 +77,16 @@ const DeviceProvider = (props) => {
                         }
                     })
                     setdeviceByType(_devicesByType)
+
+                    result.forEach((item, index) => {
+                        timer.push(
+                            setTimeout(async()=>{
+                                await PubSub.publish(`$aws/things/${item.name}/shadow/name/${item.deviceType.shadownName}/get`, { msg: '' });
+                                await PubSub.publish(`$aws/things/${item.name}/shadow/name/std/get`, { msg: '' });
+                                await PubSub.publish(`telemetry/things/${item.name}/telemetry/name/${item.deviceType.telemetryName}/get`, { msg: '' });
+                            }, 1000 + 100*index)
+                        ) 
+                    })
 
                 })
                 .catch((err) => {
