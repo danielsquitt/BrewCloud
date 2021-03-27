@@ -38,7 +38,7 @@ const DeviceList = ({index, setIndex}) => {
                 <Paper style={{maxHeight: '600px', overflow: 'auto'}}>
                     <List>
                     {
-                        Object.keys(deviceByType).map((item, idx) => {
+                        deviceByType.map((item, idx) => {
                             return(
                                 <DeviceListHeaderItem key= {idx} item={item} index={index} setIndex={setIndex}/>
                             )

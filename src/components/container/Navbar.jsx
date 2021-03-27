@@ -19,9 +19,9 @@ const useStyle = makeStyles(theme => ({
 
     },
     menuButtonClose: {
-        marginLeft: theme.spacing(7) + 1,
+        marginLeft: 0,
         [theme.breakpoints.up('sm')]: {
-          width: theme.spacing(9) + 1,
+            marginLeft: theme.spacing(9),
         },
         transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,

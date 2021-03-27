@@ -1,12 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import {Grid, Divider, Typography, IconButton} from '@material-ui/core';
+import {Grid, Divider, Typography} from '@material-ui/core';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { red, green, blue } from '@material-ui/core/colors';
 import WidgetBase from './WidgetBase'
-
-import { PubSub } from './../../../../Amplify';
-
-
 
 const ThreeLedTest = (props) => {
 
@@ -38,7 +34,7 @@ const ThreeLedTest = (props) => {
                         <Grid item xs={6}>
                             <Grid container alignItems="center" direction={'column'}>
                                 <Grid item component={Typography} align={'center'}  xs={12}>
-                                    Temeperature
+                                    Temperature
                                 </Grid>
                                 <Grid item component={Typography} align={'center'}  xs={12}>
                                     {props.data.telemetry ? `${props.data.telemetry?.temperature} ºC` : `-- ºC`}

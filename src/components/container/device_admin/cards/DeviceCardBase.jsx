@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react'
 import clsx from 'clsx';
 import {makeStyles, Card, CardHeader, CardContent, Divider , Avatar, IconButton } from '@material-ui/core';
-import {DeviceContext} from './../../../context/DeviceProvider'
+import {DeviceContext} from '../../../../context/DeviceProvider'
 import { red, green } from '@material-ui/core/colors';
 import WifiIcon from '@material-ui/icons/Wifi';
 import WifiOffIcon from '@material-ui/icons/WifiOff';

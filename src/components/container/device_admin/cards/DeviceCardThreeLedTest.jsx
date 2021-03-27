@@ -2,10 +2,10 @@ import React, {useContext, useState, useEffect} from 'react'
 import DeviceCardBase from './DeviceCardBase'
 import {makeStyles, Grid, Divider, Typography, Button, FormControl, Select, InputLabel, Backdrop, CircularProgress    } from '@material-ui/core';
 
-import {DeviceContext} from './../../../context/DeviceProvider'
-import {EventContext} from './../../../context/EventProvider';
+import {DeviceContext} from './../../../../context/DeviceProvider'
+import {EventContext} from './../../../../context/EventProvider';
 
-import { PubSub } from './../../../Amplify';
+import { PubSub } from './../../../../Amplify';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -103,7 +103,7 @@ const DeviceCardThreeLedTest = (props) => {
                         <Grid item xs={6}>
                             <Grid container alignItems="center" direction={'column'}>
                                 <Grid item component={Typography} align={'center'}  xs={12}>
-                                    Temeperature
+                                    Temperature
                                 </Grid>
                                 <Grid item component={Typography} align={'center'}  xs={12}>
                                     {deviceList[props.index].telemetry ? `${deviceList[props.index].telemetry?.temperature} ºC` : `-- ºC`}

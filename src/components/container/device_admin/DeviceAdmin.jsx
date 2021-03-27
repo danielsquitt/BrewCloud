@@ -21,7 +21,7 @@ const DeviceAdmin = (props) => {
             setSelectedDeviceIndex(idx)
         } else {
             console.log('Default');
-            setSelectedDeviceIndex(1)
+            setSelectedDeviceIndex(0)
         }
         
       }, [])

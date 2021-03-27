@@ -12,7 +12,7 @@ const DeviceProvider = (props) => {
 
     const {info} = useContext(CompanyContext)
     const [deviceList, setDeviceList] = useState([])
-    const [deviceByType, setdeviceByType] = useState({})
+    const [deviceByType, setdeviceByType] = useState([])
     const [PUB, setPUB] = useState(null)
 
     useEffect(() => {
@@ -62,15 +62,32 @@ const DeviceProvider = (props) => {
                         ) 
                     })
                     
-                    const _devicesByType = {}  
+                    const __devicesByType = {} 
                     result.forEach((element, index) => {
-                        if(_devicesByType[element.deviceType.name]){
-                            _devicesByType[element.deviceType.name].push(index)
+                        if(__devicesByType[element.deviceType.name]){
+                            __devicesByType[element.deviceType.name].push(index)
                         }else{
-                            _devicesByType[element.deviceType.name] = [index]
+                            __devicesByType[element.deviceType.name] = [index]
+                        }
+                    })
+                    
+
+                    const _devicesByType = []
+                    result.forEach((device, index) => {
+                        const _existis = _devicesByType.findIndex((element) => {
+                            return(device.deviceType?.id === element.id)
+                        })
+                        if (_existis === -1) {
+                            _devicesByType.push({
+                                ...device.deviceType,
+                                elements: [index]
+                            })
+                        }else{
+                            _devicesByType[_existis].elements.push(index)
                         }
                     })
                     setdeviceByType(_devicesByType)
+
                 })
                 .catch((err) => {
                     console.error(err);

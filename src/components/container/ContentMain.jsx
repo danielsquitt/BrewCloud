@@ -32,7 +32,10 @@ const useStyles = makeStyles((theme) => ({
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      marginLeft: theme.spacing(9),
+      marginLeft: 0,
+      [theme.breakpoints.up('sm')]:{
+        marginLeft: theme.spacing(9),
+      }
     },
     contentShift: {
       transition: theme.transitions.create('margin', {

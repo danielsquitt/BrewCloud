@@ -1,10 +1,9 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {makeStyles, Paper, Grid, Card, CardHeader, Divider, CardContent, List, ListItem, ListItemText, ListItemIcon, ListSubheader, Collapse } from '@material-ui/core';
+import React, {useState, useContext} from 'react'
+import {makeStyles, List, ListItem, ListItemText, ListItemIcon, ListSubheader, Collapse } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import {DeviceContext} from './../../../context/DeviceProvider'
-import { TrendingUpOutlined, TrendingUpRounded } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,7 +24,7 @@ const DeviceListHeaderItem = ({item, index, setIndex}) => {
 
     const [open, setOpen] = useState(true)
 
-    const handleClick = (index)=>{
+    const handleClick = ()=>{
         setOpen((_open) => {
             return !_open
         })
@@ -38,13 +37,13 @@ const DeviceListHeaderItem = ({item, index, setIndex}) => {
     return (
         <React.Fragment>
             <ListItem button onClick={handleClick}>
-                <ListItemText primary={item} />
+                <ListItemText primary={item.name} />
                 {open ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={open} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                     {
-                        deviceByType[item].map((item)=>{
+                        item.elements.map((item)=>{
                             return( 
                                 <ListItem 
                                     button

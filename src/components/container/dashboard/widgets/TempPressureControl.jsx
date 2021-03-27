@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react'
-import {Grid, Divider, Typography, TextField, Button } from '@material-ui/core';
+import React from 'react'
+import {Grid, Divider, Typography} from '@material-ui/core';
 
 import WidgetBase from './WidgetBase'
 

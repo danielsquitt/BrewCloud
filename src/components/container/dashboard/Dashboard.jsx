@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react'
-import {Grid} from '@material-ui/core';
+import {Divider, Grid, Box, Paper, Typography} from '@material-ui/core';
 
 import { DeviceContext } from './../../../context/DeviceProvider';
 
@@ -9,7 +9,7 @@ import TempPressureControl from './widgets/TempPressureControl';
 
 const Dashboard = ({setSelectedIndex}) => {
 
-  const {deviceList} = useContext(DeviceContext)
+  const {deviceList, deviceByType} = useContext(DeviceContext)
 
   const [DeviceWidgets, setDeviceWidgets] = useState([])
 
@@ -34,9 +34,39 @@ const Dashboard = ({setSelectedIndex}) => {
     }
   }, [deviceList]) 
 
+  const getComponent = (index) => {
+    switch (deviceList?.[index]?.deviceType.shadownName) {
+      case '3led':
+        return <ThreeLedTest key={index} idx={index} data={deviceList[index]}/>
+      case 'TempControl':
+        return <TempControl  key={index} idx={index} data={deviceList[index]}/>
+      case 'TePreControl':
+        return <TempPressureControl  key={index} idx={index} data={deviceList[index]}/>
+      default:
+        return null
+    }
+  }
+
     return (
           <Grid container spacing={1}> 
-            {DeviceWidgets}
+            {
+              deviceByType.map((element, index) => {
+                return(
+                  <Grid key= {index} item xs={12}>
+                    <Typography variant="h4" >{element.name}</Typography>
+                    <Divider/>
+                    <Grid container component={Box} pt={1} pb={2} px={1} spacing={1}>
+                        {element.elements.map((comp) => {
+                          //console.log(comp);
+                          return(
+                                getComponent(comp)
+                          )
+                        })}
+                    </Grid>
+                  </Grid>
+                )
+              })
+            }
           </Grid>
     )
 }
