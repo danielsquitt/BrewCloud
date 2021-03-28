@@ -5,7 +5,7 @@ import {makeStyles, Grid, Divider, Typography, Button, FormControl, Select, Inpu
 import {DeviceContext} from './../../../../context/DeviceProvider'
 import {EventContext} from './../../../../context/EventProvider';
 
-import { PubSub } from './../../../../Amplify';
+import {PubSub} from './../../../../Amplify';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -144,7 +144,7 @@ const DeviceCardThreeLedTest = (props) => {
                             <Button 
                                 variant="contained" 
                                 color="primary" 
-                                onClick={handleClic} 
+                                onClick={(event)=>{handleClic(event)}}
                                 disabled = {!change}
                             >Set</Button>
                         </Grid>

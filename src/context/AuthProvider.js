@@ -31,7 +31,7 @@ const AuthProvider = (props) => {
             const interval = user.signInUserSession.accessToken.payload.exp - user.signInUserSession.accessToken.payload.iat
             const id = setInterval(() => {
                 refresh()
-                .then(data => console.log(data))
+                .then()
             }, interval*1000)
 
             return () => clearInterval(id)

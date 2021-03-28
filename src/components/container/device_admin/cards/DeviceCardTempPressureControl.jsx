@@ -144,7 +144,7 @@ const DeviceCardTempPressureControl = (props) => {
                             <Button 
                                 variant="contained" 
                                 color="primary" 
-                                onClick={handleClic} 
+                                onClick={(event)=>{handleClic(event)}}
                                 disabled = {!change}
                             >Set</Button>
                         </Grid>

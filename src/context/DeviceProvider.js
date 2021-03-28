@@ -13,7 +13,6 @@ const DeviceProvider = (props) => {
     const {info} = useContext(CompanyContext)
     const [deviceList, setDeviceList] = useState([])
     const [deviceByType, setdeviceByType] = useState([])
-    const [PUB, setPUB] = useState(null)
 
     useEffect(() => {
         var pub
@@ -50,7 +49,6 @@ const DeviceProvider = (props) => {
                         error: error => console.error('Error:',error),
                         close: () => console.log('Done'),
                     });
-                    setPUB(pub)
                     
                     const __devicesByType = {} 
                     result.forEach((element, index) => {
@@ -99,9 +97,8 @@ const DeviceProvider = (props) => {
             timer.forEach((item) => {
                 clearTimeout(item)
             })
-            if(PUB){
-                PUB.unsubscribe()
-                setPUB(null)
+            if(pub){
+                pub.unsubscribe()
             }
         })
     }, [info.id])
@@ -189,6 +186,8 @@ const DeviceProvider = (props) => {
                     }))
                 })
                 break;
+            default:
+                break
         }
         
     }

@@ -1,32 +1,17 @@
-import React, {useEffect, useState, useContext}  from 'react'
-import {makeStyles, Paper, Grid, Card, CardHeader, Divider, CardContent, List, ListItem, ListItemText, ListItemIcon, ListSubheader } from '@material-ui/core';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+import React, {useEffect, useContext}  from 'react'
+import {Paper, Card, CardHeader, Divider, CardContent, List} from '@material-ui/core';
+
 
 import {DeviceContext} from './../../../context/DeviceProvider'
 import DeviceListHeaderItem from './DeviceListHeaderItem';
 
 const DeviceList = ({index, setIndex}) => {
 
-    const {deviceList, deviceByType} = useContext(DeviceContext)
-
-    const [open, setOpen] = useState([])
+    const {deviceByType} = useContext(DeviceContext)
 
     useEffect(() => {
         setIndex(0)
     }, [])
-
-    useEffect(() => {
-        const _open = []
-        Object.keys(deviceByType).map((item, index) => {
-            _open.push(true)
-        })
-        setOpen(_open)
-    }, [deviceByType])
-
-
-    
-
 
     return (
         <Card elevation={3}>
