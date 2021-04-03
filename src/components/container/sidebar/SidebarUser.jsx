@@ -29,7 +29,7 @@ const SidebarUser = ({selectedIndex}) => {
 
     return (
       <List component="nav">
-        <ListItem className={clsx(classes.root)} component={NavLink} to='/profile' selected={selectedIndex === 0}>
+        <ListItem className={clsx(classes.root)} /*component={NavLink} to='/profile'*/ selected={selectedIndex === 0}>
           <ListItemAvatar className={classes.icon} >
             <AccountCircleIcon fontSize="large"/>
           </ListItemAvatar >
