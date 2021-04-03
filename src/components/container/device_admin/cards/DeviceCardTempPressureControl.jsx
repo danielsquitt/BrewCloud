@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react'
 import DeviceCardBase from './DeviceCardBase'
-import {makeStyles, Grid, Divider, Typography, Button, FormControl, Select, InputLabel, Backdrop, CircularProgress    } from '@material-ui/core';
+import {makeStyles, Grid, Divider, Typography, Button, FormControl, TextField, InputLabel, Backdrop, CircularProgress    } from '@material-ui/core';
 
 import {DeviceContext} from '../../../../context/DeviceProvider'
 import {EventContext} from '../../../../context/EventProvider';
@@ -31,75 +31,41 @@ const DeviceCardTempPressureControl = (props) => {
     const {deviceList} = useContext(DeviceContext)
     const {setBackdrop, resetBackdrop} = useContext(EventContext)
 
-    const [led1, setled1] = useState(deviceList[props.index].state?.reported?.['led1'])
-    const [led2, setled2] = useState(deviceList[props.index].state?.reported?.['led2'])
-    const [led3, setled3] = useState(deviceList[props.index].state?.reported?.['led3'])
-
+    const [tempSetPoint, setTempSetPoint] = useState(parseFloat(deviceList[props.index].state?.reported?.['sp temperature']))
+    const [presSetPoint, setPresSetPoint] = useState(parseFloat(deviceList[props.index].state?.reported?.['sp pressure']))
     const [change, setchange] = useState(false)
 
     useEffect(() => {
-        setchange(led1 !== deviceList[props.index].state?.reported?.['led1'] || led2 !== deviceList[props.index].state?.reported?.['led2'] || led3 !== deviceList[props.index].state?.reported?.['led3'])
+        setchange(tempSetPoint != deviceList[props.index].state?.reported?.['sp temperature'] || presSetPoint != deviceList[props.index].state?.reported?.['sp pressure'])
         if(!change) {
             resetBackdrop(false)
         }
-    }, [led1, led2, led3, change])
+    }, [tempSetPoint, presSetPoint, change])
 
     useEffect(() => {
-        setled1(deviceList[props.index].state?.reported?.['led1'])
-        setled2(deviceList[props.index].state?.reported?.['led2'])
-        setled3(deviceList[props.index].state?.reported?.['led3'])
-    }, [deviceList])
-
-    const handleChange = (onChange, value) => {
-        console.log(value);
-        if(value == 1){
-            onChange('on')
-        } else {
-            onChange('off')
-        }
-      };
+        setTempSetPoint((parseFloat(deviceList[props.index].state?.reported?.['sp temperature'])))        
+        setPresSetPoint((parseFloat(deviceList[props.index].state?.reported?.['sp pressure'])))
+    }, [deviceList, props.index])
 
     const handleClic = (event)=>{
         event.preventDefault()
         const func = async() => {
             setBackdrop(5000, 'Timeout error updating state')
             const desired = {}
-            desired['led1'] = led1
-            desired['led2'] = led2
-            desired['led3'] = led3
+            desired['sp temperature'] = tempSetPoint.toString()
+            desired['sp pressure'] = presSetPoint.toString()
             const msg = {desired}
+            console.log({state:{...msg}});
             await PubSub.publish(`$aws/things/${deviceList[props.index].name}/shadow/name/${deviceList[props.index].deviceType.shadownName}/update`, {state:{...msg}});
         }
         func()
-    }
-
-    const LedValue = (label, state, onChange) => {
-
-        return(
-            <Grid container spacing={2} justify="center" alignItems="center">
-                <Grid item xs={12}>
-                    <FormControl variant="outlined" className={classes.formControl} size="small">
-                        <InputLabel htmlFor="age-native-helper">{label}</InputLabel>
-                        <Select
-                            native
-                            value={state === 'on' ? 1 : 0 }
-                            label={label}
-                            onChange={((event) => {handleChange(onChange, event.target.value )})}
-                        >
-                        <option value={0}>Off</option>
-                        <option value={1}>On</option>
-                        </Select>
-                    </FormControl>
-                </Grid>
-            </Grid>
-        )
     }
 
     return (
         <DeviceCardBase index={props.index}>
             <Grid container direction={'column'} spacing={3}>
                 <Grid item xs={12}>
-                    <Grid container>
+                    <Grid container justify="center">
                         <Grid item xs={6}>
                             <Grid container alignItems="center" direction={'column'}>
                                 <Grid item component={Typography} align={'center'}  xs={12}>
@@ -113,10 +79,10 @@ const DeviceCardTempPressureControl = (props) => {
                         <Grid item xs={6}>
                             <Grid container alignItems="center" direction={'column'}>
                                 <Grid item component={Typography} align={'center'}  xs={12}>
-                                    Humidity
+                                    Pressure
                                 </Grid>
                                 <Grid item component={Typography} align={'center'}  xs={12}>
-                                    {deviceList[props.index].telemetry ? `${deviceList[props.index].telemetry?.humidity} %` : `-- %`}
+                                    {deviceList[props.index].telemetry ? `${deviceList[props.index].telemetry?.pressure} bar` : `-- bar`}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -129,14 +95,45 @@ const DeviceCardTempPressureControl = (props) => {
                     <Grid container spacing={2} > 
                         <Grid item xs={12}>
                             <Grid container spacing={2}>
-                                <Grid item xs={4} md={4}>
-                                    {LedValue('led1', led1, setled1 )}
-                                </Grid>
-                                <Grid item xs={4} md={4}>
-                                    {LedValue('led2', led2, setled2 )}
-                                </Grid>
-                                <Grid item xs={4} md={4}>
-                                    {LedValue('led3', led3, setled3 )}
+                                <Grid container spacing={2} justify="center" alignItems="center">
+                                    <Grid item xs={12} sm={6}>
+                                        <FormControl variant="outlined" className={classes.formControl} >
+                                            <TextField
+                                                variant='outlined'
+                                                label="Temperature setpoint"
+                                                type="number"
+                                                value={tempSetPoint}
+                                                inputProps={{ step: 0.5 }}
+                                                size='small'
+                                                InputLabelProps={{
+                                                  shrink: true,
+                                                }}
+                                                onChange={(event)=>{
+                                                    console.log(event);
+                                                    setTempSetPoint(parseFloat(event.target.value))
+                                                }}
+                                            />
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <FormControl variant="outlined" className={classes.formControl} >
+                                            <TextField
+                                                variant='outlined'
+                                                label="Pressure setpoint"
+                                                type="number"
+                                                value={presSetPoint}
+                                                inputProps={{ step: 0.1 }}
+                                                size='small'
+                                                InputLabelProps={{
+                                                  shrink: true,
+                                                }}
+                                                onChange={(event)=>{
+                                                    console.log(event);
+                                                    setPresSetPoint(parseFloat(event.target.value))
+                                                }}
+                                            />
+                                        </FormControl>
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -144,7 +141,7 @@ const DeviceCardTempPressureControl = (props) => {
                             <Button 
                                 variant="contained" 
                                 color="primary" 
-                                onClick={(event)=>{handleClic(event)}}
+                                onClick={(event)=>{handleClic(event)}} 
                                 disabled = {!change}
                             >Set</Button>
                         </Grid>

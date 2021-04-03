@@ -10,12 +10,17 @@ const DeviceAdmin = (props) => {
     const [selectedDeviceIndex, setSelectedDeviceIndex] = useState(0)
 
     useEffect(() => {
-        console.log(props);
-        const idx = props.match.params?.idx
         props.setSelectedIndex(2)
-        setSelectedDeviceIndex(() => {return idx ? idx : 0 })
-        
       }, [])
+
+      useEffect(() => {
+        const idx = props.match.params?.idx
+        setSelectedDeviceIndex(() => {return idx ? idx : 0 })
+      }, [props.match.params])
+
+      const setIndex = (idx) => {
+        props.history.push(`/device-admin/${idx}`)
+      }
       
     return (
         <Grid container spacing={1}>
@@ -23,7 +28,7 @@ const DeviceAdmin = (props) => {
                 <DeviceCardSelector index={selectedDeviceIndex}/>
             </Grid>
             <Grid item xs={12} md={4} xl={3}>
-                <DeviceList index={selectedDeviceIndex} setIndex={setSelectedDeviceIndex} />
+                <DeviceList index={selectedDeviceIndex} setIndex={setIndex} />
             </Grid>
         </Grid>
     )

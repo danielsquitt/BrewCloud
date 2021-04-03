@@ -9,10 +9,6 @@ const DeviceList = ({index, setIndex}) => {
 
     const {deviceByType} = useContext(DeviceContext)
 
-    useEffect(() => {
-        setIndex(0)
-    }, [])
-
     return (
         <Card elevation={3}>
             <CardHeader

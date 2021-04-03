@@ -2,6 +2,7 @@ import React, {useContext} from 'react'
 
 import DeviceCardThreeLedTest from './cards/DeviceCardThreeLedTest';
 import DeviceCardTempControl from './cards/DeviceCardTempControl';
+import DeviceCardTempPressureControl from './cards/DeviceCardTempPressureControl';
 
 import {DeviceContext} from './../../../context/DeviceProvider'
 
@@ -15,7 +16,7 @@ const DeviceCardSelector = (props) => {
             case 'TempControl':
                 return <DeviceCardTempControl index = {props.index} />
             case 'TePreControl':
-                return null
+                return <DeviceCardTempPressureControl index = {props.index} />
             default:
                 return null
 

@@ -52,7 +52,7 @@ const DeviceListHeaderItem = ({item, index, setIndex}) => {
                                     selected={getindex() === item}
                                     onClick={() => setIndex(item)}
                                 >
-                                    <ListItemText primary={deviceList[item].alias} />
+                                    <ListItemText primary={deviceList[item]?.alias} />
                                 </ListItem>
                             )
                         })
