@@ -147,8 +147,8 @@ const AuthProvider = (props) => {
     }
 
     // UPDATE ATRIBUTES
+    //----------------------------------------------------------------------------------
     const updateAtributes = async(atributes) => {
-        console.log('Update atributes', atributes);
         return await new Promise((resolve, reject) => {
             Auth.updateUserAttributes(user, atributes)
             .then(()=>{
@@ -169,11 +169,28 @@ const AuthProvider = (props) => {
             })
         })
     }
+
+    // CHANGE PASSWORD
+    //----------------------------------------------------------------------------------
+    const changePassword = async(password, new_password) => {
+        console.log('Change password', password, new_password);
+        return await new Promise((resolve, reject) => {
+            Auth.changePassword(user,password, new_password)
+            .then((result)=>{
+                console.log(result);
+                resolve(result)
+            })
+            .catch((err) => {
+                console.log(err);
+                reject(err)
+            })
+        })
+    }
     
     // RETRURN
     //----------------------------------------------------------------------------------
     return (
-        <AuthContext.Provider value={{state, userInfo, login, updateUserPassword, logout, updateAtributes}}>
+        <AuthContext.Provider value={{state, userInfo, login, updateUserPassword, logout, updateAtributes, changePassword}}>
             {props.children}
         </AuthContext.Provider>
     )
