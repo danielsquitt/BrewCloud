@@ -64,7 +64,7 @@ const DeviceCardBase = (props) => {
     };
 
     const handleSave = () => {
-        if(newName !== '') updateDeviceName(props.index, newName)
+        if(newName !== '') updateDeviceName(props.index, newName.trim())
         setNewName('')
         setedit(!edit);
     };

@@ -1,5 +1,8 @@
-import React, {useEffect} from 'react'
-import {makeStyles, Grid, Card, CardHeader, CardContent, Divider, Typography } from '@material-ui/core';
+import React, {useEffect, useContext, useState} from 'react'
+import {makeStyles, Grid, Card, CardHeader, CardContent, Divider, Typography, IconButton, TextField, Dialog, DialogActions, DialogContent, Button } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
+
+import {AuthContext} from './../../../context/AuthProvider'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,17 +42,63 @@ const useStyles = makeStyles((theme) => ({
 const Profile = ({setSelectedIndex}) => {
 
     const classes = useStyles();
+    const {userInfo, updateAtributes} = useContext(AuthContext)
+
+    const [edit, setedit] = useState(false)
+    const [newName, setNewName] = useState('')
+    const [newFamilyName, setNewFamilyName] = useState('')
+    const [newEmail, setNewEmail] = useState('')
 
     useEffect(() => {
       setSelectedIndex(0)
     }, [])
+
+    const handleEdit = () => {
+      setedit(!edit);
+    };
+
+    const handleSave = () => {
+      const atributtes = {}
+      if (newName !== '') atributtes['name']=newName.trim()
+      if (newFamilyName !== '') atributtes['family_name']=newFamilyName.trim()
+      if (newEmail !== '') atributtes['email']=newEmail.trim()
+      if (Object.keys(atributtes).length > 0){
+        updateAtributes(atributtes)
+      }
+      setNewName('')
+      setNewFamilyName('')
+      setNewEmail('')
+      setedit(!edit);
+    };
+
+    const handleCancel = () => {
+      setNewName('')
+      setNewFamilyName('')
+      setNewEmail('')
+      setedit(!edit);
+    };
+
+    const action = ()=>{
+      return(
+          <IconButton
+              onClick={handleEdit}
+              aria-label="edit"
+          >
+              <EditIcon color="primary"/>
+          </IconButton>
+      )
+  }
     
     return (
         <div className={classes.root}>
             <Grid container spacing={10} justify="center">
                 <Grid item xs={12} sm={10} md={8} lg={6}>
                     <Card className={classes.cardRoot} elevation={3}>
-                        <CardHeader title={'Profile'} titleTypographyProps={{className: classes.cardtitle}} />
+                        <CardHeader 
+                          title={'Profile'} 
+                          titleTypographyProps={{className: classes.cardtitle}} 
+                          action={action()}
+                        />
                         <Divider/>
                         <Grid container component={CardContent} spacing={2}>
                           <Grid item xs={12}> 
@@ -61,7 +110,7 @@ const Profile = ({setSelectedIndex}) => {
                                       USERNAME:
                                     </Grid>
                                     <Grid item component={Typography} className={classes.typography} xs={7}>
-                                      danielsquitt
+                                      {userInfo.username}
                                     </Grid>
                                   </Grid>
                                 </div>
@@ -80,7 +129,7 @@ const Profile = ({setSelectedIndex}) => {
                                       NAME:
                                     </Grid>
                                     <Grid item component={Typography} className={classes.typography} xs={7}>
-                                      Daniel Squittieri
+                                      {`${userInfo.name} ${userInfo.family_name}`}
                                     </Grid>
                                   </Grid>
                                 </div>
@@ -99,7 +148,7 @@ const Profile = ({setSelectedIndex}) => {
                                       EMAIL:
                                     </Grid>
                                     <Grid item component={Typography} className={classes.typography} xs={7}>
-                                      danielsquitt@gmail.com
+                                      {userInfo.email}
                                     </Grid>
                                   </Grid>
                                 </div>
@@ -110,6 +159,46 @@ const Profile = ({setSelectedIndex}) => {
                     </Card>
                 </Grid>
             </Grid>
+            <Dialog open={edit} onClose={handleCancel} aria-labelledby="form-dialog-title">
+                <DialogContent>
+                  <TextField
+                      autoFocus
+                      margin="dense"
+                      id="name"
+                      label="Name"
+                      type="text"
+                      fullWidth
+                      defaultValue={userInfo.name}
+                      onChange={e => setNewName(e.target.value)}
+                    />
+                  <TextField
+                    margin="dense"
+                    id="family_name"
+                    label="Family Name"
+                    type="email"
+                    fullWidth
+                    defaultValue={userInfo.family_name}
+                    onChange={e => setNewFamilyName(e.target.value)}
+                  />
+                    <TextField
+                      margin="dense"
+                      id="email"
+                      label="Email"
+                      type="text"
+                      fullWidth
+                      defaultValue={userInfo.email}
+                      onChange={e => setNewEmail(e.target.value)}
+                    />
+                  </DialogContent>
+                <DialogActions>
+                <Button onClick={handleCancel} color="primary">
+                    Cancel
+                </Button>
+                <Button onClick={handleSave} color="primary">
+                    Save
+                </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     )
 }

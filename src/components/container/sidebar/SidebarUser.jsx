@@ -25,15 +25,15 @@ const SidebarUser = ({selectedIndex}) => {
 
     const classes = useStyles()
 
-    const { UserInfo, logout} = useContext(AuthContext)
+    const { userInfo, logout} = useContext(AuthContext)
 
     return (
       <List component="nav">
-        <ListItem className={clsx(classes.root)} /*component={NavLink} to='/profile'*/ selected={selectedIndex === 0}>
+        <ListItem className={clsx(classes.root)} component={NavLink} to='/profile' selected={selectedIndex === 0}>
           <ListItemAvatar className={classes.icon} >
             <AccountCircleIcon fontSize="large"/>
           </ListItemAvatar >
-          <ListItemText primary={<Typography variant="overline" className={classes.typography}>{`${UserInfo.name} ${UserInfo.family_name}`}</Typography>}/>
+          <ListItemText primary={<Typography variant="overline" className={classes.typography}>{`${userInfo.name} ${userInfo.family_name}`}</Typography>}/>
           <ListItemIcon>
             <IconButton edge="end" aria-label="delete" onClick={()=>{logout()}}>
               <ExitToAppIcon color="secondary" fontSize="large"/>

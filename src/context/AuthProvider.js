@@ -1,5 +1,6 @@
 
 // LIBRARIS
+import { KeyboardReturnOutlined } from '@material-ui/icons';
 import React, {useEffect, useState } from 'react'
 //import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js"
 import {Auth} from '../Amplify';
@@ -22,7 +23,7 @@ const AuthProvider = (props) => {
     const [user, setUser] = useState(false)
     
     // User data
-    const [UserInfo, setUserInfo] = useState(false)
+    const [userInfo, setUserInfo] = useState(false)
 
     // REFRESH TOKEN
     //----------------------------------------------------------------------------------
@@ -90,6 +91,7 @@ const AuthProvider = (props) => {
                         name: _user.attributes.name, 
                         family_name: _user.attributes.family_name, 
                         email: _user.attributes.email, 
+                        email_verified: _user.attributes.email_verified,
                         sub: _user.attributes.sub}
                     setUserInfo(info)
                     resolve(_user)
@@ -144,20 +146,26 @@ const AuthProvider = (props) => {
         })    
     }
 
-    // GET ATRIBUTES
-    //----------------------------------------------------------------------------------
-    const getUserAtributes = async() => {
+    // UPDATE ATRIBUTES
+    const updateAtributes = async(atributes) => {
+        console.log('Update atributes', atributes);
         return await new Promise((resolve, reject) => {
-            user.getUserAttributes(function(err, attributes) {
-                if(err){
-                    reject(err)
-                }
-                const results = {}
-                for (let attribute of attributes){
-                    const {Name, Value} = attribute
-                    results[Name] = Value
-                }
-                resolve(results)
+            Auth.updateUserAttributes(user, atributes)
+            .then(()=>{
+                return Auth.userAttributes(user)
+            })
+            .then((result)=>{
+                console.log(result);
+                const _userInfo = {username: userInfo.username}
+                result.forEach((element) => {
+                    _userInfo[element.Name] = element.Value
+                })
+                setUserInfo(_userInfo);
+                resolve(result)
+            })
+            .catch((err) => {
+                console.log();
+                reject(err)
             })
         })
     }
@@ -165,7 +173,7 @@ const AuthProvider = (props) => {
     // RETRURN
     //----------------------------------------------------------------------------------
     return (
-        <AuthContext.Provider value={{state, UserInfo, login, updateUserPassword, logout, getUserAtributes}}>
+        <AuthContext.Provider value={{state, userInfo, login, updateUserPassword, logout, updateAtributes}}>
             {props.children}
         </AuthContext.Provider>
     )
