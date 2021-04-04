@@ -3,8 +3,10 @@ import React,  {useContext, useEffect, useState} from 'react'
 import { CompanyContext } from './../context/CompanyProvider';
 
 import {listDevices} from './../graphql/queries_user'
+import {updateDevice} from './../graphql/mutations'
 
 import {API, PubSub} from '../Amplify';
+import { version } from 'react-dom';
 
 export const DeviceContext = React.createContext()
 
@@ -217,7 +219,7 @@ const DeviceProvider = (props) => {
                 query: listDevices, 
                 variables: {filter}
             })
-            .then(async(result)=>{
+            .then((result)=>{
                 var arr =result.data.listDevices.items
                 resolve(arr)
             })
@@ -227,8 +229,32 @@ const DeviceProvider = (props) => {
         })
     }
 
+    const updateDeviceName = async(idx, alias) => {
+        console.log('Update device name:', idx, alias);
+        return await new Promise((resolve, reject) => {
+            const input = {
+                id: deviceList[idx].id,
+                alias
+            }
+            API.graphql({ 
+                query: updateDevice, 
+                variables: {input}
+            })
+            .then((result)=>{
+                setDeviceList(list =>{ return list.map((element, index) => {
+                    if (index === idx) return({...element, alias})
+                    return element
+                })})
+                resolve(result)
+            })
+            .catch((err) => {
+                reject(err)
+            })
+        })
+    }
+
     return (
-        <DeviceContext.Provider value={{deviceList, deviceByType}}>
+        <DeviceContext.Provider value={{deviceList, deviceByType, updateDeviceName}}>
             {props.children}
         </DeviceContext.Provider>
     )

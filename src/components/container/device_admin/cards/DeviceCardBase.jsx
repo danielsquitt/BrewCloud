@@ -1,13 +1,11 @@
 import React, {useEffect, useState, useContext} from 'react'
 import clsx from 'clsx';
-import {makeStyles, Card, CardHeader, CardContent, Divider , Avatar, IconButton } from '@material-ui/core';
+import {makeStyles, Card, CardHeader, CardContent, Divider , Avatar, IconButton, TextField, Dialog, DialogActions, DialogContent, Button } from '@material-ui/core';
 import {DeviceContext} from '../../../../context/DeviceProvider'
 import { red, green } from '@material-ui/core/colors';
 import WifiIcon from '@material-ui/icons/Wifi';
 import WifiOffIcon from '@material-ui/icons/WifiOff';
 import EditIcon from '@material-ui/icons/Edit';
-import DoneIcon from '@material-ui/icons/Done';
-import ClearIcon from '@material-ui/icons/Clear';
 
 const useStyles = makeStyles((theme) => ({
     avatarConnected: {
@@ -33,11 +31,12 @@ const DeviceCardBase = (props) => {
 
     const classes = useStyles();
 
-    const {deviceList} = useContext(DeviceContext)
+    const {deviceList, updateDeviceName} = useContext(DeviceContext)
 
     const [state, setstate] = useState(false)
 
     const [edit, setedit] = useState(false)
+    const [newName, setNewName] = useState('')
 
     useEffect(() => {
         setstate(deviceList[props.index].connected.state)
@@ -65,44 +64,28 @@ const DeviceCardBase = (props) => {
     };
 
     const handleSave = () => {
+        if(newName !== '') updateDeviceName(props.index, newName)
+        setNewName('')
         setedit(!edit);
     };
 
     const handleCancel = () => {
+        setNewName('')
         setedit(!edit);
     };
 
     const action = ()=>{
         return(
-            <div>
-                { edit ? ( 
-                    <div>
-                        <IconButton
-                            onClick={handleCancel}
-                            aria-label="cancel"
-                        >
-                            <ClearIcon color="secondary" />
-                        </IconButton>
-                        <IconButton
-                            onClick={handleSave}
-                            aria-label="save"
-                        >
-                            <DoneIcon style={{ color: green[500] }}/>
-                        </IconButton>
-                    </div>
-                ) : ( 
-                    <IconButton
-                        onClick={handleEdit}
-                        aria-label="edit"
-                    >
-                        <EditIcon color="primary"/>
-                    </IconButton>
-                )
-                }
-            </div>
-            
+            <IconButton
+                onClick={handleEdit}
+                aria-label="edit"
+            >
+                <EditIcon color="primary"/>
+            </IconButton>
         )
     }
+
+
 
 
     return (
@@ -125,6 +108,28 @@ const DeviceCardBase = (props) => {
                     })}
                 </CardContent>
             </Card>
+            <Dialog open={edit} onClose={handleCancel} aria-labelledby="form-dialog-title">
+                <DialogContent>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="Name"
+                    type="text"
+                    fullWidth
+                    defaultValue={deviceList[props.index].alias}
+                    onChange={e => setNewName(e.target.value)}
+                />
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleCancel} color="primary">
+                    Cancel
+                </Button>
+                <Button onClick={handleSave} color="primary">
+                    Save
+                </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     )
 }
