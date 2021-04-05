@@ -33,7 +33,12 @@ const SidebarUser = ({selectedIndex}) => {
           <ListItemAvatar className={classes.icon} >
             <AccountCircleIcon fontSize="large"/>
           </ListItemAvatar >
-          <ListItemText primary={<Typography variant="overline" className={classes.typography}>{`${userInfo.name} ${userInfo.family_name}`}</Typography>}/>
+          <ListItemText 
+            variant="overline" 
+            className={classes.typography}
+            primary={`${userInfo.name} ${userInfo.family_name}`.toUpperCase()}
+            primaryTypographyProps={{ style: { whiteSpace: "normal" }}}
+          />
           <ListItemIcon>
             <IconButton edge="end" aria-label="delete" onClick={()=>{logout()}}>
               <ExitToAppIcon color="secondary" fontSize="large"/>
