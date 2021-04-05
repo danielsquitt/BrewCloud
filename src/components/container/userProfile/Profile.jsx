@@ -163,6 +163,25 @@ const Profile = ({setSelectedIndex}) => {
                                   </Grid>
                                 </Grid>
                               </Grid>
+                              <Grid item xs={12} >
+                                <div style={{ padding: 10 }}>
+                                  <Grid container >
+                                    <Grid item component={Typography} className={classes.typography} xs={5}>
+                                      ACCESS GROUP:
+                                    </Grid>
+                                    <Grid item component={Typography} className={classes.typography} xs={7}>
+                                      {userInfo.group}
+                                    </Grid>
+                                  </Grid>
+                                </div>
+                              </Grid>
+                              <Grid item xs={12}>
+                                <Grid container>
+                                  <Grid item xs={12}>
+                                    <Divider/>
+                                  </Grid>
+                                </Grid>
+                              </Grid>
                               <Grid item xs={12}>
                                 <div style={{ padding: 10 }}>
                                   <Grid container>

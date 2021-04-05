@@ -1,9 +1,10 @@
-import React, {useContext, useState, useEffect} from 'react'
+import React, {useContext, useState, useEffect, Fragment} from 'react'
 import DeviceCardBase from './DeviceCardBase'
 import {makeStyles, Grid, Divider, Typography, Button, FormControl, TextField } from '@material-ui/core';
 
 import {DeviceContext} from '../../../../context/DeviceProvider'
-import {EventContext} from '../../../../context/EventProvider';
+import {EventContext} from '../../../../context/EventProvider'
+import {AuthContext} from '../../../../context/AuthProvider'
 
 import { PubSub } from '../../../../Amplify';
 
@@ -27,9 +28,12 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 const DeviceCardTempControl = (props) => {
-    const classes = useStyles();
+
+    const classes = useStyles()
+
     const {deviceList} = useContext(DeviceContext)
     const {setBackdrop, resetBackdrop} = useContext(EventContext)
+    const {permissions} = useContext(AuthContext)
 
     const [setPoint, setSetPoint] = useState(parseFloat(deviceList[props.index].state?.reported?.['sp temperature']))
     const [change, setchange] = useState(false)
@@ -80,39 +84,45 @@ const DeviceCardTempControl = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={2} > 
-                        <Grid item xs={12}>
-                            <Grid container spacing={2}>
-                                <Grid container spacing={2} justify="center" alignItems="center">
-                                    <Grid item xs={12} sm={6}>
-                                        <FormControl variant="outlined" className={classes.formControl} >
-                                            <TextField
-                                                variant='outlined'
-                                                label="Temperature setpoint"
-                                                type="number"
-                                                value={setPoint}
-                                                inputProps={{ step: 0.5 }}
-                                                size='small'
-                                                InputLabelProps={{
-                                                  shrink: true,
-                                                }}
-                                                onChange={(event)=>{
-                                                    console.log(event);
-                                                    setSetPoint(parseFloat(event.target.value))
-                                                }}
-                                            />
-                                        </FormControl>
+                        { 
+                            permissions.editThingShadow && (
+                                <Fragment>
+                                    <Grid item xs={12}>
+                                        <Grid container spacing={2}>
+                                            <Grid container spacing={2} justify="center" alignItems="center">
+                                                <Grid item xs={12} sm={6}>
+                                                    <FormControl variant="outlined" className={classes.formControl} >
+                                                        <TextField
+                                                            variant='outlined'
+                                                            label="Temperature setpoint"
+                                                            type="number"
+                                                            value={setPoint}
+                                                            inputProps={{ step: 0.5 }}
+                                                            size='small'
+                                                            InputLabelProps={{
+                                                            shrink: true,
+                                                            }}
+                                                            onChange={(event)=>{
+                                                                console.log(event);
+                                                                setSetPoint(parseFloat(event.target.value))
+                                                            }}
+                                                        />
+                                                    </FormControl>
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
                                     </Grid>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12} >
-                            <Button 
-                                variant="contained" 
-                                color="primary" 
-                                onClick={(event)=>{handleClic(event)}} 
-                                disabled = {!change}
-                            >Set</Button>
-                        </Grid>
+                                    <Grid item xs={12} >
+                                        <Button 
+                                            variant="contained" 
+                                            color="primary" 
+                                            onClick={(event)=>{handleClic(event)}} 
+                                            disabled = {!change}
+                                        >Set</Button>
+                                    </Grid>
+                                </Fragment>
+                            )
+                        }
                     </Grid>
                 </Grid>
             </Grid>

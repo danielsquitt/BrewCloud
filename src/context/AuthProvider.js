@@ -8,20 +8,39 @@ import Pool from '../UserPool';
 
 export const AuthContext = React.createContext()
 
+const init_permissions = {
+    editThingName: false,
+    editThingShadow : false,
+}
 
+const permissions_document = {
+    Viwer: {
+        editThingName: false,
+        editThingShadow : false,
+    },
+    Prod: {
+        editThingName: false,
+        editThingShadow : true,
+    },
+    Admin: {
+        editThingName: true,
+        editThingShadow : true,
+    }
+}
 
 const AuthProvider = (props) => {
 
-    
-
     // Athentification state
-    const [state, setState] = useState({logged: false, newPasswordRequired: false, loading: false})
+    const [state, setState] = useState({logged: false, newPasswordRequired: false})
     
     // Cognito objects
     const [user, setUser] = useState(false)
     
     // User data
     const [userInfo, setUserInfo] = useState(false)
+
+    // Access level
+    const [permissions, setPermissions] = useState(init_permissions)
 
     // REFRESH TOKEN
     //----------------------------------------------------------------------------------
@@ -84,14 +103,8 @@ const AuthProvider = (props) => {
                     resolve({userAttributes, requiredAttributes})
                 } else {
                     setUser(_user)
-                    const info = { 
-                        username: _user.username, 
-                        name: _user.attributes.name, 
-                        family_name: _user.attributes.family_name, 
-                        email: _user.attributes.email, 
-                        email_verified: _user.attributes.email_verified,
-                        sub: _user.attributes.sub}
-                    setUserInfo(info)
+                    setUserInfo(getUserInfo(_user))
+                    setPermissions(getgetAccessLevelDocumment(_user.signInUserSession.idToken.payload['cognito:groups'][0]))
                     resolve(_user)
                 }
             })
@@ -110,6 +123,7 @@ const AuthProvider = (props) => {
             user.signOut()
             setState({logged: false, loading: false, message: ''})
             setUser(false)
+            setPermissions(init_permissions)
         }
     }
     
@@ -126,14 +140,8 @@ const AuthProvider = (props) => {
                 )
                 .then((_user) => {
                         setUser(_user)
-                        const info = { 
-                            username: _user.username, 
-                            name: _user.attributes.name, 
-                            family_name: _user.attributes.family_name, 
-                            email: _user.attributes.email, 
-                            sub: _user.attributes.sub}
-                        console.log(info);
-                        setUserInfo(info)
+                        setUserInfo(getUserInfo(_user))
+                        setPermissions(getgetAccessLevelDocumment(_user.signInUserSession.idToken.payload['cognito:groups'][0]))
                         setState({logged: true, newPasswordRequired: false, loading: false})
                         resolve(_user)
                 })   
@@ -184,11 +192,35 @@ const AuthProvider = (props) => {
             })
         })
     }
+
+    const getAccessLevelString = (group) => {
+        if (group.search('Prod') != -1) return 'Production'
+        if (group.search('Admin') != -1) return 'Administrator'
+        return 'Viwer'
+    }
+
+    const getgetAccessLevelDocumment = (group) => {
+        if (group.search('Prod') != -1) return permissions_document['Prod']
+        if (group.search('Admin') != -1) return permissions_document['Admin']
+        return permissions_document['Viwer']
+    }
+
+    const getUserInfo = (_user) => {
+        return ({ 
+            username: _user.username, 
+            name: _user.attributes.name, 
+            family_name: _user.attributes.family_name, 
+            email: _user.attributes.email, 
+            email_verified: _user.attributes.email_verified,
+            sub: _user.attributes.sub,
+            group: getAccessLevelString(_user.signInUserSession.idToken.payload['cognito:groups'][0])
+        })
+    }
     
     // RETRURN
     //----------------------------------------------------------------------------------
     return (
-        <AuthContext.Provider value={{state, userInfo, login, updateUserPassword, logout, updateAtributes, changePassword}}>
+        <AuthContext.Provider value={{state, userInfo, permissions, login, updateUserPassword, logout, updateAtributes, changePassword}}>
             {props.children}
         </AuthContext.Provider>
     )

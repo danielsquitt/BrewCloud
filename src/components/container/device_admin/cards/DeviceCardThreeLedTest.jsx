@@ -1,9 +1,10 @@
-import React, {useContext, useState, useEffect} from 'react'
+import React, {useContext, useState, useEffect, Fragment} from 'react'
 import DeviceCardBase from './DeviceCardBase'
 import {makeStyles, Grid, Divider, Typography, Button, FormControl, Select, InputLabel } from '@material-ui/core';
 
 import {DeviceContext} from './../../../../context/DeviceProvider'
-import {EventContext} from './../../../../context/EventProvider';
+import {EventContext} from './../../../../context/EventProvider'
+import {AuthContext} from '../../../../context/AuthProvider'
 
 import {PubSub} from './../../../../Amplify';
 
@@ -27,9 +28,12 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 const DeviceCardThreeLedTest = (props) => {
-    const classes = useStyles();
+
+    const classes = useStyles()
+
     const {deviceList} = useContext(DeviceContext)
     const {setBackdrop, resetBackdrop} = useContext(EventContext)
+    const {permissions} = useContext(AuthContext)
 
     const [led1, setled1] = useState(deviceList[props.index].state?.reported?.['led1'])
     const [led2, setled2] = useState(deviceList[props.index].state?.reported?.['led2'])
@@ -127,27 +131,33 @@ const DeviceCardThreeLedTest = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={2} > 
-                        <Grid item xs={12}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={4} md={4}>
-                                    {LedValue('led1', led1, setled1 )}
-                                </Grid>
-                                <Grid item xs={4} md={4}>
-                                    {LedValue('led2', led2, setled2 )}
-                                </Grid>
-                                <Grid item xs={4} md={4}>
-                                    {LedValue('led3', led3, setled3 )}
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12} >
-                            <Button 
-                                variant="contained" 
-                                color="primary" 
-                                onClick={(event)=>{handleClic(event)}}
-                                disabled = {!change}
-                            >Set</Button>
-                        </Grid>
+                        { 
+                            permissions.editThingShadow && (
+                                <Fragment>
+                                    <Grid item xs={12}>
+                                        <Grid container spacing={2}>
+                                            <Grid item xs={4} md={4}>
+                                                {LedValue('led1', led1, setled1 )}
+                                            </Grid>
+                                            <Grid item xs={4} md={4}>
+                                                {LedValue('led2', led2, setled2 )}
+                                            </Grid>
+                                            <Grid item xs={4} md={4}>
+                                                {LedValue('led3', led3, setled3 )}
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid item xs={12} >
+                                        <Button 
+                                            variant="contained" 
+                                            color="primary" 
+                                            onClick={(event)=>{handleClic(event)}}
+                                            disabled = {!change}
+                                        >Set</Button>
+                                    </Grid>
+                                </Fragment>
+                            )
+                        }
                     </Grid>
                 </Grid>
             </Grid>

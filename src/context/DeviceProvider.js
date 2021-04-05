@@ -36,6 +36,7 @@ const DeviceProvider = (props) => {
                             }
                         })
                     }))
+
                     // Save device topi subscriptions
                     const topics = []
                     result.forEach((element) => {
@@ -45,22 +46,14 @@ const DeviceProvider = (props) => {
                         topics.push(`$aws/things/${element.name}/shadow/name/${element.deviceType.shadownName}/update/accepted`)
                         topics.push(`telemetry/things/${element.name}/telemetry/name/${element.deviceType.telemetryName}`)
                     })
+                    // Subscribe topics
                     pub = PubSub.subscribe(topics).subscribe({
                         next: data => messageDispatcher(data.value),
                         error: error => console.error('Error:',error),
                         close: () => console.log('Done'),
                     });
-                    
-                    const __devicesByType = {} 
-                    result.forEach((element, index) => {
-                        if(__devicesByType[element.deviceType.name]){
-                            __devicesByType[element.deviceType.name].push(index)
-                        }else{
-                            __devicesByType[element.deviceType.name] = [index]
-                        }
-                    })
-                    
 
+                    // Device by Device type
                     const _devicesByType = []
                     result.forEach((device, index) => {
                         const _existis = _devicesByType.findIndex((element) => {
@@ -77,6 +70,7 @@ const DeviceProvider = (props) => {
                     })
                     setdeviceByType(_devicesByType)
 
+                    // Publish initial messages
                     result.forEach((item, index) => {
                         timer.push(
                             setTimeout(async()=>{

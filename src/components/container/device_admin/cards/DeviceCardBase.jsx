@@ -1,11 +1,13 @@
 import React, {useEffect, useState, useContext} from 'react'
 import clsx from 'clsx';
 import {makeStyles, Card, CardHeader, CardContent, Divider , Avatar, IconButton, TextField, Dialog, DialogActions, DialogContent, Button } from '@material-ui/core';
-import {DeviceContext} from '../../../../context/DeviceProvider'
 import { red, green } from '@material-ui/core/colors';
 import WifiIcon from '@material-ui/icons/Wifi';
 import WifiOffIcon from '@material-ui/icons/WifiOff';
 import EditIcon from '@material-ui/icons/Edit';
+
+import {DeviceContext} from '../../../../context/DeviceProvider'
+import {AuthContext} from '../../../../context/AuthProvider'
 
 const useStyles = makeStyles((theme) => ({
     avatarConnected: {
@@ -26,12 +28,17 @@ const useStyles = makeStyles((theme) => ({
       },
   }));
 
+  const permissions = {
+      editThingName: 2,
+  }
+
 
 const DeviceCardBase = (props) => {
 
     const classes = useStyles();
 
     const {deviceList, updateDeviceName} = useContext(DeviceContext)
+    const {permissions} = useContext(AuthContext)
 
     const [state, setstate] = useState(false)
 
@@ -79,8 +86,9 @@ const DeviceCardBase = (props) => {
             <IconButton
                 onClick={handleEdit}
                 aria-label="edit"
+                disabled={permissions.editThingName ? false : true}
             >
-                <EditIcon color="primary"/>
+                <EditIcon color={permissions.editThingName ? 'primary' : 'default'}/>
             </IconButton>
         )
     }
