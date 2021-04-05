@@ -56,7 +56,7 @@ const DeviceCardThreeLedTest = (props) => {
 
     const handleChange = (onChange, value) => {
         console.log(value);
-        if(value === 1){
+        if(value == 1){
             onChange('on')
         } else {
             onChange('off')
