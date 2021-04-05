@@ -1,5 +1,5 @@
-import React, {useContext, useState, useEffect} from 'react'
-import {Divider, Grid, Box, Paper, Typography} from '@material-ui/core';
+import React, {useContext, useEffect} from 'react'
+import {Divider, Grid, Box, Typography} from '@material-ui/core';
 
 import { DeviceContext } from './../../../context/DeviceProvider';
 
@@ -11,28 +11,9 @@ const Dashboard = ({setSelectedIndex}) => {
 
   const {deviceList, deviceByType} = useContext(DeviceContext)
 
-  const [DeviceWidgets, setDeviceWidgets] = useState([])
-
   useEffect(() => {
     setSelectedIndex(1)
-  }, [])
-
-  useEffect(() => {
-    if (deviceList.length > 0) {
-      setDeviceWidgets(deviceList.map((item, index) =>{
-          switch (item.deviceType.name) {
-            case '3LedTest':
-              return <ThreeLedTest key={index} idx={index} data={item}/>
-            case 'TempControl':
-              return <TempControl  key={index} idx={index} data={item}/>
-            case 'TePreControl':
-              return <TempPressureControl  key={index} idx={index} data={item}/>
-          }
-      }))
-    }else{
-      setDeviceWidgets([])
-    }
-  }, [deviceList]) 
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const getComponent = (index) => {
     switch (deviceList?.[index]?.deviceType.shadownName) {

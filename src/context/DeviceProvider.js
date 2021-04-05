@@ -1,12 +1,11 @@
 import React,  {useContext, useEffect, useState} from 'react'
 
-import { CompanyContext } from './../context/CompanyProvider';
+import { CompanyContext } from './../context/CompanyProvider'
 
 import {listDevices} from './../graphql/queries_user'
 import {updateDevice} from './../graphql/mutations'
 
-import {API, PubSub} from '../Amplify';
-import { version } from 'react-dom';
+import {API, PubSub} from '../Amplify'
 
 export const DeviceContext = React.createContext()
 
@@ -103,7 +102,7 @@ const DeviceProvider = (props) => {
                 pub.unsubscribe()
             }
         })
-    }, [info.id])
+    }, [info.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const messageDispatcher = (data) =>{
         console.log('Message received', data)

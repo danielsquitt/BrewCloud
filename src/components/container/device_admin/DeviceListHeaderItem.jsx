@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react'
-import {makeStyles, List, ListItem, ListItemText, ListItemIcon, ListSubheader, Collapse } from '@material-ui/core';
+import {makeStyles, List, ListItem, ListItemText, Collapse } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
@@ -20,7 +20,7 @@ const DeviceListHeaderItem = ({item, index, setIndex}) => {
 
     const classes = useStyles();
 
-    const {deviceList, deviceByType} = useContext(DeviceContext)
+    const {deviceList} = useContext(DeviceContext)
 
     const [open, setOpen] = useState(true)
 

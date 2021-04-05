@@ -40,10 +40,15 @@ const Login = (props) => {
 
     useEffect(() => {
         logout()
-        if (!id) { id = 'IBS' }
-        setCompanyName(id)
-        credentialsOnSubmmit('Admin', 'Admin1234')
-    }, [id])
+        setCompanyName(id ? id : 'IBS')
+        //credentialsOnSubmmit('Admin', 'Admin1234')
+    }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        if(state.logged){
+            props.history.push('/')
+        } 
+    }, [state.logged]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const newPasswordOnSubmmit = (Password, NewPassword, attributes)=>{
         const func = async()=>{
@@ -66,13 +71,6 @@ const Login = (props) => {
         }
         func()
     }
-
-    useEffect(() => {
-        if(state.logged){
-            props.history.push('/')
-        } 
-
-    }, [state.logged])
 
     return(
         <Container maxWidth="xs">

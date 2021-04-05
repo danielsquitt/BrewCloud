@@ -1,8 +1,6 @@
 import React from 'react'
 import clsx from 'clsx';
-import { makeStyles, Drawer, Divider, List, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
-import { MoveToInbox as InboxIcon, 
-         Mail as MailIcon} from '@material-ui/icons';
+import { makeStyles, Drawer, Divider} from "@material-ui/core";
 import SidebarHeader from "./sidebar/SidebarHeader";
 import SidebarUser from "./sidebar/SidebarUser";
 import SidebarMenu from './sidebar/SidebarMenu';

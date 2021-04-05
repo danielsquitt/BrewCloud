@@ -10,17 +10,20 @@ import EventProvider from './context/EventProvider';
 //OTHERs
 import theme from './themeConfig' ;
 import CompanyProvider from './context/CompanyProvider';
+import { CssBaseline } from '@material-ui/core';
 
 function App(props) {
   return (
     <ThemeProvider theme={theme}>
-      <EventProvider>
-        <AuthProvider>
-          <CompanyProvider>
-            <Main />
-          </CompanyProvider>
-        </AuthProvider>
-      </EventProvider>
+      <CssBaseline>
+        <EventProvider>
+          <AuthProvider>
+            <CompanyProvider>
+              <Main />
+            </CompanyProvider>
+          </AuthProvider>
+        </EventProvider>
+      </CssBaseline>
     </ThemeProvider>
   );
 }

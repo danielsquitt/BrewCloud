@@ -1,8 +1,6 @@
 
 // LIBRARIS
-import { KeyboardReturnOutlined } from '@material-ui/icons';
 import React, {useEffect, useState } from 'react'
-//import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js"
 import {Auth} from '../Amplify';
 
 // FILES
@@ -37,7 +35,7 @@ const AuthProvider = (props) => {
 
             return () => clearInterval(id)
         }
-    }, [state.logged])
+    }, [state.logged]) // eslint-disable-line react-hooks/exhaustive-deps
     
     // REFRESH
     //----------------------------------------------------------------------------------

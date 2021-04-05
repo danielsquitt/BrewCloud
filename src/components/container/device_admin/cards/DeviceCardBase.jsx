@@ -40,7 +40,7 @@ const DeviceCardBase = (props) => {
 
     useEffect(() => {
         setstate(deviceList[props.index].connected.state)
-    }, [deviceList[props.index].connected.state])
+    }, [deviceList[props.index].connected.state]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const avatar = ()=>{
         return(

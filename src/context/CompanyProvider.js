@@ -35,17 +35,17 @@ const CompanyProvider = (props) => {
             }
         }
         func()
-    }, [state.logged])
+    }, [state.logged]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if(ActualCompany !== false) {
             setInfo(companyList.current[ActualCompany])
         }
-    }, [ActualCompany])
+    }, [ActualCompany]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         setDocumentInfo(info)
-    }, [info.name, info.faviIconUrl])
+    }, [info])
 
     const setCompanyName = (name)=>{
         loadPublicInfo(name)

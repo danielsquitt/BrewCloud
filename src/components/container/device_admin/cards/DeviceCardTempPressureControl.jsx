@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react'
 import DeviceCardBase from './DeviceCardBase'
-import {makeStyles, Grid, Divider, Typography, Button, FormControl, TextField, InputLabel, Backdrop, CircularProgress    } from '@material-ui/core';
+import {makeStyles, Grid, Divider, Typography, Button, FormControl, TextField } from '@material-ui/core';
 
 import {DeviceContext} from '../../../../context/DeviceProvider'
 import {EventContext} from '../../../../context/EventProvider';
@@ -36,11 +36,11 @@ const DeviceCardTempPressureControl = (props) => {
     const [change, setchange] = useState(false)
 
     useEffect(() => {
-        setchange(tempSetPoint != deviceList[props.index].state?.reported?.['sp temperature'] || presSetPoint != deviceList[props.index].state?.reported?.['sp pressure'])
+        setchange(tempSetPoint !== deviceList[props.index].state?.reported?.['sp temperature'] || presSetPoint !== deviceList[props.index].state?.reported?.['sp pressure'])
         if(!change) {
             resetBackdrop(false)
         }
-    }, [tempSetPoint, presSetPoint, change])
+    }, [tempSetPoint, presSetPoint, change]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         setTempSetPoint((parseFloat(deviceList[props.index].state?.reported?.['sp temperature'])))        

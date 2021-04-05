@@ -93,7 +93,7 @@ const EventProvider = (props) => {
                }, timeout.current)
                return () => clearTimeout(timer);
         }
-    }, [open])
+    }, [open]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <EventContext.Provider value={{newError, newWarning, newInfo, newSuccess, setBackdrop, resetBackdrop}}>

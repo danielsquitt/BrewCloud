@@ -1,6 +1,5 @@
-import React, {useEffect, useContext}  from 'react'
+import React, {useContext}  from 'react'
 import {Paper, Card, CardHeader, Divider, CardContent, List} from '@material-ui/core';
-
 
 import {DeviceContext} from './../../../context/DeviceProvider'
 import DeviceListHeaderItem from './DeviceListHeaderItem';

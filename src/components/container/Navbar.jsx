@@ -67,7 +67,6 @@ const Navbar = (props) => {
     const [loaded, setloaded] = useState(false)
 
     useEffect(() => {
-        //console.log('List', companyList);
         if(companyList){
             setList(companyList.map((item, index)=>{
                 return { value: index, label: item.name }
@@ -83,14 +82,13 @@ const Navbar = (props) => {
             setloaded(false)
             setCompanyValue('')
         }
-        //console.log(list);
     }, [list])
 
     useEffect(() => {
         if (loaded){
             setActualCompany(companyValue.value)
         }
-    }, [companyValue])
+    }, [companyValue]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const ClickHandler = ()=>{
         if(open){

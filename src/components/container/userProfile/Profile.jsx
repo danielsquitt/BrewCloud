@@ -70,7 +70,7 @@ const Profile = ({setSelectedIndex}) => {
 
     useEffect(() => {
       setSelectedIndex(0)
-    }, [])
+    }) 
 
     const handleParamSave = async() => {
       const atributtes = {}

@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react'
 import DeviceCardBase from './DeviceCardBase'
-import {makeStyles, Grid, Divider, Typography, Button, FormControl, Select, InputLabel, Backdrop, CircularProgress    } from '@material-ui/core';
+import {makeStyles, Grid, Divider, Typography, Button, FormControl, Select, InputLabel } from '@material-ui/core';
 
 import {DeviceContext} from './../../../../context/DeviceProvider'
 import {EventContext} from './../../../../context/EventProvider';
@@ -42,17 +42,17 @@ const DeviceCardThreeLedTest = (props) => {
         if(!change) {
             resetBackdrop(false)
         }
-    }, [led1, led2, led3, change])
+    }, [led1, led2, led3, change]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         setled1(deviceList[props.index].state?.reported?.['led1'])
         setled2(deviceList[props.index].state?.reported?.['led2'])
         setled3(deviceList[props.index].state?.reported?.['led3'])
-    }, [deviceList])
+    }, [deviceList, props.index])
 
     const handleChange = (onChange, value) => {
         console.log(value);
-        if(value == 1){
+        if(value === 1){
             onChange('on')
         } else {
             onChange('off')

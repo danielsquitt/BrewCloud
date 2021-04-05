@@ -11,7 +11,7 @@ const DeviceAdmin = (props) => {
 
     useEffect(() => {
         props.setSelectedIndex(2)
-      }, [])
+      }) 
 
       useEffect(() => {
         const idx = props.match.params?.idx
