@@ -3,6 +3,9 @@ import {makeStyles, Grid, Card, CardHeader, CardContent, Divider, Typography, Ic
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import { useForm } from "react-hook-form";
 import EditIcon from '@material-ui/icons/Edit';
+import clsx from 'clsx';
+
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 import {AuthContext} from './../../../context/AuthProvider'
 import {EventContext} from './../../../context/EventProvider'
@@ -35,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
       [theme.breakpoints.up('xl')]: {
         fontSize: '1.5rem',
       },
+    },
+    title: {
+      fontWeight: 600,
     },
     cardtitle: {
       fontSize: '2rem',
@@ -141,78 +147,56 @@ const Profile = ({setSelectedIndex}) => {
                           action={action()}
                         />
                         <Divider/>
-                        <Grid container component={CardContent} spacing={2}>
-                          <Grid item xs={12}> 
-                            <Grid container spacing={1}>
-                              <Grid item xs={12} >
-                                <div style={{ padding: 10 }}>
-                                  <Grid container >
-                                    <Grid item component={Typography} className={classes.typography} xs={5}>
-                                      USERNAME:
-                                    </Grid>
-                                    <Grid item component={Typography} className={classes.typography} xs={7}>
-                                      {userInfo.username}
-                                    </Grid>
-                                  </Grid>
-                                </div>
+                        <Grid container component={CardContent} direction='column' spacing={4}>
+                          <Grid container item xs={12} justify="center" alignItems="center">
+                            <Grid container item xs={5} justify="center" alignItems="center">
+                              <Grid item xs={12} sm={10} md={8}>
+                                <AccountCircleIcon color="primary" style={{ fontSize: 100 }}/>
                               </Grid>
-                              <Grid item xs={12}>
-                                <Grid container>
-                                  <Grid item xs={12}>
-                                    <Divider/>
-                                  </Grid>
+                            </Grid>
+                            <Grid container item xs={7} spacing={4}>
+                              <Grid container item xs={12} spacing={1}>
+                                <Grid item xs={12} component={Typography} className={clsx(classes.typography, classes.title)}>
+                                  Name:
+                                </Grid>
+                                <Grid item xs={12} component={Typography} className={classes.typography}>
+                                  {userInfo.name}
                                 </Grid>
                               </Grid>
-                              <Grid item xs={12} >
-                                <div style={{ padding: 10 }}>
-                                  <Grid container >
-                                    <Grid item component={Typography} className={classes.typography} xs={5}>
-                                      ACCESS GROUP:
-                                    </Grid>
-                                    <Grid item component={Typography} className={classes.typography} xs={7}>
-                                      {userInfo.group}
-                                    </Grid>
-                                  </Grid>
-                                </div>
-                              </Grid>
-                              <Grid item xs={12}>
-                                <Grid container>
-                                  <Grid item xs={12}>
-                                    <Divider/>
-                                  </Grid>
+                              <Grid container item xs={12} spacing={1}>
+                                <Grid item xs={12} component={Typography} className={clsx(classes.typography, classes.title)}>
+                                  Family name:
+                                </Grid>
+                                <Grid item xs={12} component={Typography} className={classes.typography}>
+                                  {userInfo.family_name}
                                 </Grid>
                               </Grid>
-                              <Grid item xs={12}>
-                                <div style={{ padding: 10 }}>
-                                  <Grid container>
-                                    <Grid item component={Typography} className={classes.typography} xs={5}>
-                                      NAME:
-                                    </Grid>
-                                    <Grid item component={Typography} className={classes.typography} xs={7}>
-                                      {`${userInfo.name} ${userInfo.family_name}`}
-                                    </Grid>
-                                  </Grid>
-                                </div>
+                            </Grid>
+                          </Grid>
+                          <Grid container item xs={12} direction="column" alignItems="center" spacing={2}>
+                            <Grid container item xs={10} >
+                              <Grid item xs={5} component={Typography} className={clsx(classes.typography, classes.title)}>
+                                Username:
                               </Grid>
-                              <Grid item xs={12}>
-                                <Grid container>
-                                  <Grid item xs={12}>
-                                    <Divider/>
-                                  </Grid>
-                                </Grid>
+                              <Grid item xs={7} component={Typography} className={classes.typography}>
+                                {userInfo.username}
                               </Grid>
-                              <Grid item xs={12}>
-                                <div style={{ padding: 10 }}>
-                                  <Grid container>
-                                    <Grid item component={Typography} className={classes.typography} xs={5}>
-                                      EMAIL:
-                                    </Grid>
-                                    <Grid item component={Typography} className={classes.typography} xs={7}>
-                                      {userInfo.email}
-                                    </Grid>
-                                  </Grid>
-                                </div>
+                            </Grid>
+                            <Grid container item xs={10} spacing={1}>
+                              <Grid item xs={5} component={Typography} className={clsx(classes.typography, classes.title)}>
+                                Email:
                               </Grid>
+                              <Grid item xs={7} component={Typography} className={classes.typography}>
+                                {userInfo.email}
+                              </Grid>                              
+                            </Grid>
+                            <Grid container item xs={10} spacing={1}>
+                              <Grid item xs={5} component={Typography} className={clsx(classes.typography, classes.title)}>  
+                                Group:
+                              </Grid>
+                              <Grid item xs={7} component={Typography} className={classes.typography}>
+                                {userInfo.group}
+                              </Grid>                              
                             </Grid>
                           </Grid>
                         </Grid>
