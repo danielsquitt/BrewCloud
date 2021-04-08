@@ -49,6 +49,10 @@ const DeviceCardBase = (props) => {
         setstate(deviceList[props.index].connected.state)
     }, [deviceList[props.index].connected.state]) // eslint-disable-line react-hooks/exhaustive-deps
 
+    useEffect(() => {
+        window['scrollTo']({ top: 0, behavior: 'smooth'})
+    })
+    
     const avatar = ()=>{
         return(
             <Avatar 

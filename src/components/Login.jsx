@@ -41,7 +41,7 @@ const Login = (props) => {
     useEffect(() => {
         logout()
         setCompanyName(id ? id : 'IBS')
-        credentialsOnSubmmit('Admin', 'Admin1234')
+        //credentialsOnSubmmit('Admin', 'Admin1234')
     }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
