@@ -28,11 +28,6 @@ const useStyles = makeStyles((theme) => ({
       },
   }));
 
-  const permissions = {
-      editThingName: 2,
-  }
-
-
 const DeviceCardBase = (props) => {
 
     const classes = useStyles();

@@ -162,7 +162,7 @@ const AuthProvider = (props) => {
             })
             .then((result)=>{
                 console.log(result);
-                const _userInfo = {username: userInfo.username}
+                const _userInfo = {username: userInfo.username, group: userInfo.group}
                 result.forEach((element) => {
                     _userInfo[element.Name] = element.Value
                 })
@@ -194,14 +194,14 @@ const AuthProvider = (props) => {
     }
 
     const getAccessLevelString = (group) => {
-        if (group.search('Prod') != -1) return 'Production'
-        if (group.search('Admin') != -1) return 'Administrator'
+        if (group.search('Prod') >= 0) return 'Production'
+        if (group.search('Admin') >= 0) return 'Administrator'
         return 'Viwer'
     }
 
     const getgetAccessLevelDocumment = (group) => {
-        if (group.search('Prod') != -1) return permissions_document['Prod']
-        if (group.search('Admin') != -1) return permissions_document['Admin']
+        if (group.search('Prod') >= 0) return permissions_document['Prod']
+        if (group.search('Admin') >= 0) return permissions_document['Admin']
         return permissions_document['Viwer']
     }
 
