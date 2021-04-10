@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import Profile from './userProfile/Profile';
 import Dashboard from './dashboard/Dashboard';
 import DeviceAdmin from './device_admin/DeviceAdmin';
+import UsersAdmin from './users_admin/UsersAdmin';
 
 const drawerWidth = 250;
 
@@ -57,6 +58,9 @@ const ContentMain = ({open, setSelectedIndex}) => {
               <Profile setSelectedIndex={setSelectedIndex}/>
             </Route>
             <Route path='/device-admin/:idx?' render={(props)=>(<DeviceAdmin {...props} setSelectedIndex={setSelectedIndex}/>)}>
+            </Route>
+            <Route path='/user-admin'>
+              <UsersAdmin setSelectedIndex={setSelectedIndex}/>
             </Route>
             <Route path='/'>
               <Dashboard setSelectedIndex={setSelectedIndex}/>
