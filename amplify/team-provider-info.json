@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "ibscognitoAuth": {}
+      },
+      "function": {
+        "AdminQueries270ca439": {
+          "deploymentBucketName": "amplify-ibs-dev-201956-deployment",
+          "s3Key": "amplify-builds/AdminQueries270ca439-613161332f307266577a-build.zip"
+        }
       }
     }
   },

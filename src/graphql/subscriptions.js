@@ -18,6 +18,9 @@ export const onCreateCompany = /* GraphQL */ `
       }
       CRUD_Group
       R_Group
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       devices {
@@ -31,10 +34,14 @@ export const onCreateCompany = /* GraphQL */ `
           connStatus
           CRUD_Group
           R_Group
+          _version
+          _deleted
+          _lastChangedAt
           createdOn
           updatedOn
         }
         nextToken
+        startedAt
       }
     }
   }
@@ -56,6 +63,9 @@ export const onUpdateCompany = /* GraphQL */ `
       }
       CRUD_Group
       R_Group
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       devices {
@@ -69,10 +79,14 @@ export const onUpdateCompany = /* GraphQL */ `
           connStatus
           CRUD_Group
           R_Group
+          _version
+          _deleted
+          _lastChangedAt
           createdOn
           updatedOn
         }
         nextToken
+        startedAt
       }
     }
   }
@@ -94,6 +108,9 @@ export const onDeleteCompany = /* GraphQL */ `
       }
       CRUD_Group
       R_Group
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       devices {
@@ -107,10 +124,14 @@ export const onDeleteCompany = /* GraphQL */ `
           connStatus
           CRUD_Group
           R_Group
+          _version
+          _deleted
+          _lastChangedAt
           createdOn
           updatedOn
         }
         nextToken
+        startedAt
       }
     }
   }
@@ -121,12 +142,26 @@ export const onCreateDevice = /* GraphQL */ `
       id
       name
       deviceTypeId
+      deviceType {
+        id
+        name
+        shadownName
+        telemetryName
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
       companyId
       alias
       description
       connStatus
       CRUD_Group
       R_Group
+      _version
+      _deleted
+      _lastChangedAt
       createdOn
       updatedOn
       company {
@@ -144,19 +179,15 @@ export const onCreateDevice = /* GraphQL */ `
         }
         CRUD_Group
         R_Group
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         devices {
           nextToken
+          startedAt
         }
-      }
-      deviceType {
-        id
-        name
-        shadownName
-        telemetryName
-        createdAt
-        updatedAt
       }
     }
   }
@@ -167,12 +198,26 @@ export const onUpdateDevice = /* GraphQL */ `
       id
       name
       deviceTypeId
+      deviceType {
+        id
+        name
+        shadownName
+        telemetryName
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
       companyId
       alias
       description
       connStatus
       CRUD_Group
       R_Group
+      _version
+      _deleted
+      _lastChangedAt
       createdOn
       updatedOn
       company {
@@ -190,19 +235,15 @@ export const onUpdateDevice = /* GraphQL */ `
         }
         CRUD_Group
         R_Group
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         devices {
           nextToken
+          startedAt
         }
-      }
-      deviceType {
-        id
-        name
-        shadownName
-        telemetryName
-        createdAt
-        updatedAt
       }
     }
   }
@@ -213,12 +254,26 @@ export const onDeleteDevice = /* GraphQL */ `
       id
       name
       deviceTypeId
+      deviceType {
+        id
+        name
+        shadownName
+        telemetryName
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
       companyId
       alias
       description
       connStatus
       CRUD_Group
       R_Group
+      _version
+      _deleted
+      _lastChangedAt
       createdOn
       updatedOn
       company {
@@ -236,19 +291,15 @@ export const onDeleteDevice = /* GraphQL */ `
         }
         CRUD_Group
         R_Group
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         devices {
           nextToken
+          startedAt
         }
-      }
-      deviceType {
-        id
-        name
-        shadownName
-        telemetryName
-        createdAt
-        updatedAt
       }
     }
   }

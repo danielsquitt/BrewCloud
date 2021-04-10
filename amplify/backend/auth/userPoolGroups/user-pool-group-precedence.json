@@ -1,0 +1,18 @@
+[
+    {
+        "groupName": "PeninsulaViwer",
+        "precedence": 1
+    },
+    {
+        "groupName": "PeninsulaProd",
+        "precedence": 2
+    },
+    {
+        "groupName": "PeninsulaAdmin",
+        "precedence": 3
+    },
+    {
+        "groupName": "IBSAdmin",
+        "precedence": 4
+    }
+]

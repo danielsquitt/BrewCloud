@@ -1,6 +1,60 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createDeviceType = /* GraphQL */ `
+  mutation CreateDeviceType(
+    $input: CreateDeviceTypeInput!
+    $condition: ModelDeviceTypeConditionInput
+  ) {
+    createDeviceType(input: $input, condition: $condition) {
+      id
+      name
+      shadownName
+      telemetryName
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateDeviceType = /* GraphQL */ `
+  mutation UpdateDeviceType(
+    $input: UpdateDeviceTypeInput!
+    $condition: ModelDeviceTypeConditionInput
+  ) {
+    updateDeviceType(input: $input, condition: $condition) {
+      id
+      name
+      shadownName
+      telemetryName
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteDeviceType = /* GraphQL */ `
+  mutation DeleteDeviceType(
+    $input: DeleteDeviceTypeInput!
+    $condition: ModelDeviceTypeConditionInput
+  ) {
+    deleteDeviceType(input: $input, condition: $condition) {
+      id
+      name
+      shadownName
+      telemetryName
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createCompany = /* GraphQL */ `
   mutation CreateCompany(
     $input: CreateCompanyInput!
@@ -21,6 +75,9 @@ export const createCompany = /* GraphQL */ `
       }
       CRUD_Group
       R_Group
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       devices {
@@ -34,10 +91,14 @@ export const createCompany = /* GraphQL */ `
           connStatus
           CRUD_Group
           R_Group
+          _version
+          _deleted
+          _lastChangedAt
           createdOn
           updatedOn
         }
         nextToken
+        startedAt
       }
     }
   }
@@ -62,6 +123,9 @@ export const updateCompany = /* GraphQL */ `
       }
       CRUD_Group
       R_Group
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       devices {
@@ -75,10 +139,14 @@ export const updateCompany = /* GraphQL */ `
           connStatus
           CRUD_Group
           R_Group
+          _version
+          _deleted
+          _lastChangedAt
           createdOn
           updatedOn
         }
         nextToken
+        startedAt
       }
     }
   }
@@ -103,6 +171,9 @@ export const deleteCompany = /* GraphQL */ `
       }
       CRUD_Group
       R_Group
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       devices {
@@ -116,10 +187,14 @@ export const deleteCompany = /* GraphQL */ `
           connStatus
           CRUD_Group
           R_Group
+          _version
+          _deleted
+          _lastChangedAt
           createdOn
           updatedOn
         }
         nextToken
+        startedAt
       }
     }
   }
@@ -133,12 +208,26 @@ export const createDevice = /* GraphQL */ `
       id
       name
       deviceTypeId
+      deviceType {
+        id
+        name
+        shadownName
+        telemetryName
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
       companyId
       alias
       description
       connStatus
       CRUD_Group
       R_Group
+      _version
+      _deleted
+      _lastChangedAt
       createdOn
       updatedOn
       company {
@@ -156,19 +245,15 @@ export const createDevice = /* GraphQL */ `
         }
         CRUD_Group
         R_Group
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         devices {
           nextToken
+          startedAt
         }
-      }
-      deviceType {
-        id
-        name
-        shadownName
-        telemetryName
-        createdAt
-        updatedAt
       }
     }
   }
@@ -182,12 +267,26 @@ export const updateDevice = /* GraphQL */ `
       id
       name
       deviceTypeId
+      deviceType {
+        id
+        name
+        shadownName
+        telemetryName
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
       companyId
       alias
       description
       connStatus
       CRUD_Group
       R_Group
+      _version
+      _deleted
+      _lastChangedAt
       createdOn
       updatedOn
       company {
@@ -205,19 +304,15 @@ export const updateDevice = /* GraphQL */ `
         }
         CRUD_Group
         R_Group
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         devices {
           nextToken
+          startedAt
         }
-      }
-      deviceType {
-        id
-        name
-        shadownName
-        telemetryName
-        createdAt
-        updatedAt
       }
     }
   }
@@ -231,12 +326,26 @@ export const deleteDevice = /* GraphQL */ `
       id
       name
       deviceTypeId
+      deviceType {
+        id
+        name
+        shadownName
+        telemetryName
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
       companyId
       alias
       description
       connStatus
       CRUD_Group
       R_Group
+      _version
+      _deleted
+      _lastChangedAt
       createdOn
       updatedOn
       company {
@@ -254,65 +363,16 @@ export const deleteDevice = /* GraphQL */ `
         }
         CRUD_Group
         R_Group
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         devices {
           nextToken
+          startedAt
         }
       }
-      deviceType {
-        id
-        name
-        shadownName
-        telemetryName
-        createdAt
-        updatedAt
-      }
-    }
-  }
-`;
-export const createDeviceType = /* GraphQL */ `
-  mutation CreateDeviceType(
-    $input: CreateDeviceTypeInput!
-    $condition: ModelDeviceTypeConditionInput
-  ) {
-    createDeviceType(input: $input, condition: $condition) {
-      id
-      name
-      shadownName
-      telemetryName
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateDeviceType = /* GraphQL */ `
-  mutation UpdateDeviceType(
-    $input: UpdateDeviceTypeInput!
-    $condition: ModelDeviceTypeConditionInput
-  ) {
-    updateDeviceType(input: $input, condition: $condition) {
-      id
-      name
-      shadownName
-      telemetryName
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteDeviceType = /* GraphQL */ `
-  mutation DeleteDeviceType(
-    $input: DeleteDeviceTypeInput!
-    $condition: ModelDeviceTypeConditionInput
-  ) {
-    deleteDeviceType(input: $input, condition: $condition) {
-      id
-      name
-      shadownName
-      telemetryName
-      createdAt
-      updatedAt
     }
   }
 `;

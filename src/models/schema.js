@@ -17,8 +17,17 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "InitImg": {
-                    "name": "InitImg",
+                "initImg": {
+                    "name": "initImg",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "S3Object"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "faviIcon": {
+                    "name": "faviIcon",
                     "isArray": false,
                     "type": {
                         "nonModel": "S3Object"
@@ -39,6 +48,20 @@ export const schema = {
                         "connectionType": "HAS_MANY",
                         "associatedWith": "company"
                     }
+                },
+                "CRUD_Group": {
+                    "name": "CRUD_Group",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "R_Group": {
+                    "name": "R_Group",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -68,6 +91,16 @@ export const schema = {
                                 "operations": [
                                     "read"
                                 ]
+                            },
+                            {
+                                "groupClaim": "cognito:groups",
+                                "provider": "userPools",
+                                "allow": "groups",
+                                "groupsField": "R_Group",
+                                "operations": [
+                                    "read"
+                                ],
+                                "groupField": "groups"
                             }
                         ]
                     }
@@ -84,12 +117,32 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "type": {
-                    "name": "type",
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "deviceTypeId": {
+                    "name": "deviceTypeId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
                     "attributes": []
+                },
+                "deviceType": {
+                    "name": "deviceType",
+                    "isArray": false,
+                    "type": {
+                        "model": "DeviceType"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": "id"
+                    }
                 },
                 "company": {
                     "name": "company",
@@ -124,6 +177,22 @@ export const schema = {
                     "type": "Boolean",
                     "isRequired": false,
                     "attributes": []
+                },
+                "CRUD_Group": {
+                    "name": "CRUD_Group",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "R_Group": {
+                    "name": "R_Group",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
                 }
             },
             "syncable": true,
@@ -143,9 +212,54 @@ export const schema = {
                     "properties": {
                         "name": "byCompanyId",
                         "fields": [
-                            "companyId"
+                            "companyId",
+                            "alias"
                         ],
                         "queryField": "deviceByCompanyId"
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "groupClaim": "cognito:groups",
+                                "provider": "userPools",
+                                "allow": "groups",
+                                "groups": [
+                                    "Admin"
+                                ],
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "groupClaim": "cognito:groups",
+                                "provider": "userPools",
+                                "allow": "groups",
+                                "groupsField": "R_Group",
+                                "operations": [
+                                    "read"
+                                ],
+                                "groupField": "groups"
+                            },
+                            {
+                                "groupClaim": "cognito:groups",
+                                "provider": "userPools",
+                                "allow": "groups",
+                                "groupsField": "CRUD_Group",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ],
+                                "groupField": "groups"
+                            }
+                        ]
                     }
                 }
             ]
@@ -166,6 +280,20 @@ export const schema = {
                     "type": "String",
                     "isRequired": true,
                     "attributes": []
+                },
+                "shadownName": {
+                    "name": "shadownName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "telemetryName": {
+                    "name": "telemetryName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -174,8 +302,6 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {
-                        "queries": null,
-                        "mutations": null,
                         "subscriptions": null
                     }
                 }
@@ -211,5 +337,5 @@ export const schema = {
             }
         }
     },
-    "version": "88cd409c4b6602ff69386f587adb5e39"
+    "version": "50fa6d6b1e469f233b4182e81266f51e"
 };

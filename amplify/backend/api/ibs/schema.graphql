@@ -45,9 +45,6 @@ type Device
 
 type DeviceType
   @model( subscriptions: null)
-  @auth(rules: [
-      { allow: groups, groups: ["Admin"] },
-      ])
 {
   id: ID!
   name: String!
