@@ -27,7 +27,7 @@ const SidebarMenu = ({selectedIndex}) => {
                 </ListItemIcon>
                 <ListItemText primary="Dashboard" />
             </ListItem>
-            <ListItem button key={'device'} component={NavLink} to='/device-admin' selected={selectedIndex === 2}>
+            <ListItem button key={'device-admin'} component={NavLink} to='/device-admin' selected={selectedIndex === 2}>
                 <ListItemIcon className={classes.icon} >
                     <PhonelinkSetupIcon />
                 </ListItemIcon>
@@ -35,7 +35,7 @@ const SidebarMenu = ({selectedIndex}) => {
             </ListItem>
             { 
                 permissions?.manageUsers ? (
-                    <ListItem button key={'device'} component={NavLink} to='/user-admin' selected={selectedIndex === 3}>
+                    <ListItem button key={'user-admin'} component={NavLink} to='/user-admin' selected={selectedIndex === 3}>
                         <ListItemIcon className={classes.icon} >
                             <PeopleIcon />
                         </ListItemIcon>

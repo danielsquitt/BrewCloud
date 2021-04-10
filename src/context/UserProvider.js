@@ -11,7 +11,7 @@ const UserProvider = (props) => {
 
     useEffect(() => {
         //console.log('Info:',info);
-        if(info.name && false){
+        if(info.name && true){
             const func = async()=>{
                 listUsers()
                 .then((userlist)=>{
@@ -63,26 +63,38 @@ const UserProvider = (props) => {
 
     const getUser = async(username) => {
         return await new Promise(async(resolve, reject) => {
-            let apiName = 'AdminQueries';
-            let path = '/getUser';
-            let headers= {
+            const apiName = 'AdminQueries';
+            const pathUser = '/getUser';
+            const pathGroup = '/listGroupsForUser'
+            const headers= {
                     'Content-Type' : 'application/json',
                     Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
                 } 
-            API.get(apiName, path, {queryStringParameters: {"username": username}, headers})
-            .then(user => {
-                console.log('User', user);
-                const _user = {...user}
-                delete _user.UserAttributes
-                user.UserAttributes.forEach(element => {
+            const user = API.get(apiName, pathUser, {queryStringParameters: {"username": username}, headers})
+            const groups = API.get(apiName, pathGroup, {queryStringParameters: {"username": username}, headers})
+            Promise.allSettled([user, groups])
+            .then(result => {
+                console.log('result', result);
+                // Check result
+                if(result[0].status === "rejected") reject(result[0].reason.response)
+                if(result[1].status === "rejected") reject(result[1].reason.response)
+
+                // Get user info
+                const _user = {...result[0].value}
+                _user.UserAttributes.forEach(element => {
                     _user[element.Name] = element.Value
-                });
-                console.log('User', _user);
+                })
+                delete _user.UserAttributes
+
+                // Get user groups
+                const groups = []
+                result[1].value.Groups.forEach(element => {
+                    groups.push(element.GroupName)
+                })
+                _user['Groups'] = groups
+
+                console.log('User', _user)
                 resolve(_user)
-            })
-            .catch(error => {
-                console.log(error.response)
-                reject(error)
             })
         })
     }
