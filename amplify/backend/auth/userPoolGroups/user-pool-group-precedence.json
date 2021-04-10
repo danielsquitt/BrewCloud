@@ -14,5 +14,9 @@
     {
         "groupName": "IBSAdmin",
         "precedence": 4
+    },
+    {
+        "groupName": "AdminQueriesAPI",
+        "precedence": 5
     }
 ]

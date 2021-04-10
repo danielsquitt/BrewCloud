@@ -11,6 +11,7 @@ export const AuthContext = React.createContext()
 const init_permissions = {
     editThingName: false,
     editThingShadow : false,
+    manageUsers: false
 }
 
 const permissions_document = {
@@ -104,7 +105,7 @@ const AuthProvider = (props) => {
                 } else {
                     setUser(_user)
                     setUserInfo(getUserInfo(_user))
-                    setPermissions(getgetAccessLevelDocumment(_user.signInUserSession.idToken.payload['cognito:groups'][0]))
+                    setPermissions(getgetAccessLevelDocumment(_user.signInUserSession.idToken.payload['cognito:groups']))
                     resolve(_user)
                 }
             })
@@ -141,7 +142,7 @@ const AuthProvider = (props) => {
                 .then((_user) => {
                         setUser(_user)
                         setUserInfo(getUserInfo(_user))
-                        setPermissions(getgetAccessLevelDocumment(_user.signInUserSession.idToken.payload['cognito:groups'][0]))
+                        setPermissions(getgetAccessLevelDocumment(_user.signInUserSession.idToken.payload['cognito:groups']))
                         setState({logged: true, newPasswordRequired: false, loading: false})
                         resolve(_user)
                 })   
@@ -199,10 +200,17 @@ const AuthProvider = (props) => {
         return 'Viwer'
     }
 
-    const getgetAccessLevelDocumment = (group) => {
-        if (group.search('Prod') >= 0) return permissions_document['Prod']
-        if (group.search('Admin') >= 0) return permissions_document['Admin']
-        return permissions_document['Viwer']
+    const getgetAccessLevelDocumment = (groups) => {
+        let document = init_permissions
+        groups.forEach(element => {
+            if (element.search('Viwer') > 0) document = permissions_document['Viwer']
+            else if (element.search('Prod') > 0) document = permissions_document['Prod']
+            else if (element.search('Admin') > 0) document = permissions_document['Admin']
+        });
+        if (groups.find(element => element === 'AdminQueriesAPI')) document['manageUsers'] = true
+        else document['manageUsers'] = false
+        
+        return document
     }
 
     const getUserInfo = (_user) => {

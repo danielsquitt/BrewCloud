@@ -257,6 +257,60 @@
         },
      
     
+        "AdminQueriesAPIGroup": {
+          "Type" : "AWS::Cognito::UserPoolGroup",
+          "Properties" : {
+              "GroupName" : "AdminQueriesAPI",
+              "Precedence" : 5,
+              
+              "RoleArn" : {
+                "Fn::GetAtt": [
+                    "AdminQueriesAPIGroupRole",
+                    "Arn"
+                ]
+              },
+              
+              "UserPoolId" : {
+                "Ref": "authibscognitoAuthUserPoolId"
+              } 
+            }
+        },
+        
+        "AdminQueriesAPIGroupRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName":{
+                    "Fn::Join": [
+                        "",
+                        [
+                          {
+                            "Ref": "authibscognitoAuthUserPoolId"
+                          },
+                          "-AdminQueriesAPIGroupRole"
+                        ]
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Sid": "",
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Federated": "cognito-identity.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRoleWithWebIdentity",
+                            "Condition": {
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authibscognitoAuthIdentityPoolId"}},
+                              "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+     
+    
     
         "LambdaExecutionRole": {
             "Type": "AWS::IAM::Role",
@@ -494,6 +548,17 @@
             "Value": {
                 "Fn::GetAtt": [
                     "IBSAdminGroupRole",
+                    "Arn"
+                ]
+            }
+         
+        },
+        
+      
+        "AdminQueriesAPIGroupRole": {
+            "Value": {
+                "Fn::GetAtt": [
+                    "AdminQueriesAPIGroupRole",
                     "Arn"
                 ]
             }
