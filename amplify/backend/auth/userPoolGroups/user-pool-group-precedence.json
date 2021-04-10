@@ -4,19 +4,27 @@
         "precedence": 1
     },
     {
-        "groupName": "PeninsulaProd",
+        "groupName": "IBSViwer",
         "precedence": 2
     },
     {
-        "groupName": "PeninsulaAdmin",
+        "groupName": "PeninsulaProd",
         "precedence": 3
     },
     {
-        "groupName": "IBSAdmin",
+        "groupName": "IBSProd",
         "precedence": 4
     },
     {
-        "groupName": "AdminQueriesAPI",
+        "groupName": "PeninsulaAdmin",
         "precedence": 5
+    },
+    {
+        "groupName": "IBSAdmin",
+        "precedence": 6
+    },
+    {
+        "groupName": "AdminQueriesAPI",
+        "precedence": 7
     }
 ]

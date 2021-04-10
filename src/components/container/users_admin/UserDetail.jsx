@@ -1,15 +1,40 @@
 import React, {useContext, useState, useEffect} from 'react'
 
-import {makeStyles, Grid, Card, CardHeader, CardContent, Divider , Typography, IconButton, TextField, Dialog, DialogActions, DialogContent, Button } from '@material-ui/core';
+import {makeStyles, Grid, Card, CardHeader, CardContent, Divider , Typography, IconButton, TextField, Dialog, ButtonGroup, DialogContent, Button } from '@material-ui/core';
 import clsx from 'clsx'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
 import { UserContext } from './../../../context/UserProvider';
+import { AuthContext } from './../../../context/AuthProvider';
 
 const useStyles = makeStyles((theme) => ({
     cardtitle: {
         fontSize: '1.5rem',
-      },
+    },
+    typography: {
+        fontSize: '0.7rem',
+        [theme.breakpoints.up('sm')]: {
+          fontSize: '0.8rem',
+        },
+        [theme.breakpoints.up('md')]: {
+          fontSize: '1rem',
+        },
+        [theme.breakpoints.up('lg')]: {
+          fontSize: '1.2rem',
+        },
+        [theme.breakpoints.up('xl')]: {
+          fontSize: '1.5rem',
+        },
+    },
+    typography_gren: {
+        color: 'green'
+    },
+    typography_red: {    
+        color: 'red'
+    },
+    title: {
+        fontWeight: 600,
+    },
   }));
 
 
@@ -17,7 +42,8 @@ const UserDetail = ({username}) => {
 
     const classes = useStyles();
 
-    const {getUser}  = useContext(UserContext)
+    const {getUser, setUserState}  = useContext(UserContext)
+    const {userInfo}  = useContext(AuthContext)
 
     const [info, setinfo] = useState({})
 
@@ -28,18 +54,71 @@ const UserDetail = ({username}) => {
                 setinfo(user)
             })
         }
+        console.log(userInfo.username);
     }, [username])
 
+    const handleClic = (state)=>{
+        setUserState(username, state)
+        .then(()=>{
+            setinfo((user =>{
+                return({
+                    ...user,
+                    Enabled: state
+                })
+            }))
+        })
+    }
+
+    const options = () => {
+        if (userInfo.username !== username){
+            return(
+                <Card elevation={1}> 
+                    <CardContent>
+                        <ButtonGroup>
+                            {
+                                info.Enabled ? (
+                                    <Button variant="contained" color="secondary" onClick={() => {handleClic(false)}}>Disable</Button>
+                                ) : (
+                                    <Button variant="contained" color="primary" onClick={() => {handleClic(true)}}>Enable</Button>
+                                )
+                            }
+                        </ButtonGroup>
+                    </CardContent>
+                </Card>
+            )
+        } else {
+            return null
+        }
+    }
+
+    const getAccessLevelString = (groups) => {
+        console.log('groups', groups )
+        let result = 'Viwer'
+        if(groups){
+            groups.forEach(group => {
+                if (group.search('Prod') > 0) result = 'Production'
+                if (group.search('Admin') > 0) result = 'Administrator'
+                if (group.search('Viwer') > 0) result = 'Viwer'
+            })
+        }
+        return result
+    }
+
     return (
-        <Card elevation={1}>
-                <CardHeader
-                    title={username}
-                    subheader={info.sub}
-                    titleTypographyProps={{className: classes.cardtitle}}
-                />
-                <Divider/>
-                <Grid container component={CardContent} direction='column' spacing={4}>
-                          <Grid container item xs={12} justify="center" alignItems="center">
+        <Grid container direction="column" spacing={1}>
+            <Grid item>
+                {options()}
+            </Grid>
+            <Grid item>
+                <Card elevation={1}>
+                    <CardHeader
+                        title={username}
+                        subheader={info.sub}
+                        titleTypographyProps={{className: classes.cardtitle}}
+                    />
+                    <Divider/>
+                    <Grid container component={CardContent} direction='column' spacing={4}>
+                        <Grid container item xs={12} justify="center" alignItems="center">
                             <Grid container item xs={5} justify="center" alignItems="center">
                               <Grid item xs={12} sm={10} md={8}>
                                 <AccountCircleIcon color="primary" style={{ fontSize: 100 }}/>
@@ -63,13 +142,13 @@ const UserDetail = ({username}) => {
                                 </Grid>
                               </Grid>
                             </Grid>
-                          </Grid>
-                          <Grid container item xs={12} direction="column" alignItems="center" spacing={2}>
+                        </Grid>
+                        <Grid container item xs={12} direction="column" alignItems="center" spacing={2}>
                             <Grid container item xs={10} spacing={1}>
                               <Grid item xs={5} component={Typography} className={clsx(classes.typography, classes.title)}>
                                 Status:
                               </Grid>
-                              <Grid item xs={7} component={Typography} className={classes.typography}>
+                              <Grid item xs={7} component={Typography} className={clsx(classes.typography, {[classes.typography_gren]: info.UserStatus === 'CONFIRMED', [classes.typography_red]: info.UserStatus !== 'CONFIRMED' })}>
                                 {info.UserStatus}
                               </Grid>                              
                             </Grid>
@@ -77,8 +156,8 @@ const UserDetail = ({username}) => {
                               <Grid item xs={5} component={Typography} className={clsx(classes.typography, classes.title)}>
                                 Enabled:
                               </Grid>
-                              <Grid item xs={7} component={Typography} className={classes.typography}>
-                                {info.Enabled ? "true" : "false"}
+                              <Grid item xs={7} component={Typography} className={clsx(classes.typography, {[classes.typography_gren]: info.Enabled, [classes.typography_red]: !info.Enabled})}>
+                                {info.Enabled ? "Yes" : "No"}
                               </Grid>                              
                             </Grid>
                             <Grid container item xs={10} spacing={1}>
@@ -93,8 +172,8 @@ const UserDetail = ({username}) => {
                               <Grid item xs={5} component={Typography} className={clsx(classes.typography, classes.title)}>  
                                 Email verified:
                               </Grid>
-                              <Grid item xs={7} component={Typography} className={classes.typography}>
-                                {info.email_verified}
+                              <Grid item xs={7} component={Typography} className={clsx(classes.typography, {[classes.typography_gren]: info.email_verified, [classes.typography_red]: !info.email_verified})}>
+                                {info.email_verified ? "Yes" : "No"}
                               </Grid>                              
                             </Grid>
                             <Grid container item xs={10} spacing={1}>
@@ -102,12 +181,14 @@ const UserDetail = ({username}) => {
                                 Group:
                               </Grid>
                               <Grid item xs={7} component={Typography} className={classes.typography}>
-                                {info.Groups}
+                                {getAccessLevelString(info.Groups)}
                               </Grid>                              
                             </Grid>
-                          </Grid>
                         </Grid>
-            </Card>
+                    </Grid>
+                </Card>
+            </Grid>
+        </Grid>
     )
 }
 

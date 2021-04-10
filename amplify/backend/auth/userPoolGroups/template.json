@@ -95,11 +95,65 @@
         },
      
     
+        "IBSViwerGroup": {
+          "Type" : "AWS::Cognito::UserPoolGroup",
+          "Properties" : {
+              "GroupName" : "IBSViwer",
+              "Precedence" : 2,
+              
+              "RoleArn" : {
+                "Fn::GetAtt": [
+                    "IBSViwerGroupRole",
+                    "Arn"
+                ]
+              },
+              
+              "UserPoolId" : {
+                "Ref": "authibscognitoAuthUserPoolId"
+              } 
+            }
+        },
+        
+        "IBSViwerGroupRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName":{
+                    "Fn::Join": [
+                        "",
+                        [
+                          {
+                            "Ref": "authibscognitoAuthUserPoolId"
+                          },
+                          "-IBSViwerGroupRole"
+                        ]
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Sid": "",
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Federated": "cognito-identity.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRoleWithWebIdentity",
+                            "Condition": {
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authibscognitoAuthIdentityPoolId"}},
+                              "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+     
+    
         "PeninsulaProdGroup": {
           "Type" : "AWS::Cognito::UserPoolGroup",
           "Properties" : {
               "GroupName" : "PeninsulaProd",
-              "Precedence" : 2,
+              "Precedence" : 3,
               
               "RoleArn" : {
                 "Fn::GetAtt": [
@@ -149,11 +203,65 @@
         },
      
     
+        "IBSProdGroup": {
+          "Type" : "AWS::Cognito::UserPoolGroup",
+          "Properties" : {
+              "GroupName" : "IBSProd",
+              "Precedence" : 4,
+              
+              "RoleArn" : {
+                "Fn::GetAtt": [
+                    "IBSProdGroupRole",
+                    "Arn"
+                ]
+              },
+              
+              "UserPoolId" : {
+                "Ref": "authibscognitoAuthUserPoolId"
+              } 
+            }
+        },
+        
+        "IBSProdGroupRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName":{
+                    "Fn::Join": [
+                        "",
+                        [
+                          {
+                            "Ref": "authibscognitoAuthUserPoolId"
+                          },
+                          "-IBSProdGroupRole"
+                        ]
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Sid": "",
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Federated": "cognito-identity.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRoleWithWebIdentity",
+                            "Condition": {
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authibscognitoAuthIdentityPoolId"}},
+                              "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+     
+    
         "PeninsulaAdminGroup": {
           "Type" : "AWS::Cognito::UserPoolGroup",
           "Properties" : {
               "GroupName" : "PeninsulaAdmin",
-              "Precedence" : 3,
+              "Precedence" : 5,
               
               "RoleArn" : {
                 "Fn::GetAtt": [
@@ -207,7 +315,7 @@
           "Type" : "AWS::Cognito::UserPoolGroup",
           "Properties" : {
               "GroupName" : "IBSAdmin",
-              "Precedence" : 4,
+              "Precedence" : 6,
               
               "RoleArn" : {
                 "Fn::GetAtt": [
@@ -261,7 +369,7 @@
           "Type" : "AWS::Cognito::UserPoolGroup",
           "Properties" : {
               "GroupName" : "AdminQueriesAPI",
-              "Precedence" : 5,
+              "Precedence" : 7,
               
               "RoleArn" : {
                 "Fn::GetAtt": [
@@ -522,10 +630,32 @@
         },
         
       
+        "IBSViwerGroupRole": {
+            "Value": {
+                "Fn::GetAtt": [
+                    "IBSViwerGroupRole",
+                    "Arn"
+                ]
+            }
+         
+        },
+        
+      
         "PeninsulaProdGroupRole": {
             "Value": {
                 "Fn::GetAtt": [
                     "PeninsulaProdGroupRole",
+                    "Arn"
+                ]
+            }
+         
+        },
+        
+      
+        "IBSProdGroupRole": {
+            "Value": {
+                "Fn::GetAtt": [
+                    "IBSProdGroupRole",
                     "Arn"
                 ]
             }

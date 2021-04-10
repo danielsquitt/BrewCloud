@@ -1,7 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react'
-import {makeStyles, Paper, Card, CardHeader, Divider, CardContent, List, ListItem, ListItemText} from '@material-ui/core';
+import {makeStyles, Paper, Card, CardHeader, Divider, CardContent, List, ListItem, ListItemText, ListItemIcon} from '@material-ui/core';
 
+import ClearIcon from '@material-ui/icons/Clear';
+import DoneIcon from '@material-ui/icons/Done';
 
+import { green, red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -16,13 +19,18 @@ const useStyles = makeStyles((theme) => ({
 
 const UserList = ({list, index, setIndex}) => {
 
-    const classes = useStyles();
-    const handleClick = ()=>{
-
-    }
+    const classes = useStyles(); 
 
     const getindex = () => {
         return index
+    }
+
+    const getIcon = (status) =>{
+        if(status === 'CONFIRMED'){
+            return(<DoneIcon style={{ color: green[500] }}/>)
+        }else{
+            return(<ClearIcon style={{ color: red[500] }}/>)
+        }
     }
 
     return (
@@ -44,6 +52,9 @@ const UserList = ({list, index, setIndex}) => {
                                         selected={getindex() === index}
                                         onClick={() => setIndex(index)}
                                     >
+                                        <ListItemIcon>
+                                            {getIcon(element.UserStatus)}
+                                        </ListItemIcon>
                                         <ListItemText primary={element.Username} />
                                     </ListItem>
                                 )

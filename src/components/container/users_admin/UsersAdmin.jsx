@@ -37,7 +37,9 @@ const UsersAdmin = ({setSelectedIndex}) => {
     return (
         <Grid container spacing={1}>
             <Grid item xs={12} md={8} xl={9}>
-                {username !== '' ? (<UserDetail username= {username}/>) : (null)}
+                {username !== '' ? (
+                    <UserDetail username= {username}/>
+                ) : (null)}
             </Grid>
             <Grid item xs={12} md={4} xl={3}>
                 <UserList list={userList} index={currentUserIdx} setIndex={setCurrentUserIdx} />

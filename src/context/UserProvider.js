@@ -74,7 +74,7 @@ const UserProvider = (props) => {
             const groups = API.get(apiName, pathGroup, {queryStringParameters: {"username": username}, headers})
             Promise.allSettled([user, groups])
             .then(result => {
-                console.log('result', result);
+                //console.log('result', result);
                 // Check result
                 if(result[0].status === "rejected") reject(result[0].reason.response)
                 if(result[1].status === "rejected") reject(result[1].reason.response)
@@ -93,14 +93,35 @@ const UserProvider = (props) => {
                 })
                 _user['Groups'] = groups
 
-                console.log('User', _user)
+                //console.log('User', _user)
                 resolve(_user)
             })
         })
     }
 
+    const setUserState = async(username, status)=>{
+        return await new Promise(async(resolve, reject) => {
+            let apiName = 'AdminQueries';
+            let path = status ? '/enableUser' : '/disableUser';
+            let headers= {
+                    'Content-Type' : 'application/json',
+                    Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+                } 
+            API.post(apiName, path, {body: {"username": username}, headers})
+            .then((result)=>{
+                console.log(result);
+                resolve(result)
+            })
+            .catch((error)=>{
+                console.log(error);
+                reject(error)
+            })
+        })
+    }
+
+
     return (
-        <UserContext.Provider value={{listUsers, getUser}}>
+        <UserContext.Provider value={{listUsers, getUser, setUserState}}>
             {props.children}
         </UserContext.Provider>
     )
