@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect, Fragment} from 'react'
 import DeviceCardBase from './DeviceCardBase'
-import {makeStyles, Grid, Divider, Typography, Button, FormControl, Select, InputLabel } from '@material-ui/core';
+import {makeStyles, Grid, Divider, Typography, Button, FormControl, Select, InputLabel, FormLabel, FormGroup, FormHelperText } from '@material-ui/core';
 
 import {DeviceContext} from './../../../../context/DeviceProvider'
 import {EventContext} from './../../../../context/EventProvider'
@@ -35,33 +35,33 @@ const DeviceCardThreeLedTest = (props) => {
     const {setBackdrop, resetBackdrop} = useContext(EventContext)
     const {permissions} = useContext(AuthContext)
 
+    //const [state, setstate] = useState(deviceList[props.index]?.state)
+
     const [led1, setled1] = useState(deviceList[props.index].state?.reported?.['led1'])
     const [led2, setled2] = useState(deviceList[props.index].state?.reported?.['led2'])
     const [led3, setled3] = useState(deviceList[props.index].state?.reported?.['led3'])
 
-    const [change, setchange] = useState(false)
+    const [enableSet, setEnableSet] = useState(false)
+    const [error, setError] = useState([false, false, false])
 
     useEffect(() => {
-        setchange(led1 !== deviceList[props.index].state?.reported?.['led1'] || led2 !== deviceList[props.index].state?.reported?.['led2'] || led3 !== deviceList[props.index].state?.reported?.['led3'])
-        if(!change) {
+        setEnableSet(led1 !== deviceList[props.index].state.desired['led1'] || led2 !== deviceList[props.index].state.desired['led2'] || led3 !== deviceList[props.index].state.desired['led3'])
+        setError([deviceList[props.index].state.reported['led1'] !== deviceList[props.index].state.desired['led1'], deviceList[props.index].state.reported['led2'] !== deviceList[props.index].state.desired['led2'], deviceList[props.index].state.reported['led3'] !== deviceList[props.index].state.desired['led3']])
+    }, [led1, led2, led3, deviceList, props])
+
+    useEffect(() => {
+        if(!enableSet) {
             resetBackdrop(false)
         }
-    }, [led1, led2, led3, change]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [enableSet]) // eslint-disable-line react-hooks/exhaustive-deps
+
 
     useEffect(() => {
-        setled1(deviceList[props.index].state?.reported?.['led1'])
-        setled2(deviceList[props.index].state?.reported?.['led2'])
-        setled3(deviceList[props.index].state?.reported?.['led3'])
-    }, [deviceList, props.index])
+        setled1(deviceList[props.index].state?.desired?.['led1'])
+        setled2(deviceList[props.index].state?.desired?.['led2'])
+        setled3(deviceList[props.index].state?.desired?.['led3'])
+    }, [deviceList])
 
-    const handleChange = (onChange, value) => {
-        console.log(value);
-        if(value == 1){
-            onChange('on')
-        } else {
-            onChange('off')
-        }
-      };
 
     const handleClic = (event)=>{
         event.preventDefault()
@@ -77,22 +77,23 @@ const DeviceCardThreeLedTest = (props) => {
         func()
     }
 
-    const LedValue = (label, state, onChange) => {
+    const LedValue = (label, value, onChange, error) => {
 
         return(
             <Grid container spacing={2} justify="center" alignItems="center">
                 <Grid item xs={12}>
-                    <FormControl variant="outlined" className={classes.formControl} size="small">
+                    <FormControl variant="outlined" className={classes.formControl} size="small" error={error}>
                         <InputLabel htmlFor="age-native-helper">{label}</InputLabel>
                         <Select
                             native
-                            value={state === 'on' ? 1 : 0 }
+                            value={value === 'on' ? 1 : 0}
                             label={label}
-                            onChange={((event) => {handleChange(onChange, event.target.value )})}
+                            onChange={((event) => {onChange((event.target.value == 1 ? 'on' : 'off')) })}
                         >
                         <option value={0}>Off</option>
                         <option value={1}>On</option>
                         </Select>
+                        <FormHelperText>Reported: {deviceList[props.index].state.reported[label] }</FormHelperText>
                     </FormControl>
                 </Grid>
             </Grid>
@@ -137,13 +138,13 @@ const DeviceCardThreeLedTest = (props) => {
                                     <Grid item xs={12}>
                                         <Grid container spacing={2}>
                                             <Grid item xs={4} md={4}>
-                                                {LedValue('led1', led1, setled1 )}
+                                                {LedValue('led1', led1, setled1, error[0] )}
                                             </Grid>
                                             <Grid item xs={4} md={4}>
-                                                {LedValue('led2', led2, setled2 )}
+                                                {LedValue('led2', led2, setled2, error[1] )}
                                             </Grid>
                                             <Grid item xs={4} md={4}>
-                                                {LedValue('led3', led3, setled3 )}
+                                                {LedValue('led3', led3, setled3, error[2] )}
                                             </Grid>
                                         </Grid>
                                     </Grid>
@@ -152,7 +153,7 @@ const DeviceCardThreeLedTest = (props) => {
                                             variant="contained" 
                                             color="primary" 
                                             onClick={(event)=>{handleClic(event)}}
-                                            disabled = {!change}
+                                            disabled = {!enableSet}
                                         >Set</Button>
                                     </Grid>
                                 </Fragment>

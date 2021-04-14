@@ -200,6 +200,12 @@ const DeviceProvider = (props) => {
         })
     }
 
+    const functio_template = async() => {
+        return await new Promise((resolve, reject) => {
+            ;
+        })
+    }
+
     const getDeviceList = async()=>{
         return await new Promise((resolve, reject) => {
             const filter = {

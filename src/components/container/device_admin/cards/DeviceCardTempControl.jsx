@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect, Fragment} from 'react'
 import DeviceCardBase from './DeviceCardBase'
-import {makeStyles, Grid, Divider, Typography, Button, FormControl, TextField } from '@material-ui/core';
+import {makeStyles, Grid, Divider, Typography, Button, FormControl, TextField, InputAdornment } from '@material-ui/core';
 
 import {DeviceContext} from '../../../../context/DeviceProvider'
 import {EventContext} from '../../../../context/EventProvider'
@@ -36,18 +36,24 @@ const DeviceCardTempControl = (props) => {
     const {permissions} = useContext(AuthContext)
 
     const [setPoint, setSetPoint] = useState(parseFloat(deviceList[props.index].state?.reported?.['sp temperature']))
-    const [change, setchange] = useState(false)
+    
+    const [enableSet, setEnableSet] = useState(false)
+    const [error, setError] = useState([false])
 
     useEffect(() => {
-        setchange(setPoint !== deviceList[props.index].state?.reported?.['sp temperature'])
-        if(!change) {
+        setEnableSet(setPoint !== parseFloat(deviceList[props.index].state?.desired?.['sp temperature']))
+        setError([deviceList[props.index].state.reported['sp temperature'] !== deviceList[props.index].state.desired['sp temperature']])
+    }, [setPoint, deviceList, props]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        if(!enableSet) {
             resetBackdrop(false)
         }
-    }, [setPoint, change]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [enableSet]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
-        setSetPoint((parseFloat(deviceList[props.index].state?.reported?.['sp temperature'])))
-    }, [deviceList, props.index])
+        setSetPoint((parseFloat(deviceList[props.index].state?.desired?.['sp temperature'])))
+    }, [deviceList, props])
 
     const handleClic = (event)=>{
         event.preventDefault()
@@ -93,15 +99,20 @@ const DeviceCardTempControl = (props) => {
                                                 <Grid item xs={12} sm={6}>
                                                     <FormControl variant="outlined" className={classes.formControl} >
                                                         <TextField
+                                                            error={error[0]}
                                                             variant='outlined'
                                                             label="Temperature setpoint"
                                                             type="number"
                                                             value={setPoint}
                                                             inputProps={{ step: 0.5 }}
+                                                            InputProps={{
+                                                                endAdornment: <InputAdornment position="start">ºC</InputAdornment>,
+                                                              }}
                                                             size='small'
                                                             InputLabelProps={{
                                                             shrink: true,
                                                             }}
+                                                            helperText={`Reported: ${deviceList[props.index].state.reported['sp temperature']?.replace('.',',')} ºC`}
                                                             onChange={(event)=>{
                                                                 console.log(event);
                                                                 setSetPoint(parseFloat(event.target.value))
@@ -117,7 +128,7 @@ const DeviceCardTempControl = (props) => {
                                             variant="contained" 
                                             color="primary" 
                                             onClick={(event)=>{handleClic(event)}} 
-                                            disabled = {!change}
+                                            disabled = {!enableSet}
                                         >Set</Button>
                                     </Grid>
                                 </Fragment>
