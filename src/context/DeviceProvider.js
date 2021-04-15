@@ -5,7 +5,7 @@ import { CompanyContext } from './../context/CompanyProvider'
 import {listDevices} from './../graphql/queries_user'
 import {updateDevice} from './../graphql/mutations_user'
 
-import {API, PubSub} from '../Amplify'
+import {API, data, PubSub} from '../Amplify'
 
 export const DeviceContext = React.createContext()
 
@@ -234,8 +234,10 @@ const DeviceProvider = (props) => {
                 variables: {input}
             })
             .then((result)=>{
+                console.log(result.data.updateDevice.alias);
                 setDeviceList(list =>{ return list.map((element, index) => {
-                    if (index === idx) return({...element, alias})
+                    console.log(element, index, parseInt(idx));
+                    if (index === parseInt(idx)) {return({...element, alias: result.data.updateDevice.alias})}
                     return element
                 })})
                 resolve(result)
