@@ -60,7 +60,7 @@ const DeviceCardThreeLedTest = (props) => {
         setled1(deviceList[props.index].state?.desired?.['led1'])
         setled2(deviceList[props.index].state?.desired?.['led2'])
         setled3(deviceList[props.index].state?.desired?.['led3'])
-    }, [deviceList])
+    }, [deviceList, props])
 
 
     const handleClic = (event)=>{

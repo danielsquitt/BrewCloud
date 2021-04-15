@@ -3,7 +3,7 @@ import React,  {useContext, useEffect, useState} from 'react'
 import { CompanyContext } from './../context/CompanyProvider'
 
 import {listDevices} from './../graphql/queries_user'
-import {updateDevice} from './../graphql/mutations'
+import {updateDevice} from './../graphql/mutations_user'
 
 import {API, PubSub} from '../Amplify'
 
@@ -197,12 +197,6 @@ const DeviceProvider = (props) => {
                 if (element.name === thingName) return ({...element, telemetry: {...data}})
                 return element
             }))
-        })
-    }
-
-    const functio_template = async() => {
-        return await new Promise((resolve, reject) => {
-            ;
         })
     }
 
