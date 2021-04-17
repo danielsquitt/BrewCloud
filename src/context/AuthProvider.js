@@ -22,10 +22,12 @@ const permissions_document = {
     Prod: {
         editThingName: false,
         editThingShadow : true,
+        manageUsers: false
     },
     Admin: {
         editThingName: true,
         editThingShadow : true,
+        manageUsers: false
     }
 }
 

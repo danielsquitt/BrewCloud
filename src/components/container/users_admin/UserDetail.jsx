@@ -1,8 +1,9 @@
 import React, {useContext, useState, useEffect} from 'react'
 
-import {makeStyles, Grid, Card, CardHeader, CardContent, Divider, Typography, ButtonGroup, Button } from '@material-ui/core';
+import {makeStyles, Grid, Card, CardHeader, CardContent, Divider, Typography, ButtonGroup, Button, CircularProgress, IconButton,  Dialog, DialogActions, DialogContent, Select, FormControl, MenuItem, InputLabel } from '@material-ui/core';
 import clsx from 'clsx'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import EditIcon from '@material-ui/icons/Edit';
 
 import { UserContext } from './../../../context/UserProvider';
 import { AuthContext } from './../../../context/AuthProvider';
@@ -35,6 +36,10 @@ const useStyles = makeStyles((theme) => ({
     title: {
         fontWeight: 600,
     },
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
+    },
   }));
 
 
@@ -42,57 +47,51 @@ const UserDetail = (props) => {
 
     const classes = useStyles();
 
-    const {userList, setUserState}  = useContext(UserContext)
+    const {userList, setUserState, changeUserGroup}  = useContext(UserContext)
     const {userInfo}  = useContext(AuthContext)
 
     const [info, setinfo] = useState({})
 
-    const handleClic = (state)=>{
-        (async () => {
-          await setUserState(props.index, state)
-        })()
-    }
+    const [setUsetStateLoading, setSetUsetStateLoading] = useState(false)
+
+    const [edit, setedit] = useState(false)
+    const [group, setGroup] = useState('')
 
     useEffect(() => {
       setinfo(userList[props.index])
     }, [userList, props])
 
-    const options = () => {
-        if (userInfo.username !== info.Username){
-            return(
-                <Card elevation={1}> 
-                    <CardContent>
-                        <ButtonGroup>
-                            {
-                                info.Enabled ? (
-                                    <Button variant="contained" color="secondary" onClick={() => {handleClic(false)}}>Disable</Button>
-                                ) : (
-                                    <Button variant="contained" color="primary" onClick={() => {handleClic(true)}}>Enable</Button>
-                                )
-                            }
-                        </ButtonGroup>
-                    </CardContent>
-                </Card>
-            )
-        } else {
-            return null
-        }
-    }
+    useEffect(() => {
+      setGroup(info.AccessGroup)
+    }, [info])
 
-    const getAccessLevelString = (groups) => {
-        console.log('groups', groups )
-        let result = 'Viwer'
-        if(groups){
-            groups.forEach(group => {
-                if (group.search('Prod') > 0) result = 'Production'
-                if (group.search('Admin') > 0) result = 'Administrator'
-                if (group.search('Viwer') > 0) result = 'Viwer'
-            })
-        }
-        return result
-    }
+    const handleEdit = () => {
+      setedit(!edit);
+    };
+
+    const handleSave = () => {
+      changeUserGroup(props.index, group)
+      setedit(!edit);
+    };
+
+  const handleCancel = () => {
+    setGroup(info.Groups)
+    setedit(!edit);
+    };
+
+    const action = ()=>{
+      return(
+          <IconButton
+              onClick={handleEdit}
+              aria-label="edit"
+          >
+              <EditIcon color='primary'/>
+          </IconButton>
+      )
+  }
 
     return (
+      <div>
         <Grid container direction="column" spacing={1}>
             <Grid item>
                 <Card elevation={1}>
@@ -100,6 +99,7 @@ const UserDetail = (props) => {
                         title={info.Username}
                         subheader={info.sub}
                         titleTypographyProps={{className: classes.cardtitle}}
+                        action={userInfo.username !== info.Username ? action() : (null)}
                     />
                     <Divider/>
                     <Grid container component={CardContent} direction='column' spacing={4}>
@@ -166,17 +166,40 @@ const UserDetail = (props) => {
                                 Group:
                               </Grid>
                               <Grid item xs={7} component={Typography} className={classes.typography}>
-                                {getAccessLevelString(info.Groups)}
+                                {info.AccessGroup}
                               </Grid>                              
                             </Grid>
                         </Grid>
                     </Grid>
                 </Card>
             </Grid>
-            <Grid item>
-                {options()}
-            </Grid>
         </Grid>
+        <Dialog open={edit} onClose={handleCancel} aria-labelledby="form-dialog-title">
+        <DialogContent>
+          <FormControl className={classes.formControl}>
+            <InputLabel id="demo-simple-select-label">Group</InputLabel>
+            <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={group}
+                onChange={(event)=>{setGroup(event.target.value)}}
+              >
+                <MenuItem value="Administrator">Administrator</MenuItem>
+                <MenuItem value="Production">Production</MenuItem>
+                <MenuItem value="Viwer">Viwer</MenuItem>
+            </Select>
+          </FormControl>
+        </DialogContent>
+            <DialogActions>
+            <Button onClick={handleCancel} color="primary">
+                Cancel
+            </Button>
+            <Button onClick={handleSave} color="primary">
+                Save
+            </Button>
+            </DialogActions>
+        </Dialog>
+        </div>
     )
 }
 

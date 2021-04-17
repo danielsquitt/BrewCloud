@@ -7,12 +7,12 @@ export const UserContext = React.createContext()
 
 const UserProvider = (props) => {
 
-    const {info} = useContext(CompanyContext)
+    const {info: companyInfo} = useContext(CompanyContext)
     const [userList, setuserList] = useState([])
 
     useEffect(() => {
         //console.log('Info:',info);
-        if(info.name && true){
+        if(companyInfo.name && true){
             const func = async()=>{
                 listUsers()
                 .then((userlist)=>{
@@ -27,7 +27,7 @@ const UserProvider = (props) => {
             }
             func()
         }
-    }, [info])
+    }, [companyInfo])
 
     const listUsers = async() => {
         return await new Promise(async(resolve, reject) => {
@@ -38,9 +38,9 @@ const UserProvider = (props) => {
                     Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
                 } 
 
-            const listAdmin = API.get(apiName, path, {queryStringParameters: {"groupname": `${info.name}Admin`}, headers})
-            const listProd = API.get(apiName, path, {queryStringParameters: {"groupname": `${info.name}Prod`}, headers})
-            const listViwer = API.get(apiName, path, {queryStringParameters: {"groupname": `${info.name}Viwer`}, headers})
+            const listAdmin = API.get(apiName, path, {queryStringParameters: {"groupname": `${companyInfo.name}Admin`}, headers})
+            const listProd = API.get(apiName, path, {queryStringParameters: {"groupname": `${companyInfo.name}Prod`}, headers})
+            const listViwer = API.get(apiName, path, {queryStringParameters: {"groupname": `${companyInfo.name}Viwer`}, headers})
             
             const userList = []
 
@@ -90,13 +90,17 @@ const UserProvider = (props) => {
                 delete _user.UserAttributes
 
                 // Get user groups
-                const groups = []
+                let groups = []
                 result[1].value.Groups.forEach(element => {
+                    console.log(element);
                     groups.push(element.GroupName)
+                    if (element.GroupName.search(companyInfo.name) >= 0){
+                        if (element.GroupName.search('Prod') > 0) _user['AccessGroup'] = 'Production'
+                        if (element.GroupName.search('Admin') > 0) _user['AccessGroup'] = 'Administrator'
+                        if (element.GroupName.search('Viwer') > 0) _user['AccessGroup'] = 'Viwer'
+                    }
                 })
-                _user['Groups'] = groups
-
-                //console.log('User', _user)
+                _user['GropusName'] = groups
                 resolve(_user)
             })
         })
@@ -128,7 +132,7 @@ const UserProvider = (props) => {
         })
     }
 
-    const changeUserGroup = async(username, newGroup) => {
+    const changeUserGroup = async(idx, accesLevel) => {
         return await new Promise(async(resolve, reject) => {
             const apiName = 'AdminQueries';
             const pathRemove = '/removeUserFromGroup';
@@ -137,16 +141,62 @@ const UserProvider = (props) => {
                     'Content-Type' : 'application/json',
                     Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
                 } 
-            const currentGroupName = ``;
-            const newGroupName = ``;
-            const remove = API.post(apiName, pathRemove, {body: {"username": username}, headers})
-            const add = API.post(apiName, pathAdd, {body: {"username": username}, headers})
+            const currentGroupName = getUserGroup(idx);
+            const newGroupName = getNewUserGroup(accesLevel);
+            console.log(currentGroupName, newGroupName);
+            const remove = API.post(apiName, pathRemove, {body: {"username": userList[idx].Username, groupname: currentGroupName}, headers})
+            const add = API.post(apiName, pathAdd, {body: {"username": userList[idx].Username, groupname: newGroupName}, headers})
+            Promise.allSettled([remove, add])
+            .then(result => {
+                console.log(result);
+
+                if(result[0].status === "rejected") reject(result[0].reason.response)
+                if(result[1].status === "rejected") reject(result[1].reason.response)
+
+                setuserList((list) => {
+                    return list.map((user, index) =>{   
+                        if (index === parseInt(idx)){
+                            user.GropusName[user.GropusName.indexOf(currentGroupName)] = newGroupName
+                            user.AccessGroup = accesLevel
+
+                            return user
+                        }
+                        console.log(user);
+                        return user
+                    })
+                })
+
+
+                resolve(result)
+            })
         })    
+    }
+
+    const getUserGroup = (idx) => {
+        return userList[idx].GropusName.find(element => {
+            return element.search(companyInfo.name) >= 0
+        })
+    }
+
+    const getNewUserGroup = (accesLevel) => {
+        var userGroup = companyInfo.name
+        switch (accesLevel) {
+            case 'Production':
+                userGroup = userGroup +'Prod'
+                break;
+            case 'Administrator':
+                userGroup =userGroup +'Admin'
+                break;
+            default:
+                userGroup =userGroup +'Viwer'
+                break;
+        }
+        return userGroup
     }
 
 
     return (
-        <UserContext.Provider value={{userList, setUserState}}>
+        <UserContext.Provider value={{userList, setUserState, changeUserGroup}}>
             {props.children}
         </UserContext.Provider>
     )

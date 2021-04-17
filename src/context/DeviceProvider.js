@@ -152,8 +152,8 @@ const DeviceProvider = (props) => {
         })
     }
 
-    const devicehadowHandler = (thingName, payload, type) => {
-        //console.log(thingName, payload, version);
+    const devicehadowHandler = (thingName, payload, version, type) => {
+        //console.log(thingName, payload, type);
 
         switch (type) {
             case 'get':
@@ -167,7 +167,7 @@ const DeviceProvider = (props) => {
             case 'update':
                 setDeviceList((list) => {
                     return(list.map((device) => {        
-                        if (device.name === thingName){     // El elemento que queremos cambiar
+                        if (device.name === thingName){
                             Object.entries(payload).forEach((_subNewState)=>{
                                 if(device.state[_subNewState[0]]){
                                     Object.entries(_subNewState[1]).forEach((item) => {
