@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react'
 
-import {makeStyles, Grid, Card, CardHeader, CardContent, Divider , Typography, IconButton, TextField, Dialog, ButtonGroup, DialogContent, Button } from '@material-ui/core';
+import {makeStyles, Grid, Card, CardHeader, CardContent, Divider, Typography, ButtonGroup, Button } from '@material-ui/core';
 import clsx from 'clsx'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 
@@ -38,39 +38,27 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-const UserDetail = ({username}) => {
+const UserDetail = (props) => {
 
     const classes = useStyles();
 
-    const {getUser, setUserState}  = useContext(UserContext)
+    const {userList, setUserState}  = useContext(UserContext)
     const {userInfo}  = useContext(AuthContext)
 
     const [info, setinfo] = useState({})
 
-    useEffect(() => {
-        if(username !== ''){
-            getUser(username)
-            .then((user)=>{
-                setinfo(user)
-            })
-        }
-        console.log(userInfo.username);
-    }, [username])
-
     const handleClic = (state)=>{
-        setUserState(username, state)
-        .then(()=>{
-            setinfo((user =>{
-                return({
-                    ...user,
-                    Enabled: state
-                })
-            }))
-        })
+        (async () => {
+          await setUserState(props.index, state)
+        })()
     }
 
+    useEffect(() => {
+      setinfo(userList[props.index])
+    }, [userList, props])
+
     const options = () => {
-        if (userInfo.username !== username){
+        if (userInfo.username !== info.Username){
             return(
                 <Card elevation={1}> 
                     <CardContent>
@@ -107,12 +95,9 @@ const UserDetail = ({username}) => {
     return (
         <Grid container direction="column" spacing={1}>
             <Grid item>
-                {options()}
-            </Grid>
-            <Grid item>
                 <Card elevation={1}>
                     <CardHeader
-                        title={username}
+                        title={info.Username}
                         subheader={info.sub}
                         titleTypographyProps={{className: classes.cardtitle}}
                     />
@@ -187,6 +172,9 @@ const UserDetail = ({username}) => {
                         </Grid>
                     </Grid>
                 </Card>
+            </Grid>
+            <Grid item>
+                {options()}
             </Grid>
         </Grid>
     )

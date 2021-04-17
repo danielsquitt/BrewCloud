@@ -5,7 +5,7 @@ import { CompanyContext } from './../context/CompanyProvider'
 import {listDevices} from './../graphql/queries_user'
 import {updateDevice} from './../graphql/mutations_user'
 
-import {API, data, PubSub} from '../Amplify'
+import {API, PubSub} from '../Amplify'
 
 export const DeviceContext = React.createContext()
 
@@ -152,7 +152,7 @@ const DeviceProvider = (props) => {
         })
     }
 
-    const devicehadowHandler = (thingName, payload, version, type) => {
+    const devicehadowHandler = (thingName, payload, type) => {
         //console.log(thingName, payload, version);
 
         switch (type) {
@@ -234,9 +234,7 @@ const DeviceProvider = (props) => {
                 variables: {input}
             })
             .then((result)=>{
-                console.log(result.data.updateDevice.alias);
                 setDeviceList(list =>{ return list.map((element, index) => {
-                    console.log(element, index, parseInt(idx));
                     if (index === parseInt(idx)) {return({...element, alias: result.data.updateDevice.alias})}
                     return element
                 })})

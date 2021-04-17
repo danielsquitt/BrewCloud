@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 
 import {API, Auth} from '../Amplify';
 import {CompanyContext } from './../context/CompanyProvider'
@@ -8,6 +8,7 @@ export const UserContext = React.createContext()
 const UserProvider = (props) => {
 
     const {info} = useContext(CompanyContext)
+    const [userList, setuserList] = useState([])
 
     useEffect(() => {
         //console.log('Info:',info);
@@ -15,11 +16,13 @@ const UserProvider = (props) => {
             const func = async()=>{
                 listUsers()
                 .then((userlist)=>{
-                    //console.log('userlist',userlist);
-                    userlist.forEach(async(element) => {
-                        //console.log('Element', element);
-                        await getUser(element.Username)
-                    })
+                    return Promise.all(userlist.map((element) => {
+                       return getUser(element.Username)
+                    }))
+                })
+                .then((userlist)=>{
+                    console.log('userlist', userlist);
+                    setuserList(userlist)
                 })
             }
             func()
@@ -99,17 +102,23 @@ const UserProvider = (props) => {
         })
     }
 
-    const setUserState = async(username, status)=>{
+    const setUserState = async(index, status)=>{
         return await new Promise(async(resolve, reject) => {
+            const username = userList[index].Username
             let apiName = 'AdminQueries';
             let path = status ? '/enableUser' : '/disableUser';
             let headers= {
                     'Content-Type' : 'application/json',
                     Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
                 } 
-            API.post(apiName, path, {body: {"username": username}, headers})
+            await API.post(apiName, path, {body: {"username": username}, headers})
             .then((result)=>{
-                console.log(result);
+                setuserList((list)=>{
+                    return list.map((user, idx)=>{
+                        if (idx === parseInt(index)) return {...user, Enabled: status}
+                        return user
+                    })
+                })
                 resolve(result)
             })
             .catch((error)=>{
@@ -119,9 +128,25 @@ const UserProvider = (props) => {
         })
     }
 
+    const changeUserGroup = async(username, newGroup) => {
+        return await new Promise(async(resolve, reject) => {
+            const apiName = 'AdminQueries';
+            const pathRemove = '/removeUserFromGroup';
+            const pathAdd = '/addUserToGroup'
+            const headers= {
+                    'Content-Type' : 'application/json',
+                    Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+                } 
+            const currentGroupName = ``;
+            const newGroupName = ``;
+            const remove = API.post(apiName, pathRemove, {body: {"username": username}, headers})
+            const add = API.post(apiName, pathAdd, {body: {"username": username}, headers})
+        })    
+    }
+
 
     return (
-        <UserContext.Provider value={{listUsers, getUser, setUserState}}>
+        <UserContext.Provider value={{userList, setUserState}}>
             {props.children}
         </UserContext.Provider>
     )

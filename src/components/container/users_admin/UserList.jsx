@@ -6,6 +6,8 @@ import DoneIcon from '@material-ui/icons/Done';
 
 import { green, red } from '@material-ui/core/colors';
 
+import { UserContext } from './../../../context/UserProvider';
+
 const useStyles = makeStyles((theme) => ({
     root: {
       width: '100%',
@@ -17,7 +19,9 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const UserList = ({list, index, setIndex}) => {
+const UserList = ({index, setIndex}) => {
+
+    const {userList} = useContext(UserContext)
 
     const classes = useStyles(); 
 
@@ -43,7 +47,7 @@ const UserList = ({list, index, setIndex}) => {
                 <Paper style={{maxHeight: '600px', overflow: 'auto'}}>
                     <List>
                         {
-                            list.map((element, index) => {
+                            userList.map((element, index) => {
                                 return(
                                     <ListItem 
                                         button

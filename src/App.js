@@ -11,7 +11,6 @@ import EventProvider from './context/EventProvider';
 import theme from './themeConfig' ;
 import CompanyProvider from './context/CompanyProvider';
 import { CssBaseline } from '@material-ui/core';
-import UserProvider from './context/UserProvider';
 
 function App(props) {
   return (
@@ -20,9 +19,7 @@ function App(props) {
         <EventProvider>
           <AuthProvider>
             <CompanyProvider>
-              <UserProvider>
                 <Main />
-              </UserProvider>
             </CompanyProvider>
           </AuthProvider>
         </EventProvider>

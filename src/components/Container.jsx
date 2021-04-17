@@ -11,6 +11,7 @@ import Sidebar from './container/Sidebar'
 
 // CONTEXT
 import DeviceProvider from './../context/DeviceProvider';
+import UserProvider from './../context/UserProvider';
 
 import ContentMain from './container/ContentMain';
 
@@ -45,13 +46,15 @@ const Container = () => {
 
     return (
       <DeviceProvider>
-        <Route>
-            <div className={classes.root}>
-                <Navbar open={open} onClose={handleDrawerClose} onOpen={handleDrawerOpen}/>
-                <Sidebar open={open} onClose={handleDrawerClose} onOpen={handleDrawerOpen} selectedIndex={selectedIndex}/>
-                <ContentMain open={open} setSelectedIndex={setSelectedIndex}/>
-            </div>
-        </Route>    
+        <UserProvider>
+          <Route>
+              <div className={classes.root}>
+                  <Navbar open={open} onClose={handleDrawerClose} onOpen={handleDrawerOpen}/>
+                  <Sidebar open={open} onClose={handleDrawerClose} onOpen={handleDrawerOpen} selectedIndex={selectedIndex}/>
+                  <ContentMain open={open} setSelectedIndex={setSelectedIndex}/>
+              </div>
+          </Route>    
+        </UserProvider>
       </DeviceProvider>
     )
 }
