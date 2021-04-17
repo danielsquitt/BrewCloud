@@ -209,6 +209,7 @@ const Profile = ({setSelectedIndex}) => {
             </Grid>
             <Dialog open={edit} onClose={handleParamCancel} aria-labelledby="form-dialog-title">
               <DialogTitle id="form-dialog-title">Edit Parameters</DialogTitle>
+              <Divider/>
                 <DialogContent>
                   <TextField
                       autoFocus
@@ -239,6 +240,7 @@ const Profile = ({setSelectedIndex}) => {
                       onChange={e => setNewEmail(e.target.value)}
                     />
                   </DialogContent>
+                  <Divider/>
                 <DialogActions>
                 <Button onClick={handleParamCancel} color="primary">
                     Cancel
@@ -251,6 +253,7 @@ const Profile = ({setSelectedIndex}) => {
             <Dialog open={changePass} onClose={handlePassCancel} aria-labelledby="form-dialog-title">
               <form noValidate autoComplete="off" onSubmit={handleSubmit(handlePassSave)}>
                 <DialogTitle id="form-dialog-title">Change password</DialogTitle>
+                <Divider/>
                 <DialogContent>
                   <FormControl className={classes.form} noValidate variant="outlined" >
                     <InputLabel>Password</InputLabel>
@@ -342,6 +345,7 @@ const Profile = ({setSelectedIndex}) => {
                     { errors.repeat_password ? ( <FormHelperText error > {errors.repeat_password.message} </FormHelperText> ) : null }
                   </FormControl>
                 </DialogContent>
+                <Divider/>
                 <DialogActions>
                   <Button onClick={handlePassCancel} color="primary">
                     Cancel

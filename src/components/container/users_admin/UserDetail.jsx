@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react'
 
-import {makeStyles, Grid, Card, CardHeader, CardContent, Divider, Typography, ButtonGroup, Button, CircularProgress, IconButton,  Dialog, DialogActions, DialogContent, Select, FormControl, MenuItem, InputLabel } from '@material-ui/core';
+import {makeStyles, Grid, Card, CardHeader, FormControlLabel, Switch, DialogTitle, CardContent, Divider, Typography, FormGroup, Button, CircularProgress, IconButton,  Dialog, DialogActions, DialogContent, Select, FormControl, MenuItem, InputLabel } from '@material-ui/core';
 import clsx from 'clsx'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import EditIcon from '@material-ui/icons/Edit';
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 600,
     },
     formControl: {
-      margin: theme.spacing(1),
+      margin: theme.spacing(2),
       minWidth: 120,
     },
   }));
@@ -55,7 +55,8 @@ const UserDetail = (props) => {
     const [setUsetStateLoading, setSetUsetStateLoading] = useState(false)
 
     const [edit, setedit] = useState(false)
-    const [group, setGroup] = useState('')
+    const [group, setGroup] = useState('Viwer')
+    const [enabled, setEnabled] = useState(false)
 
     useEffect(() => {
       setinfo(userList[props.index])
@@ -63,6 +64,7 @@ const UserDetail = (props) => {
 
     useEffect(() => {
       setGroup(info.AccessGroup)
+      setEnabled(info.Enabled)
     }, [info])
 
     const handleEdit = () => {
@@ -70,12 +72,14 @@ const UserDetail = (props) => {
     };
 
     const handleSave = () => {
-      changeUserGroup(props.index, group)
+      if(group !== info.AccessGroup) changeUserGroup(props.index, group)
+      if(enabled !== info.Enabled) setUserState(props.index, enabled)
       setedit(!edit);
     };
 
   const handleCancel = () => {
-    setGroup(info.Groups)
+    setGroup(info.AccessGroup)
+    setEnabled(info.Enabled)
     setedit(!edit);
     };
 
@@ -175,21 +179,35 @@ const UserDetail = (props) => {
             </Grid>
         </Grid>
         <Dialog open={edit} onClose={handleCancel} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Edit {info.Username}</DialogTitle>
+        <Divider/>
         <DialogContent>
+            <FormGroup aria-label="position" colum>
           <FormControl className={classes.formControl}>
-            <InputLabel id="demo-simple-select-label">Group</InputLabel>
-            <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={group}
-                onChange={(event)=>{setGroup(event.target.value)}}
-              >
-                <MenuItem value="Administrator">Administrator</MenuItem>
-                <MenuItem value="Production">Production</MenuItem>
-                <MenuItem value="Viwer">Viwer</MenuItem>
-            </Select>
-          </FormControl>
+              <InputLabel id="demo-simple-select-label">Group</InputLabel>
+              <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={group}
+                  onChange={(event)=>{setGroup(event.target.value)}}
+                >
+                  <MenuItem value="Administrator">Administrator</MenuItem>
+                  <MenuItem value="Production">Production</MenuItem>
+                  <MenuItem value="Viwer">Viwer</MenuItem>
+              </Select>
+              </FormControl>
+              <FormControl className={classes.formControl}>
+              <FormControlLabel
+                  value="enable"
+                  control={<Switch color="primary" checked={enabled} onChange={(event)=>{setEnabled(event.target.checked)}}/>}
+                  label="Enable"
+                  labelPlacement="start"
+              />
+              </FormControl>
+            </FormGroup>
+
         </DialogContent>
+        <Divider/>
             <DialogActions>
             <Button onClick={handleCancel} color="primary">
                 Cancel
