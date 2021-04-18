@@ -108,6 +108,8 @@ const AuthProvider = (props) => {
                     setUser(_user)
                     setUserInfo(getUserInfo(_user))
                     setPermissions(getgetAccessLevelDocumment(_user.signInUserSession.idToken.payload['cognito:groups']))
+                    Auth.currentCredentials().then((info) => {
+                    console.log(`%cIdentity Id:%c${info.identityId}`, "font-size: 15px; font-weight: bold", "color:blue; font-size: 15px")})
                     resolve(_user)
                 }
             })
@@ -126,6 +128,7 @@ const AuthProvider = (props) => {
             user.signOut()
             setState({logged: false, loading: false, message: ''})
             setUser(false)
+            setUserInfo(false)
             setPermissions(init_permissions)
         }
     }

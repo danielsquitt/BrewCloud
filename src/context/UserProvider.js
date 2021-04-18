@@ -21,13 +21,13 @@ const UserProvider = (props) => {
                     }))
                 })
                 .then((userlist)=>{
-                    console.log('userlist', userlist);
+                    //console.log('userlist', userlist);
                     setuserList(userlist)
                 })
             }
             func()
         }
-    }, [companyInfo])
+    }, [companyInfo]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const listUsers = async() => {
         return await new Promise(async(resolve, reject) => {
@@ -92,7 +92,7 @@ const UserProvider = (props) => {
                 // Get user groups
                 let groups = []
                 result[1].value.Groups.forEach(element => {
-                    console.log(element);
+                    //console.log(element);
                     groups.push(element.GroupName)
                     if (element.GroupName.search(companyInfo.name) >= 0){
                         if (element.GroupName.search('Prod') > 0) _user['AccessGroup'] = 'Production'
@@ -148,7 +148,7 @@ const UserProvider = (props) => {
             const add = API.post(apiName, pathAdd, {body: {"username": userList[idx].Username, groupname: newGroupName}, headers})
             Promise.allSettled([remove, add])
             .then(result => {
-                console.log(result);
+                //console.log(result);
 
                 if(result[0].status === "rejected") reject(result[0].reason.response)
                 if(result[1].status === "rejected") reject(result[1].reason.response)
@@ -161,7 +161,7 @@ const UserProvider = (props) => {
 
                             return user
                         }
-                        console.log(user);
+                        //console.log(user);
                         return user
                     })
                 })

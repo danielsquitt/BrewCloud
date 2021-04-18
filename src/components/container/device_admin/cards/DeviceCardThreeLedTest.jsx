@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect, Fragment} from 'react'
 import DeviceCardBase from './DeviceCardBase'
-import {makeStyles, Grid, Divider, Typography, Button, FormControl, Select, InputLabel, FormLabel, FormGroup, FormHelperText } from '@material-ui/core';
+import {makeStyles, Grid, Divider, Typography, Button, FormControl, Select, InputLabel, FormHelperText } from '@material-ui/core';
 
 import {DeviceContext} from './../../../../context/DeviceProvider'
 import {EventContext} from './../../../../context/EventProvider'
@@ -88,7 +88,7 @@ const DeviceCardThreeLedTest = (props) => {
                             native
                             value={value === 'on' ? 1 : 0}
                             label={label}
-                            onChange={((event) => {onChange((event.target.value == 1 ? 'on' : 'off')) })}
+                            onChange={((event) => {onChange((parseInt(event.target.value) === 1 ? 'on' : 'off')) })}
                         >
                         <option value={0}>Off</option>
                         <option value={1}>On</option>

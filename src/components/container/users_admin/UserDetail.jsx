@@ -1,12 +1,13 @@
+// LIBRARIES
 import React, {useContext, useState, useEffect} from 'react'
-
-import {makeStyles, Grid, Card, CardHeader, FormControlLabel, Switch, DialogTitle, CardContent, Divider, Typography, FormGroup, Button, CircularProgress, IconButton,  Dialog, DialogActions, DialogContent, Select, FormControl, MenuItem, InputLabel } from '@material-ui/core';
+import {makeStyles, Grid, Card, CardHeader, FormControlLabel, Switch, DialogTitle, CardContent, Divider, Typography, FormGroup, Button, IconButton,  Dialog, DialogActions, DialogContent, Select, FormControl, MenuItem, InputLabel } from '@material-ui/core';
 import clsx from 'clsx'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import EditIcon from '@material-ui/icons/Edit';
-
+// CONTEXT
 import { UserContext } from './../../../context/UserProvider';
 import { AuthContext } from './../../../context/AuthProvider';
+
 
 const useStyles = makeStyles((theme) => ({
     cardtitle: {
@@ -45,44 +46,49 @@ const useStyles = makeStyles((theme) => ({
 
 const UserDetail = (props) => {
 
+    // Classes
     const classes = useStyles();
-
+    // Constxt
     const {userList, setUserState, changeUserGroup}  = useContext(UserContext)
     const {userInfo}  = useContext(AuthContext)
-
+    // Page info state
     const [info, setinfo] = useState({})
-
-    const [setUsetStateLoading, setSetUsetStateLoading] = useState(false)
-
+    // Dialog handlers state
     const [edit, setedit] = useState(false)
     const [group, setGroup] = useState('Viwer')
     const [enabled, setEnabled] = useState(false)
 
+    // Load page info
     useEffect(() => {
       setinfo(userList[props.index])
     }, [userList, props])
 
+    // Load dialog values
     useEffect(() => {
       setGroup(info.AccessGroup)
       setEnabled(info.Enabled)
     }, [info])
 
+    // Handle edit button
     const handleEdit = () => {
       setedit(!edit);
     };
 
+    // Handle save button
     const handleSave = () => {
       if(group !== info.AccessGroup) changeUserGroup(props.index, group)
       if(enabled !== info.Enabled) setUserState(props.index, enabled)
       setedit(!edit);
     };
 
-  const handleCancel = () => {
-    setGroup(info.AccessGroup)
-    setEnabled(info.Enabled)
-    setedit(!edit);
+    // Handle cancel button
+    const handleCancel = () => {
+      setGroup(info.AccessGroup)
+      setEnabled(info.Enabled)
+      setedit(!edit);
     };
 
+    // Card acction element -> edit
     const action = ()=>{
       return(
           <IconButton
@@ -92,8 +98,64 @@ const UserDetail = (props) => {
               <EditIcon color='primary'/>
           </IconButton>
       )
-  }
+    }
 
+    // Data row
+    const row = (label, value, mainsize, size1, size2, style) => {
+      return(
+        <Grid container item xs={mainsize} spacing={1}>
+          <Grid item xs={size1} component={Typography} className={clsx(classes.typography, classes.title)}>
+            {label}:
+          </Grid>
+          <Grid item xs={size2} component={Typography} className={style}>
+            {value}
+          </Grid>
+        </Grid>
+      )
+    }
+
+    // Edit dialog
+    const dialog = () => {
+      return(
+        <Dialog open={edit} onClose={handleCancel} aria-labelledby="form-dialog-title">
+            <DialogTitle id="form-dialog-title">Edit {info.Username}</DialogTitle>
+            <Divider/>
+            <DialogContent>
+                <FormGroup aria-label="position" colum>
+                  <FormControl className={classes.formControl}>
+                      <InputLabel id="demo-simple-select-label">Group</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={group}
+                        onChange={(event)=>{setGroup(event.target.value)}}
+                      >
+                          <MenuItem value="Administrator">Administrator</MenuItem>
+                          <MenuItem value="Production">Production</MenuItem>
+                          <MenuItem value="Viwer">Viwer</MenuItem>
+                      </Select>
+                  </FormControl>
+                  <FormControl className={classes.formControl}>
+                      <FormControlLabel
+                        value="enable"
+                        control={<Switch color="primary" checked={enabled} onChange={(event)=>{setEnabled(event.target.checked)}}/>}
+                        label="Enable"
+                        labelPlacement="start"
+                      />
+                  </FormControl>
+                </FormGroup>
+
+            </DialogContent>
+            <Divider/>
+            <DialogActions>
+                <Button onClick={handleCancel} color="primary">Cancel</Button>
+                <Button onClick={handleSave} color="primary">Save</Button>
+            </DialogActions>
+        </Dialog>
+      )
+    }
+
+    // Return
     return (
       <div>
         <Grid container direction="column" spacing={1}>
@@ -114,109 +176,22 @@ const UserDetail = (props) => {
                               </Grid>
                             </Grid>
                             <Grid container item xs={7} spacing={4}>
-                              <Grid container item xs={12} spacing={1}>
-                                <Grid item xs={12} component={Typography} className={clsx(classes.typography, classes.title)}>
-                                  Name:
-                                </Grid>
-                                <Grid item xs={12} component={Typography} className={classes.typography}>
-                                  {info.name}
-                                </Grid>
-                              </Grid>
-                              <Grid container item xs={12} spacing={1}>
-                                <Grid item xs={12} component={Typography} className={clsx(classes.typography, classes.title)}>
-                                  Family name:
-                                </Grid>
-                                <Grid item xs={12} component={Typography} className={classes.typography}>
-                                  {info.family_name}
-                                </Grid>
-                              </Grid>
+                              {row('Name', info.name, 12, 12, 12, classes.typography)}
+                              {row('Family name', info.family_name, 12, 12, 12, classes.typography)}
                             </Grid>
                         </Grid>
                         <Grid container item xs={12} direction="column" alignItems="center" spacing={2}>
-                            <Grid container item xs={10} spacing={1}>
-                              <Grid item xs={5} component={Typography} className={clsx(classes.typography, classes.title)}>
-                                Status:
-                              </Grid>
-                              <Grid item xs={7} component={Typography} className={clsx(classes.typography, {[classes.typography_gren]: info.UserStatus === 'CONFIRMED', [classes.typography_red]: info.UserStatus !== 'CONFIRMED' })}>
-                                {info.UserStatus}
-                              </Grid>                              
-                            </Grid>
-                            <Grid container item xs={10} spacing={1}>
-                              <Grid item xs={5} component={Typography} className={clsx(classes.typography, classes.title)}>
-                                Enabled:
-                              </Grid>
-                              <Grid item xs={7} component={Typography} className={clsx(classes.typography, {[classes.typography_gren]: info.Enabled, [classes.typography_red]: !info.Enabled})}>
-                                {info.Enabled ? "Yes" : "No"}
-                              </Grid>                              
-                            </Grid>
-                            <Grid container item xs={10} spacing={1}>
-                              <Grid item xs={5} component={Typography} className={clsx(classes.typography, classes.title)}>
-                                Email:
-                              </Grid>
-                              <Grid item xs={7} component={Typography} className={classes.typography}>
-                                {info.email}
-                              </Grid>                              
-                            </Grid>
-                            <Grid container item xs={10} spacing={1}>
-                              <Grid item xs={5} component={Typography} className={clsx(classes.typography, classes.title)}>  
-                                Email verified:
-                              </Grid>
-                              <Grid item xs={7} component={Typography} className={clsx(classes.typography, {[classes.typography_gren]: info.email_verified, [classes.typography_red]: !info.email_verified})}>
-                                {info.email_verified ? "Yes" : "No"}
-                              </Grid>                              
-                            </Grid>
-                            <Grid container item xs={10} spacing={1}>
-                              <Grid item xs={5} component={Typography} className={clsx(classes.typography, classes.title)}>  
-                                Group:
-                              </Grid>
-                              <Grid item xs={7} component={Typography} className={classes.typography}>
-                                {info.AccessGroup}
-                              </Grid>                              
-                            </Grid>
+                            {row('Status', info.UserStatus, 10, 5, 7, classes.typography)}
+                            {row('Enabled', info.Enabled ? "Yes" : "No", 10, 5, 7, clsx(classes.typography, {[classes.typography_gren]: info.Enabled, [classes.typography_red]: !info.Enabled}))}
+                            {row('Email', info.email, 10, 5, 7, classes.typography)}
+                            {row('Email verified', info.email_verified ? "Yes" : "No", 10, 5, 7, clsx(classes.typography, {[classes.typography_gren]: info.email_verified, [classes.typography_red]: !info.email_verified}))}
+                            {row('Group', info.AccessGroup, 10, 5, 7, classes.typography)}
                         </Grid>
                     </Grid>
                 </Card>
             </Grid>
         </Grid>
-        <Dialog open={edit} onClose={handleCancel} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Edit {info.Username}</DialogTitle>
-        <Divider/>
-        <DialogContent>
-            <FormGroup aria-label="position" colum>
-          <FormControl className={classes.formControl}>
-              <InputLabel id="demo-simple-select-label">Group</InputLabel>
-              <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={group}
-                  onChange={(event)=>{setGroup(event.target.value)}}
-                >
-                  <MenuItem value="Administrator">Administrator</MenuItem>
-                  <MenuItem value="Production">Production</MenuItem>
-                  <MenuItem value="Viwer">Viwer</MenuItem>
-              </Select>
-              </FormControl>
-              <FormControl className={classes.formControl}>
-              <FormControlLabel
-                  value="enable"
-                  control={<Switch color="primary" checked={enabled} onChange={(event)=>{setEnabled(event.target.checked)}}/>}
-                  label="Enable"
-                  labelPlacement="start"
-              />
-              </FormControl>
-            </FormGroup>
-
-        </DialogContent>
-        <Divider/>
-            <DialogActions>
-            <Button onClick={handleCancel} color="primary">
-                Cancel
-            </Button>
-            <Button onClick={handleSave} color="primary">
-                Save
-            </Button>
-            </DialogActions>
-        </Dialog>
+        {dialog()}
         </div>
     )
 }

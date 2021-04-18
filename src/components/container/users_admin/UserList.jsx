@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext} from 'react'
 import {makeStyles, Paper, Card, CardHeader, Divider, CardContent, List, ListItem, ListItemText, ListItemIcon} from '@material-ui/core';
 
 import ClearIcon from '@material-ui/icons/Clear';
