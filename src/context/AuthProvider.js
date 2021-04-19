@@ -1,5 +1,6 @@
 
 // LIBRARIS
+import { DomainRounded } from '@material-ui/icons';
 import React, {useEffect, useState } from 'react'
 import {Auth} from '../Amplify';
 
@@ -50,9 +51,10 @@ const AuthProvider = (props) => {
     useEffect(() => {
         if (state.logged) {
             const interval = user.signInUserSession.accessToken.payload.exp - user.signInUserSession.accessToken.payload.iat
+            console.log('Refresh token interval:', interval*1000);
             const id = setInterval(() => {
                 refresh()
-                .then()
+                .then(data => setUser(data))
             }, interval*1000)
 
             return () => clearInterval(id)
@@ -199,6 +201,40 @@ const AuthProvider = (props) => {
         })
     }
 
+    // SEND VERIFICATION CODE
+    //----------------------------------------------------------------------------------
+    const sendVerificationCode = async() => {
+        console.log('Send verification code')
+        return await new Promise((resolve, reject) => {
+            Auth.verifyUserAttribute(user, 'email')
+            .then((result)=>{
+                //console.log(result);
+                resolve(result)
+            })
+            .catch((err) => {
+                console.log(err);
+                reject(err)
+            })
+        })
+    }
+
+    // CONFIRM ENAIL
+    //----------------------------------------------------------------------------------
+    const confirmEmail = async(code) => {
+        console.log('confirm email: ', code)
+        return await new Promise((resolve, reject) => {
+            Auth.verifyUserAttributeSubmit(user, 'email', code)
+            .then((result)=>{
+                console.log(result);
+                resolve(result)
+            })
+            .catch((err) => {
+                console.log(err);
+                reject(err)
+            })
+        })
+    }
+
     const getAccessLevelString = (group) => {
         if (group.search('Prod') >= 0) return 'Production'
         if (group.search('Admin') >= 0) return 'Administrator'
@@ -233,7 +269,7 @@ const AuthProvider = (props) => {
     // RETRURN
     //----------------------------------------------------------------------------------
     return (
-        <AuthContext.Provider value={{state, userInfo, permissions, login, updateUserPassword, logout, updateAtributes, changePassword}}>
+        <AuthContext.Provider value={{state, userInfo, permissions, login, updateUserPassword, logout, updateAtributes, changePassword, sendVerificationCode, confirmEmail}}>
             {props.children}
         </AuthContext.Provider>
     )

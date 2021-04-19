@@ -22,7 +22,7 @@ const EventProvider = (props) => {
     const [alertArray, setalertArray] = useState([])
 
     const newAlert = (severity, message) => {
-        console.log('severity', severity)
+        //console.log('severity', severity)
         setalertArray(alertArray.concat([
             genAlert(severity, message)
     ]))
@@ -30,7 +30,7 @@ const EventProvider = (props) => {
 
     const genAlert = (severity, message)=>{
         
-        console.log('severity', severity)
+        //console.log('severity', severity)
         return(
             <Snackbar 
                 key={alertArray.length}

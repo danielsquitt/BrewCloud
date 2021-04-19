@@ -1,5 +1,5 @@
 import React, {useEffect, useContext, useState} from 'react'
-import {makeStyles, Grid, Card, CardHeader, CardContent, Divider, Typography, IconButton, TextField, Dialog, DialogActions, DialogContent, Button, DialogTitle, FormControl, InputLabel, FormHelperText, InputAdornment, Input  } from '@material-ui/core';
+import {makeStyles, Grid, Card, CardHeader, CardContent, Divider, Typography, IconButton, TextField, Dialog, DialogActions, DialogContent, Button, DialogTitle, FormControl, InputLabel, FormHelperText, InputAdornment, Input, GridListTileBar  } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import { useForm } from "react-hook-form";
 import EditIcon from '@material-ui/icons/Edit';
@@ -55,8 +55,8 @@ const useStyles = makeStyles((theme) => ({
 const Profile = ({setSelectedIndex}) => {
 
     const classes = useStyles();
-    const {userInfo, updateAtributes, changePassword} = useContext(AuthContext)
-    const {newError} = useContext(EventContext)
+    const {userInfo, updateAtributes, changePassword, sendVerificationCode, confirmEmail} = useContext(AuthContext)
+    const {newError, newSuccess} = useContext(EventContext)
 
     const [edit, setedit] = useState(false)
     const [newName, setNewName] = useState('')
@@ -73,6 +73,9 @@ const Profile = ({setSelectedIndex}) => {
     const [password, setPassword] = useState('')
     const [password1, setPassword1] = useState('')
     const [password2, setPassword2] = useState('')
+
+    const [veryfyEmail, setVeryfyEmail] = useState(false)
+    const [verificationCode, setVerificationCode] = useState('test')
 
     useEffect(() => {
       setSelectedIndex(0)
@@ -124,6 +127,33 @@ const Profile = ({setSelectedIndex}) => {
       setPassword2('')
       setChangePass(!changePass);
     };
+
+    const handleVerifyEmailSave = async() => {
+      await confirmEmail(verificationCode)
+      .then((result) => {
+        console.log(result);
+        newSuccess(`Email ${userInfo.email} verified`)
+      })
+      .catch((error) => {
+        newError(error.message)
+      })
+      setVeryfyEmail(!veryfyEmail)
+    }
+
+    const handleVerifyEmailCancel = () => {
+      setVeryfyEmail(!veryfyEmail)
+    }
+
+    const handleVerifySendCode = async() => {
+      await sendVerificationCode()
+      .then((result) => {
+        console.log(result);
+        newSuccess(`Email with verification code send to ${userInfo.email}`)
+      })
+      .catch((error) => {
+        newError(error.message)
+      })
+    }
 
     const action = ()=>{
       return(
@@ -191,6 +221,14 @@ const Profile = ({setSelectedIndex}) => {
                               </Grid>                              
                             </Grid>
                             <Grid container item xs={10} spacing={1}>
+                              <Grid item xs={5} component={Typography} className={clsx(classes.typography, classes.title)}>
+                                Email verified:
+                              </Grid>
+                              <Grid item xs={7} component={Typography} className={classes.typography}>
+                                {userInfo.email_verified ? 'Yes' : 'No'}
+                              </Grid>                              
+                            </Grid>
+                            <Grid container item xs={10} spacing={1}>
                               <Grid item xs={5} component={Typography} className={clsx(classes.typography, classes.title)}>  
                                 Group:
                               </Grid>
@@ -202,7 +240,14 @@ const Profile = ({setSelectedIndex}) => {
                         </Grid>
                         <Divider/>
                         <CardContent>
-                            <Button variant="contained" color="primary" onClick={()=>{setChangePass(!changePass)}}>Change Password</Button>
+                            <Grid container spacing={1}>
+                              <Grid item> 
+                                <Button variant="contained" color="primary" onClick={()=>{setChangePass(!changePass)}}>Change Password</Button>
+                              </Grid>
+                              <Grid item> 
+                                <Button variant="contained" color="primary" onClick={()=>{setVeryfyEmail(!veryfyEmail)}}>Verify email</Button>
+                              </Grid>
+                            </Grid>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -355,6 +400,36 @@ const Profile = ({setSelectedIndex}) => {
                   </Button>
                 </DialogActions>
                 </form>
+            </Dialog>
+            <Dialog open={veryfyEmail} onClose={handleVerifyEmailCancel} aria-labelledby="form-dialog-title">
+              <form noValidate autoComplete="off" onSubmit={handleSubmit(handleVerifyEmailSave)}>
+                <DialogTitle id="form-dialog-title">Change password</DialogTitle>
+                <Divider/>
+                <DialogContent>
+                  <TextField
+                      autoFocus
+                      margin="dense"
+                      id="verify_code"
+                      label="Verify code"
+                      type="text"
+                      fullWidth
+                      value={verificationCode}
+                      onChange={e => setVerificationCode(e.target.value)}
+                   />
+                </DialogContent>
+                <Divider/>
+                <DialogActions>
+                <Button onClick={handleVerifySendCode} color="secondary">
+                    Send code
+                </Button>
+                <Button onClick={handleVerifyEmailCancel} color="primary">
+                    Cancel
+                </Button>
+                <Button onClick={handleVerifyEmailSave} color="primary">
+                    OK
+                </Button>
+                </DialogActions>
+              </form>
             </Dialog>
         </div>
     )
