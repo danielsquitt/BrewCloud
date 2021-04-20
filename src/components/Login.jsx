@@ -1,8 +1,9 @@
 
 // Libraries
-import React, {useEffect, useContext} from 'react'
+import React, {useEffect, useContext, useState} from 'react'
 import Credentials from './login/Credentials'
 import NewPassword from './login/NewPassword'
+import ForgotPassword from './login/ForgotPassword'
 import {AuthContext} from "./../context/AuthProvider"
 import { Container, Card, CardMedia } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -22,10 +23,13 @@ const useStyles = makeStyles((theme) => ({
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(3),
-      },
-      submit: {
-        margin: theme.spacing(3, 0, 2),
-      },
+    },
+    form_2: {
+        width: '100%', // Fix IE 11 issue.
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 1),
+    },
 }))
 
 const Login = (props) => {
@@ -34,14 +38,16 @@ const Login = (props) => {
 
     const classes = useStyles();
 
-    const {state, login, logout, updateUserPassword } = useContext(AuthContext)
-    const {newError} = useContext(EventContext)
+    const {state, login, logout, updateUserPassword, sendForgotpasswordCode, confirmNewPassWord} = useContext(AuthContext)
+    const {newError, newSuccess} = useContext(EventContext)
     const {info, setCompanyName} = useContext(CompanyContext)
+
+    const [forgotPassword, setforgotPassword] = useState(false)
 
     useEffect(() => {
         logout()
         setCompanyName(id ? id : 'IBS')
-        credentialsOnSubmmit('Admin', 'Admin1234')
+        //credentialsOnSubmmit('Admin', 'Admin1234')
     }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
@@ -72,6 +78,30 @@ const Login = (props) => {
         func()
     }
 
+    const forgotPasswordOnSubmit = (username, code, password)=>{
+        confirmNewPassWord(username, code, password)
+        .then((result)=>{
+            newSuccess(`New password has been sent successfully`)
+            setforgotPassword(false)
+        })
+        .catch((error)=>{
+            newError(error.message)
+            console.log(error);
+        })
+    }
+
+    const forgotPasswordSendCode = (username)=>{
+        sendForgotpasswordCode(username)
+        .then((result)=>{
+            const msg = result.CodeDeliveryDetails
+            newSuccess(`${msg.DeliveryMedium === 'EMAIL' ? 'An':(msg.DeliveryMedium === 'SMS' ? 'A': '')} ${msg.DeliveryMedium} has been send to ${msg.Destination}`)
+        })
+        .catch((error)=>{
+            newError(error.message)
+            console.log(error);
+        })
+    }
+
     return(
         <Container maxWidth="xs">
             <Card className={classes.card}>
@@ -87,10 +117,20 @@ const Login = (props) => {
                         classes={classes}
                     />
                 ) : (
-                    <Credentials 
-                        onSubmit={credentialsOnSubmmit} 
-                        classes={classes}
-                    />
+                    !forgotPassword ? (
+                        <Credentials 
+                            onSubmit={credentialsOnSubmmit} 
+                            onForgotPassword={setforgotPassword}
+                            classes={classes}
+                        />
+                    ) : (
+                        <ForgotPassword
+                            onForgotPassword={setforgotPassword}
+                            onSubmit={forgotPasswordOnSubmit} 
+                            onSendCode={forgotPasswordSendCode}
+                            classes={classes}
+                        />
+                    )
                 )}
             </Card>
         </Container>

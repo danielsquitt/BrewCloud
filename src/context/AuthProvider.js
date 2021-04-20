@@ -1,6 +1,5 @@
 
 // LIBRARIS
-import { DomainRounded } from '@material-ui/icons';
 import React, {useEffect, useState } from 'react'
 import {Auth} from '../Amplify';
 
@@ -172,7 +171,13 @@ const AuthProvider = (props) => {
                 console.log(result);
                 const _userInfo = {username: userInfo.username, group: userInfo.group}
                 result.forEach((element) => {
-                    _userInfo[element.Name] = element.Value
+                    if (element.Value === "false"){
+                        _userInfo[element.Name] = false
+                    }else if(element.Value === "true"){
+                        _userInfo[element.Name] = true
+                    }else {
+                        _userInfo[element.Name] = element.Value
+                    }
                 })
                 setUserInfo(_userInfo);
                 resolve(result)
@@ -226,6 +231,7 @@ const AuthProvider = (props) => {
             Auth.verifyUserAttributeSubmit(user, 'email', code)
             .then((result)=>{
                 console.log(result);
+                setUserInfo({...userInfo, email_verified: true})
                 resolve(result)
             })
             .catch((err) => {
@@ -234,6 +240,41 @@ const AuthProvider = (props) => {
             })
         })
     }
+
+    // SEND FORGOT PASSWORD CODE
+    //----------------------------------------------------------------------------------
+    const sendForgotpasswordCode = async(username) => {
+        console.log(`Send reset password code to ${username}`)
+        return await new Promise((resolve, reject) => {
+            Auth.forgotPassword(username)
+            .then((result)=>{
+                console.log(result);
+                resolve(result)
+            })
+            .catch((err) => {
+                console.log(err);
+                reject(err)
+            })
+        })
+    }
+
+    // CONFIRM NEW PASSWORD
+    //----------------------------------------------------------------------------------
+    const confirmNewPassWord = async(username, code, password) => {
+        console.log('confirm email: ', code)
+        return await new Promise((resolve, reject) => {
+            Auth.forgotPasswordSubmit(username, code, password)
+            .then((result)=>{
+                console.log(result);
+                resolve(result)
+            })
+            .catch((err) => {
+                console.log(err);
+                reject(err)
+            })
+        })
+    }
+
 
     const getAccessLevelString = (group) => {
         if (group.search('Prod') >= 0) return 'Production'
@@ -269,7 +310,7 @@ const AuthProvider = (props) => {
     // RETRURN
     //----------------------------------------------------------------------------------
     return (
-        <AuthContext.Provider value={{state, userInfo, permissions, login, updateUserPassword, logout, updateAtributes, changePassword, sendVerificationCode, confirmEmail}}>
+        <AuthContext.Provider value={{state, userInfo, permissions, login, updateUserPassword, logout, updateAtributes, changePassword, sendVerificationCode, confirmEmail, sendForgotpasswordCode, confirmNewPassWord}}>
             {props.children}
         </AuthContext.Provider>
     )

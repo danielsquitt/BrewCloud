@@ -75,7 +75,7 @@ const Profile = ({setSelectedIndex}) => {
     const [password2, setPassword2] = useState('')
 
     const [veryfyEmail, setVeryfyEmail] = useState(false)
-    const [verificationCode, setVerificationCode] = useState('test')
+    const [verificationCode, setVerificationCode] = useState('')
 
     useEffect(() => {
       setSelectedIndex(0)
@@ -244,9 +244,13 @@ const Profile = ({setSelectedIndex}) => {
                               <Grid item> 
                                 <Button variant="contained" color="primary" onClick={()=>{setChangePass(!changePass)}}>Change Password</Button>
                               </Grid>
-                              <Grid item> 
-                                <Button variant="contained" color="primary" onClick={()=>{setVeryfyEmail(!veryfyEmail)}}>Verify email</Button>
-                              </Grid>
+                              { 
+                                !userInfo.email_verified ? (
+                                  <Grid item> 
+                                    <Button variant="contained" color="primary" onClick={()=>{setVeryfyEmail(!veryfyEmail)}}>Verify email</Button>
+                                  </Grid>
+                                ) : (null)
+                              }
                             </Grid>
                         </CardContent>
                     </Card>
@@ -420,13 +424,13 @@ const Profile = ({setSelectedIndex}) => {
                 <Divider/>
                 <DialogActions>
                 <Button onClick={handleVerifySendCode} color="secondary">
-                    Send code
+                    Verification code
                 </Button>
                 <Button onClick={handleVerifyEmailCancel} color="primary">
                     Cancel
                 </Button>
                 <Button onClick={handleVerifyEmailSave} color="primary">
-                    OK
+                    send
                 </Button>
                 </DialogActions>
               </form>

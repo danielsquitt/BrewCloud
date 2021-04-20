@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 
 const Credentials = (props) => {
 
-    const {classes} = props
+    const {classes, onForgotPassword} = props
     const { register, errors, handleSubmit } = useForm({
         reValidateMode: "onBlur"
     });
@@ -80,6 +80,14 @@ const Credentials = (props) => {
                         className={classes.submit}
                     >
                         Login
+                    </Button>
+                </FormControl>
+                <FormControl className={classes.form_forgotPassword} noValidate variant="outlined" >
+                    <Button
+                        color="primary"
+                        onClick={()=>{onForgotPassword(true)}}
+                    >
+                        Forgot Password
                     </Button>
                 </FormControl>
             </form>
