@@ -29,6 +29,22 @@ const UserProvider = (props) => {
         }
     }, [companyInfo]) // eslint-disable-line react-hooks/exhaustive-deps
 
+    useEffect(() => {
+        const func = async()=>{
+            let apiName = 'apirest';
+            let path = '/users';
+            let headers= {
+                    'Content-Type' : 'application/json',
+                    Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+                } 
+
+            API.get(apiName, path, {headers})
+            .then(result => console.log(result))
+            .catch(err => console.log(err))
+        }
+        func()
+    }, [])
+
     const listUsers = async() => {
         return await new Promise(async(resolve, reject) => {
             let apiName = 'AdminQueries';

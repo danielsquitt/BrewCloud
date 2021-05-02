@@ -1,6 +1,6 @@
 {
   "function": {
-    "AdminQueries270ca439": {
+    "AdminQueries0592327c": {
       "service": "Lambda",
       "providerPlugin": "awscloudformation",
       "build": true,
@@ -72,7 +72,7 @@
         },
         {
           "category": "function",
-          "resourceName": "AdminQueries270ca439",
+          "resourceName": "AdminQueries0592327c",
           "attributes": [
             "Arn",
             "Name"

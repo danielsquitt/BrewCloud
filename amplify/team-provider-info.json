@@ -16,9 +16,9 @@
         "ibscognitoAuth": {}
       },
       "function": {
-        "AdminQueries270ca439": {
+        "AdminQueries0592327c": {
           "deploymentBucketName": "amplify-ibs-dev-201956-deployment",
-          "s3Key": "amplify-builds/AdminQueries270ca439-613161332f307266577a-build.zip"
+          "s3Key": "amplify-builds/AdminQueries0592327c-58327159624d382f5476-build.zip"
         }
       }
     }

@@ -50,10 +50,18 @@
     "useDefault": "manual",
     "thirdPartyAuth": false,
     "userPoolGroups": false,
-    "adminQueries": false,
+    "adminQueries": true,
     "triggers": "{}",
     "hostedUI": false,
-    "userPoolGroupList": [],
+    "userPoolGroupList": [
+        "PeninsulaViwer",
+        "IBSViwer",
+        "PeninsulaProd",
+        "IBSProd",
+        "PeninsulaAdmin",
+        "IBSAdmin",
+        "AdminQueriesAPI"
+    ],
     "serviceName": "Cognito",
     "verificationBucketName": "ibscognitoauthverificationbucket",
     "usernameCaseSensitive": false,
@@ -62,5 +70,6 @@
     },
     "permissions": [],
     "dependsOn": [],
-    "authProviders": []
+    "authProviders": [],
+    "adminQueryGroup": "AdminQueriesAPI"
 }
