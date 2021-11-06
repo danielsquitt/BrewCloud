@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect, Fragment} from 'react'
 import DeviceCardBase from './DeviceCardBase'
-import {makeStyles, Grid, Divider, Typography, Button, FormControl, TextField, InputAdornment } from '@material-ui/core';
+import {makeStyles, Grid, Divider, ButtonGroup, Typography, Button, FormControl, Card, TextField, InputAdornment, CardHeader, CardContent } from '@material-ui/core';
 
 import {DeviceContext} from '../../../../context/DeviceProvider'
 import {EventContext} from '../../../../context/EventProvider'
@@ -35,15 +35,36 @@ const DeviceCardTempControl = (props) => {
     const {setBackdrop, resetBackdrop} = useContext(EventContext)
     const {permissions} = useContext(AuthContext)
 
-    const [setPoint, setSetPoint] = useState(parseFloat(deviceList[props.index].state?.reported?.['sp temperature']))
+    const [setPoint, setSetPoint] = useState(parseFloat(deviceList[props.index].state?.reported?.temp?.['sp']))
+    const [ctrlState, setCtrlState] = useState(parseFloat(deviceList[props.index].state?.reported?.temp?.['state']))
     
     const [enableSet, setEnableSet] = useState(false)
+    const [enableStart, setEnableStart] = useState(false)
+    const [enableStop, setEnableStop] = useState(false)
+    const [enableCold, setEnableCold] = useState(false)
     const [error, setError] = useState([false])
 
     useEffect(() => {
-        setEnableSet(setPoint !== parseFloat(deviceList[props.index].state?.desired?.['sp temperature']))
-        setError([deviceList[props.index].state.reported['sp temperature'] !== deviceList[props.index].state.desired['sp temperature']])
+        setEnableSet(setPoint !== parseFloat(deviceList[props.index].state?.desired?.temp?.['sp']))
+        let reported = deviceList[props.index].state?.reported?.temp?.['sp']
+        let desired = deviceList[props.index].state?.desired?.temp?.['sp']
+        if (reported !== undefined && desired !== undefined) {
+            if (parseFloat(reported) == parseFloat(desired)) {
+                setError([false])
+            } else {
+                setError([true])
+            }
+        } else {
+            setError([false])
+        }
     }, [setPoint, deviceList, props]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        setEnableStart(deviceList[props.index].state?.reported?.temp?.['state'] !== "1")
+        setEnableStop(deviceList[props.index].state?.reported?.temp?.['state'] !== "0")
+        setEnableCold(deviceList[props.index].state?.reported?.temp?.['state'] !== "-1")
+    }, [deviceList])
+
 
     useEffect(() => {
         if(!enableSet) {
@@ -52,36 +73,231 @@ const DeviceCardTempControl = (props) => {
     }, [enableSet]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
-        setSetPoint((parseFloat(deviceList[props.index].state?.desired?.['sp temperature'])))
+        setSetPoint((parseFloat(deviceList[props.index].state?.desired?.temp?.['sp'])))
+        setCtrlState((parseFloat(deviceList[props.index].state?.desired?.temp?.['state'])))
     }, [deviceList, props])
 
     const handleClic = (event)=>{
         event.preventDefault()
         const func = async() => {
             setBackdrop(5000, 'Timeout error updating state')
-            const desired = {}
-            desired['sp temperature'] = setPoint.toString()
-            const msg = {desired}
+            const temp = {}
+            temp['sp'] = setPoint.toFixed(2)
+
+
+
+            const msg = {desired : {temp},}
             console.log({state:{...msg}});
             await PubSub.publish(`$aws/things/${deviceList[props.index].name}/shadow/name/${deviceList[props.index].deviceType.shadownName}/update`, {state:{...msg}});
         }
         func()
     }
 
+    const handleCtrlClic = (event, type) =>{
+        event.preventDefault()
+        const func = async() => {
+            //setBackdrop(5000, 'Timeout error updating state')
+            const temp = {}
+            if(type === 'START')
+            {
+                temp['state'] = "1"
+            } else if(type === 'STOP')
+            {
+                temp['state'] = "0"
+            } else if(type === 'COLD')
+            {
+                temp['state'] = "-1"
+            }
+            const msg = {desired : {temp},}
+            console.log({state:{...msg}});
+            await PubSub.publish(`$aws/things/${deviceList[props.index].name}/shadow/name/${deviceList[props.index].deviceType.shadownName}/update`, {state:{...msg}});
+        }
+        func()
+    }
+
+    const ControlState = () => {
+        let bg_color
+        let txt
+        switch (parseInt(deviceList[props.index].state?.reported?.temp?.['state'])) {
+            case 1:
+                bg_color = "#4CAF50"
+                txt = "   RUN   "
+                break;
+            case -1:
+                bg_color = "#3F51B5"
+                txt = "COLD CRASH"
+                break;
+            default:
+                bg_color = "#EAA61F"
+                txt = "   STOP   "
+                break;
+        }
+
+        return(
+            <Grid container justify="center" spacing={1}>
+                <Grid item component={Card} variant = 'outlined' style={{backgroundColor: bg_color, width: '100%'}}>
+                    <Grid container spacing={0}>
+                        <Grid item component={Typography} align={'center'} xs={12}>
+                            {txt}
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        )
+    }
+
+    const ValveState = () =>{
+        let bg_color
+        let txt
+        switch (parseInt(deviceList[props.index].telemetry?.temp?.['valve'])) {
+            case 1:
+                bg_color = "#3F51B5"
+                txt = "   OPEN   "
+                break;
+            default:
+                bg_color = "lightgrey"
+                txt = "   CLOSE   "
+                break;
+        }
+
+        return(
+            <Grid container justify="center" spacing={1}>
+                <Grid item component={Typography} align={'center'}  xs={12}>
+                    Valve:
+                </Grid>
+                <Grid item component={Card} variant = 'outlined' style={{backgroundColor: bg_color, width: '50%'}}>
+                    <Grid container spacing={0}>
+                        <Grid item component={Typography} align={'center'} xs={12}>
+                            {txt}
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        )
+    }
+
+    const Temperature = () =>{
+        return(
+            <Grid container justify="center" spacing={1}>
+                <Grid item component={Typography} align={'center'}  xs={12}>
+                    Temperature:
+                </Grid>
+                <Grid item component={Card} elevation={0} style={{width: '100%'}}>
+                    <Grid container alignItems="flex-end">
+                        <Grid item component={Typography} variant='h5' align={'center'}  xs={6}>
+                            {(deviceList[props.index].telemetry?.temp && deviceList[props.index].state?.reported?.temp?.['state'] !== "0")  ? `${deviceList[props.index].telemetry?.temp?.value} ºC` : `-- ºC`}
+                        </Grid>
+                        <Grid item component={Typography} variant='h5' align={'center'}  xs={1}>
+                            {`/`}
+                        </Grid>
+                        <Grid item component={Typography}  variant='caption' align={'center'}  xs={5}>
+                            {`${deviceList[props.index].state?.reported?.temp?.['sp']} ºC`}
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        )
+    }
+
+    const SetPoint = () => {
+        return(
+            <Grid item component={Card} variant='outlined'>
+                <CardHeader title="Setpoint"/>
+                <Divider/>
+                <CardContent>
+                    <FormControl variant="outlined" className={classes.formControl} >
+                        <TextField
+                            error={error[0]}
+                            variant='outlined'
+                            label="Temperature"
+                            type="number"
+                            value={setPoint}
+                            inputProps={{ step: 0.5 }}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="start">ºC</InputAdornment>,
+                            }}
+                            size='small'
+                            InputLabelProps={{
+                            shrink: true,
+                            }}
+                            //helperText={`Reported: ${deviceList[props.index].state.reported.temp?.['sp']?.replace('.',',')} ºC`}
+                            onChange={(event)=>{
+                                console.log(event);
+                                setSetPoint(parseFloat(event.target.value))
+                            }}
+                        />
+                    </FormControl>
+                    <Button 
+                        className={classes.formControl}
+                        variant="contained" 
+                        color="primary" 
+                        onClick={(event)=>{handleClic(event)}} 
+                        disabled = {!enableSet}
+                    >Set</Button>
+                </CardContent>
+            </Grid>
+        )
+    }
+
+    const ControlButtons = () => {
+        return(
+            <Grid item component={Card} variant='outlined'>
+                <CardHeader title="Control"/>
+                <Divider/>
+                <CardContent>
+                    <Grid container justify="center" spacing={1} >
+                        <Grid item xs={6}>
+                            <ButtonGroup variant="outlined" aria-label="outlined primary button group" orientation="vertical">
+                                <Button
+                                    style={{
+                                        backgroundColor: "#4CAF50",
+                                        borderColor: "#4CAF50",
+                                        textColor: "#4CAF50",
+                                        margin: "1px",
+                                    }}
+                                    onClick={(event)=>{handleCtrlClic(event, 'START')}} 
+                                    disabled = {!enableStart}
+                                >Start</Button>
+                                <Button
+                                    style={{
+                                    backgroundColor: "#3F51B5",
+                                    borderColor: "#3F51B5",
+                                    margin: "1px",
+                                    }}
+                                    onClick={(event)=>{handleCtrlClic(event,'COLD')}} 
+                                    disabled = {!enableCold}
+                                >COLD CRASH</Button>
+                                <Button
+                                    style={{
+                                        backgroundColor: "#EAA61F",
+                                        borderColor: "#EAA61F",
+                                        textColor: "#EAA61F",
+                                        margin: "1px",
+                                    }}
+                                    onClick={(event)=>{handleCtrlClic(event, 'STOP')}} 
+                                    disabled = {!enableStop}
+                                >STOP</Button>
+                            </ButtonGroup>
+                        </Grid>
+                    </Grid>
+                </CardContent>
+            </Grid>
+        )
+    }
+
     return (
         <DeviceCardBase index={props.index}>
             <Grid container direction={'column'} spacing={3}>
+            <Grid item xs={12}>
+                    {ControlState()}
+                </Grid>
                 <Grid item xs={12}>
-                    <Grid container justify="center">
-                        <Grid item xs={6}>
-                            <Grid container alignItems="center" direction={'column'}>
-                                <Grid item component={Typography} align={'center'}  xs={12}>
-                                    Temperature
-                                </Grid>
-                                <Grid item component={Typography} align={'center'}  xs={12}>
-                                    {deviceList[props.index].telemetry ? `${deviceList[props.index].telemetry?.temperature} ºC` : `-- ºC`}
-                                </Grid>
-                            </Grid>
+                    <Grid container justify="center" spacing={1}>
+                        <Grid item xs={4} >
+                            {Temperature()}
+                        </Grid>
+                        <Grid item xs={4}>
+                            {ValveState()}
                         </Grid>
                     </Grid>
                 </Grid>
@@ -95,41 +311,15 @@ const DeviceCardTempControl = (props) => {
                                 <Fragment>
                                     <Grid item xs={12}>
                                         <Grid container spacing={2}>
-                                            <Grid container spacing={2} justify="center" alignItems="center">
-                                                <Grid item xs={12} sm={6}>
-                                                    <FormControl variant="outlined" className={classes.formControl} >
-                                                        <TextField
-                                                            error={error[0]}
-                                                            variant='outlined'
-                                                            label="Temperature setpoint"
-                                                            type="number"
-                                                            value={setPoint}
-                                                            inputProps={{ step: 0.5 }}
-                                                            InputProps={{
-                                                                endAdornment: <InputAdornment position="start">ºC</InputAdornment>,
-                                                              }}
-                                                            size='small'
-                                                            InputLabelProps={{
-                                                            shrink: true,
-                                                            }}
-                                                            helperText={`Reported: ${deviceList[props.index].state.reported['sp temperature']?.replace('.',',')} ºC`}
-                                                            onChange={(event)=>{
-                                                                console.log(event);
-                                                                setSetPoint(parseFloat(event.target.value))
-                                                            }}
-                                                        />
-                                                    </FormControl>
+                                            <Grid container spacing={2} justify="center" alignItems="stretch">
+                                                <Grid item xs={6}>
+                                                    {SetPoint()}
+                                                </Grid>
+                                                <Grid item xs={6}>
+                                                    {ControlButtons()}
                                                 </Grid>
                                             </Grid>
                                         </Grid>
-                                    </Grid>
-                                    <Grid item xs={12} >
-                                        <Button 
-                                            variant="contained" 
-                                            color="primary" 
-                                            onClick={(event)=>{handleClic(event)}} 
-                                            disabled = {!enableSet}
-                                        >Set</Button>
                                     </Grid>
                                 </Fragment>
                             )

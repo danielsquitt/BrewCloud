@@ -97,7 +97,7 @@ const DeviceCardBase = (props) => {
 
     return (
         <div>
-            <Card elevation={1}>
+            <Card elevation={5}>
                 <CardHeader
                     avatar={avatar()}
                     title={deviceList[props.index].alias}

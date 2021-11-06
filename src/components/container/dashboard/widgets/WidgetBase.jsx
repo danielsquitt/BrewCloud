@@ -97,7 +97,7 @@ const WidgetBase = (props) => {
 
     return (
         <Grid item xs={12} md={6} lg={4} xl={3}>
-            <Card elevation={3}>
+            <Card elevation={6}>
                 <CardHeader
                     avatar={avatar()}
                     title={props.data.alias}

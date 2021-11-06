@@ -99,7 +99,7 @@ const DeviceProvider = (props) => {
     }, [info.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const messageDispatcher = (data) =>{
-        //console.log('Message received', data)
+        console.log('Message received', data)
         const topic=data[Object.getOwnPropertySymbols(data)[0]].split('/')
 
         switch (topic[0]) {
