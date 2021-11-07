@@ -128,7 +128,7 @@ const DeviceCardTempControl = (props) => {
                 txt = "COLD CRASH"
                 break;
             default:
-                bg_color = "#EAA61F"
+                bg_color = "#818181"
                 txt = "   STOP   "
                 break;
         }
@@ -205,35 +205,41 @@ const DeviceCardTempControl = (props) => {
                 <CardHeader title="Setpoint"/>
                 <Divider/>
                 <CardContent>
-                    <FormControl variant="outlined" className={classes.formControl} >
-                        <TextField
-                            error={error[0]}
-                            variant='outlined'
-                            label="Temperature"
-                            type="number"
-                            value={setPoint}
-                            inputProps={{ step: 0.5 }}
-                            InputProps={{
-                                endAdornment: <InputAdornment position="start">ºC</InputAdornment>,
-                            }}
-                            size='small'
-                            InputLabelProps={{
-                            shrink: true,
-                            }}
-                            //helperText={`Reported: ${deviceList[props.index].state.reported.temp?.['sp']?.replace('.',',')} ºC`}
-                            onChange={(event)=>{
-                                console.log(event);
-                                setSetPoint(parseFloat(event.target.value))
-                            }}
-                        />
-                    </FormControl>
-                    <Button 
-                        className={classes.formControl}
-                        variant="contained" 
-                        color="primary" 
-                        onClick={(event)=>{handleClic(event)}} 
-                        disabled = {!enableSet}
-                    >Set</Button>
+                    <Grid container direction="row" justifyContent="center" alignItems="center">
+                        <Grid item xs={8}>
+                            <FormControl variant="outlined" className={classes.formControl} >
+                                <TextField
+                                    error={error[0]}
+                                    variant='outlined'
+                                    label="Temperature"
+                                    type="number"
+                                    value={setPoint}
+                                    inputProps={{ step: 0.5 }}
+                                    InputProps={{
+                                        endAdornment: <InputAdornment position="start">ºC</InputAdornment>,
+                                    }}
+                                    size='small'
+                                    InputLabelProps={{
+                                    shrink: true,
+                                    }}
+                                    onChange={(event)=>{
+                                        console.log(event);
+                                        setSetPoint(parseFloat(event.target.value))
+                                    }}
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Button 
+                                className={classes.formControl}
+                                variant="contained" 
+                                size="small"
+                                color="primary" 
+                                onClick={(event)=>{handleClic(event)}} 
+                                disabled = {!enableSet}
+                            >Set</Button>
+                        </Grid>
+                    </Grid>
                 </CardContent>
             </Grid>
         )
@@ -269,8 +275,8 @@ const DeviceCardTempControl = (props) => {
                                 >COLD CRASH</Button>
                                 <Button
                                     style={{
-                                        backgroundColor: "#EAA61F",
-                                        borderColor: "#EAA61F",
+                                        backgroundColor: "#818181",
+                                        borderColor: "#818181",
                                         textColor: "#EAA61F",
                                         margin: "1px",
                                     }}
@@ -286,8 +292,12 @@ const DeviceCardTempControl = (props) => {
     }
 
     const getValue = (value) => {
+        if(value)
+        {
         let length = value.length
         return value.slice(0, length - 1)
+        }
+        return ""
     }
 
     return (

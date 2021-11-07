@@ -20,7 +20,7 @@ const TempControl = (props) => {
                 txt = "COLD CRASH"
                 break;
             default:
-                bg_color = "#EAA61F"
+                bg_color = "#818181"
                 txt = "   STOP   "
                 break;
         }
@@ -86,7 +86,7 @@ const TempControl = (props) => {
                 <Grid item component={Card} elevation={0} style={{width: '100%'}}>
                     <Grid container alignItems="flex-end" justifycontent="center">
                         <Grid item component={Typography} variant='h6' align={'center'}  xs={6}>
-                            {(props.data.telemetry?.temp && props.data.telemetry?.temp?.state !== "0") ? `${getValue(props.data.telemetry?.temp?.value)} ºC` : `-- ºC`}
+                            {(props.data.telemetry?.temp && props.data.state?.reported?.temp?.state !== "0") ? `${getValue(props.data.telemetry?.temp?.value)} ºC` : `-- ºC`}
                         </Grid>
                         <Grid item component={Typography} variant='h6' align={'center'}  xs={1}>
                             {`/`}
