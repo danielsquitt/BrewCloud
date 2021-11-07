@@ -12,15 +12,15 @@ const TempControl = (props) => {
         let txt
         switch (parseInt(props.data.state?.reported?.temp?.['state'])) {
             case 1:
-                bg_color = "green"
+                bg_color = "#4CAF50"
                 txt = "   RUN   "
                 break;
             case -1:
-                bg_color = "blue"
+                bg_color = "#3F51B5"
                 txt = "COLD CRASH"
                 break;
             default:
-                bg_color = "white"
+                bg_color = "#EAA61F"
                 txt = "   STOP   "
                 break;
         }
@@ -59,13 +59,22 @@ const TempControl = (props) => {
                 </Grid>
                 <Grid item component={Card} variant = 'outlined' style={{backgroundColor: bg_color, width: '50%'}}>
                     <Grid container spacing={0}>
-                        <Grid item component={Typography} align={'center'} xs={12}>
+                        <Grid item component={Typography} variant="body2" align={'center'} xs={12}>
                             {txt}
                         </Grid>
                     </Grid>
                 </Grid>
             </Grid>
         )
+    }
+
+    const getValue = (value) => {
+        if(value)
+        {
+        let length = value.length
+        return value.slice(0, length - 1)
+        }
+        return ""
     }
 
     const Temperature = () =>{
@@ -75,15 +84,15 @@ const TempControl = (props) => {
                     Temperature:
                 </Grid>
                 <Grid item component={Card} elevation={0} style={{width: '100%'}}>
-                    <Grid container alignItems="flex-end">
+                    <Grid container alignItems="flex-end" justifycontent="center">
                         <Grid item component={Typography} variant='h6' align={'center'}  xs={6}>
-                            {props.data.telemetry?.temp ? `${props.data.telemetry?.temp?.value} ºC` : `-- ºC`}
+                            {(props.data.telemetry?.temp && props.data.telemetry?.temp?.state !== "0") ? `${getValue(props.data.telemetry?.temp?.value)} ºC` : `-- ºC`}
                         </Grid>
                         <Grid item component={Typography} variant='h6' align={'center'}  xs={1}>
                             {`/`}
                         </Grid>
                         <Grid item component={Typography}  variant='caption' align={'center'}  xs={5}>
-                            {`${props.data.state?.reported?.temp?.['sp']} ºC`}
+                            {`${getValue(props.data.state?.reported?.temp?.['sp'])} ºC`}
                         </Grid>
                     </Grid>
                 </Grid>
@@ -100,10 +109,10 @@ const TempControl = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container justify="center" spacing={1}>
-                        <Grid item xs={6} >
+                        <Grid item xs={7} >
                             {Temperature()}
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={5}>
                             {ValveState()}
                         </Grid>
                     </Grid>

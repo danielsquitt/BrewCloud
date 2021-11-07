@@ -1,18 +1,20 @@
 import React, {useContext, useEffect, useState} from 'react'
 
 import {API, Auth} from '../Amplify';
-import {CompanyContext } from './../context/CompanyProvider'
+import {CompanyContext} from './../context/CompanyProvider'
+import {AuthContext} from './../context/AuthProvider'
 
 export const UserContext = React.createContext()
 
 const UserProvider = (props) => {
 
     const {info: companyInfo} = useContext(CompanyContext)
+    const {permissions} = useContext(AuthContext)
     const [userList, setuserList] = useState([])
 
     useEffect(() => {
         //console.log('Info:',info);
-        if(companyInfo.name && true){
+        if(companyInfo.name && permissions?.manageUsers){
             const func = async()=>{
                 listUsers()
                 .then((userlist)=>{

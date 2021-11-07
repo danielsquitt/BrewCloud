@@ -167,7 +167,7 @@ const DeviceCardTempControl = (props) => {
                 </Grid>
                 <Grid item component={Card} variant = 'outlined' style={{backgroundColor: bg_color, width: '50%'}}>
                     <Grid container spacing={0}>
-                        <Grid item component={Typography} align={'center'} xs={12}>
+                        <Grid item component={Typography} variant="body2" align={'center'} xs={12}>
                             {txt}
                         </Grid>
                     </Grid>
@@ -185,13 +185,13 @@ const DeviceCardTempControl = (props) => {
                 <Grid item component={Card} elevation={0} style={{width: '100%'}}>
                     <Grid container alignItems="flex-end">
                         <Grid item component={Typography} variant='h5' align={'center'}  xs={6}>
-                            {(deviceList[props.index].telemetry?.temp && deviceList[props.index].state?.reported?.temp?.['state'] !== "0")  ? `${deviceList[props.index].telemetry?.temp?.value} ºC` : `-- ºC`}
+                            {(deviceList[props.index].telemetry?.temp && deviceList[props.index].state?.reported?.temp?.['state'] !== "0")  ? `${getValue(deviceList[props.index].telemetry?.temp?.value)} ºC` : `-- ºC`}
                         </Grid>
                         <Grid item component={Typography} variant='h5' align={'center'}  xs={1}>
                             {`/`}
                         </Grid>
                         <Grid item component={Typography}  variant='caption' align={'center'}  xs={5}>
-                            {`${deviceList[props.index].state?.reported?.temp?.['sp']} ºC`}
+                            {`${getValue(deviceList[props.index].state?.reported?.temp?.['sp'])} ºC`}
                         </Grid>
                     </Grid>
                 </Grid>
@@ -285,6 +285,11 @@ const DeviceCardTempControl = (props) => {
         )
     }
 
+    const getValue = (value) => {
+        let length = value.length
+        return value.slice(0, length - 1)
+    }
+
     return (
         <DeviceCardBase index={props.index}>
             <Grid container direction={'column'} spacing={3}>
@@ -293,10 +298,10 @@ const DeviceCardTempControl = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container justify="center" spacing={1}>
-                        <Grid item xs={4} >
+                        <Grid item xs={7} >
                             {Temperature()}
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={5}>
                             {ValveState()}
                         </Grid>
                     </Grid>

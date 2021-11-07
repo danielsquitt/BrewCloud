@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "ibscognitoAuth": {}
+        "ibscognitoAuth": {},
+        "userPoolGroups": {}
       },
       "function": {
         "AdminQueries0592327c": {
@@ -37,7 +38,11 @@
     },
     "categories": {
       "auth": {
-        "ibscognitoAuth": {}
+        "ibscognitoAuth": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "AdminQueries0592327c": {}
       }
     }
   }
