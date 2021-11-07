@@ -14,12 +14,14 @@ const DeviceProvider = (props) => {
     const {info} = useContext(CompanyContext)
     const [deviceList, setDeviceList] = useState([])
     const [deviceByType, setdeviceByType] = useState([])
+    const [id, setId] = useState(info.id)
 
     useEffect(() => {
         var pub
         var timer = []
         const fuc = async() => {
-            if(info.id !== ''){
+            if(info.id !== '' && info.id !== id){
+                setId(info.id)
                 await getDeviceList()
                 .then((result) => {
                     // Save device list
@@ -85,6 +87,8 @@ const DeviceProvider = (props) => {
                 .catch((err) => {
                     console.error(err);
                 })
+            }else{
+                return
             }
         }
         fuc()

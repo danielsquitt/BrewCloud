@@ -50,10 +50,10 @@ const AuthProvider = (props) => {
     useEffect(() => {
         if (state.logged) {
             const interval = user.signInUserSession.accessToken.payload.exp - user.signInUserSession.accessToken.payload.iat
-            console.log('Refresh token interval:', interval*900);
+            console.log('Refresh token interval:', interval*100);
             const id = setInterval(() => {
                 refresh()
-                .then(data => setUser(data))
+                .then()//data => setUser(data))
             }, interval*1000)
 
             return () => clearInterval(id)
