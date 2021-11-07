@@ -206,7 +206,7 @@ const DeviceCardTempControl = (props) => {
                 <Divider/>
                 <CardContent>
                     <Grid container direction="row" justifyContent="center" alignItems="center">
-                        <Grid item xs={8}>
+                        <Grid item xs={12} sm={8}>
                             <FormControl variant="outlined" className={classes.formControl} >
                                 <TextField
                                     error={error[0]}
@@ -229,7 +229,7 @@ const DeviceCardTempControl = (props) => {
                                 />
                             </FormControl>
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={12} sm={4}>
                             <Button 
                                 className={classes.formControl}
                                 variant="contained" 
@@ -252,8 +252,7 @@ const DeviceCardTempControl = (props) => {
                 <Divider/>
                 <CardContent>
                     <Grid container justify="center" spacing={1} >
-                        <Grid item xs={6}>
-                            <ButtonGroup variant="outlined" aria-label="outlined primary button group" orientation="vertical">
+                            <Grid item component={ButtonGroup} xs={12} sm={8} md={6} variant="outlined" aria-label="outlined primary button group" orientation="vertical">
                                 <Button
                                     style={{
                                         backgroundColor: "#4CAF50",
@@ -283,7 +282,6 @@ const DeviceCardTempControl = (props) => {
                                     onClick={(event)=>{handleCtrlClic(event, 'STOP')}} 
                                     disabled = {!enableStop}
                                 >STOP</Button>
-                            </ButtonGroup>
                         </Grid>
                     </Grid>
                 </CardContent>

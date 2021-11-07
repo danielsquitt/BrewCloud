@@ -41,9 +41,9 @@ const TempControl = (props) => {
     const ValveState = () =>{
         let bg_color
         let txt
-        switch (parseInt(props.data.state?.reported?.temp?.['valve'])) {
+        switch (parseInt(props.data.telemetry?.temp?.['valve'])) {
             case 1:
-                bg_color = "blue"
+                bg_color = "#3F51B5"
                 txt = "   OPEN   "
                 break;
             default:
