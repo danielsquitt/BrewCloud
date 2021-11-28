@@ -107,6 +107,7 @@ const AuthProvider = (props) => {
                     resolve({userAttributes, requiredAttributes})
                 } else {
                     setUser(_user)
+                    console.log(_user);
                     setUserInfo(getUserInfo(_user))
                     setPermissions(getgetAccessLevelDocumment(_user.signInUserSession.idToken.payload['cognito:groups']))
                     Auth.currentCredentials().then((info) => {

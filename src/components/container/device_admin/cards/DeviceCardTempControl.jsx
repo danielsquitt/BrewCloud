@@ -98,17 +98,21 @@ const DeviceCardTempControl = (props) => {
         const func = async() => {
             //setBackdrop(5000, 'Timeout error updating state')
             const temp = {}
+            var global_state = ""
             if(type === 'START')
             {
+                global_state = "1"
                 temp['state'] = "1"
             } else if(type === 'STOP')
             {
+                global_state = "0"
                 temp['state'] = "0"
             } else if(type === 'COLD')
             {
+                global_state = "-1"
                 temp['state'] = "-1"
             }
-            const msg = {desired : {temp},}
+            const msg = {desired : {temp, global_state}}
             console.log({state:{...msg}});
             await PubSub.publish(`$aws/things/${deviceList[props.index].name}/shadow/name/${deviceList[props.index].deviceType.shadownName}/update`, {state:{...msg}});
         }
